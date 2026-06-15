@@ -1,0 +1,262 @@
+/* ════════════════════════════════════════════════════════════════════
+   HEAVY MACHINERY TEMPLATE — templateStyle: 'machinery_detailed'
+   Multi-section industrial assemblies modeled on the reference offer
+   (عرض سعر جزء خلفي). Loads ALONGSIDE replicaQuote.print.css (read-only
+   reuse of the rp- page skeleton) and never alters standard/replica.
+   Brand locked to #3b767c · typography locked to 'Cairo'.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── Machinery item block — never split across pages ── */
+.mq-item {
+  margin-bottom: 18px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Structured section title banner — brand color */
+.mq-item-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  direction: rtl;
+  background-color: #3b767c !important;
+  color: #ffffff !important;
+  font-weight: 800;
+  font-size: 16px;
+  padding: 9px 16px;
+  border-radius: 4px 4px 0 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.mq-item-ordinal {
+  flex-shrink: 0;
+  background-color: #ffffff;
+  color: #3b767c;
+  font-weight: 700;
+  font-size: 12.5px;
+  border-radius: 3px;
+  padding: 1px 10px;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.mq-item-title {
+  flex: 1 1 auto;
+  unicode-bidi: plaintext;
+}
+
+/* Dual-column: image slot beside the dedicated spec table */
+.mq-item-grid {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 12px;
+  align-items: stretch;
+  border: 1px solid #3b767c;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  padding: 10px;
+}
+
+.mq-item-img-box {
+  flex: 0 0 42%;
+  border: 1px solid #3b767c;
+  border-radius: 4px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  min-height: 140px;
+}
+
+.mq-item-img-box img {
+  width: 100%;
+  max-height: 210px;
+  object-fit: contain;
+}
+
+.mq-item-img-empty {
+  flex: 0 0 42%;
+  border: 1px dashed rgba(59, 118, 124, 0.45);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(59, 118, 124, 0.6);
+  font-size: 11px;
+  font-weight: 600;
+  min-height: 140px;
+}
+
+.mq-item-table-box {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Standalone price highlight card */
+.mq-price-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  direction: rtl;
+  gap: 10px;
+  border: 2px solid #3b767c;
+  background-color: #e9f3f4 !important;
+  border-radius: 4px;
+  padding: 6px 14px;
+  margin-top: auto;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.mq-price-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #2e6569;
+}
+
+.mq-price-value {
+  font-size: 16px;
+  font-weight: 700;
+  font-style: italic;
+  color: #111827;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.mq-price-note {
+  font-size: 10px;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+/* Global financial matrix heading */
+.mq-financial-title {
+  direction: rtl;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff !important;
+  background-color: #3b767c !important;
+  border-radius: 4px;
+  padding: 6px 12px;
+  margin: 18px 0 10px;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+/* Compact print mode */
+.print-mode-compact .mq-item {
+  margin-bottom: 12px;
+}
+
+.print-mode-compact .mq-item-grid {
+  padding: 7px;
+  gap: 8px;
+}
+
+.print-mode-compact .mq-item-img-box img {
+  max-height: 160px;
+}
+
+@media print {
+  .mq-item,
+  .mq-price-card {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .mq-item-banner,
+  .mq-financial-title {
+    break-after: avoid !important;
+    page-break-after: avoid !important;
+  }
+
+  .mq-item-img-empty {
+    display: none !important;
+  }
+
+  /* ── Chromium-safe table layout (replaces flex/grid for page breaks) ── */
+  .mq-item-banner {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+
+  .mq-item-ordinal,
+  .mq-item-title {
+    display: table-cell !important;
+    vertical-align: middle !important;
+  }
+
+  .mq-item-ordinal {
+    width: 12% !important;
+  }
+
+  .mq-item-title {
+    width: 88% !important;
+  }
+
+  .mq-item-grid {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+  }
+
+  .mq-item-table-box,
+  .mq-item-img-box,
+  .mq-item-img-empty {
+    display: table-cell !important;
+    vertical-align: top !important;
+    float: none !important;
+  }
+
+  .mq-item-table-box {
+    width: 58% !important;
+  }
+
+  .mq-item-img-box,
+  .mq-item-img-empty {
+    width: 42% !important;
+  }
+
+  .mq-item-table-box .rp-table {
+    width: 100% !important;
+  }
+
+  .mq-price-card {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+
+  .mq-price-label,
+  .mq-price-value,
+  .mq-price-note {
+    display: table-cell !important;
+    vertical-align: middle !important;
+  }
+
+  .mq-price-label {
+    width: 28% !important;
+  }
+
+  .mq-price-value {
+    width: 32% !important;
+  }
+
+  .mq-price-note {
+    width: 40% !important;
+  }
+}

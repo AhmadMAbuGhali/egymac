@@ -1,0 +1,58 @@
+/* ════════════════════════════════════════════════════════════════════
+   Universal inline editing — quote preview screens.
+   Fits seamlessly into the static document when idle; reveals an
+   ultra-clean dashed teal affordance on hover/focus. Completely
+   invisible in any print/PDF context so exported documents stay pristine.
+   ════════════════════════════════════════════════════════════════════ */
+
+.qe-editable {
+  outline: 1.5px dashed transparent;
+  outline-offset: 2px;
+  border-radius: 4px;
+  transition: outline-color 0.18s ease, background-color 0.18s ease;
+  cursor: text;
+  min-width: 1ch;
+}
+
+.qe-editable:hover {
+  outline-color: rgb(59 118 124 / 0.45);
+}
+
+.qe-editable:focus {
+  outline-color: #3b767c;
+  background-color: rgb(59 118 124 / 0.05);
+}
+
+.qe-block {
+  display: block;
+  white-space: pre-wrap;
+}
+
+.qe-editable:empty::before {
+  content: attr(data-qe-placeholder);
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+/* Editing chrome must vanish in every print/PDF context */
+@media print {
+  .qe-editable,
+  .qe-editable:hover,
+  .qe-editable:focus {
+    outline: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .qe-editable:empty::before {
+    content: "" !important;
+  }
+}
+
+.pdf-capture-active .qe-editable,
+.pdf-capture-active .qe-editable:hover,
+.pdf-capture-active .qe-editable:focus {
+  outline: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}

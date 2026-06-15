@@ -1,0 +1,567 @@
+/* ════════════════════════════════════════════════════════════════════
+   REPLICA TEMPLATE — templateStyle: 'replica'
+   Carbon-copy of the reference offer (عرض سعر جزء خلفي) with the system
+   palette locked to #3b767c and typography locked to 'Cairo', sans-serif.
+   Shared verbatim between the React Live Preview (screen) and the
+   backend Puppeteer HTML builder (print). Fully additive — the standard
+   template never loads this file's selectors.
+   ════════════════════════════════════════════════════════════════════ */
+
+.replica-print-wrapper {
+  --rp-brand: #3b767c;
+  --rp-brand-dark: #2e6569;
+  --rp-brand-light: #e9f3f4;
+  --rp-ink: #0a0a0a;
+  --rp-ink-body: #111827;
+  width: 100%;
+  max-width: 210mm;
+  margin: 0 auto;
+}
+
+#replica-print-area {
+  position: relative;
+  background-color: #ffffff;
+  font-family: "Cairo", sans-serif !important;
+  color: var(--rp-ink);
+  font-size: 14.5px;
+  line-height: 1.62;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+#replica-print-area * {
+  font-family: "Cairo", sans-serif !important;
+  box-sizing: border-box;
+}
+
+/* Screen-only sheet chrome */
+@media screen {
+  #replica-print-area {
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 6px -1px rgb(17 24 39 / 0.06);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+}
+
+/* ── Document-level table: thead/tfoot repeat on every printed page ── */
+.rp-doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: none;
+}
+
+.rp-doc-table > thead {
+  display: table-header-group;
+}
+
+.rp-doc-table > tfoot {
+  display: table-footer-group;
+}
+
+.rp-doc-table > thead > tr > td,
+.rp-doc-table > tfoot > tr > td,
+.rp-doc-table > tbody > tr > td {
+  border: none;
+  padding: 0;
+  vertical-align: top;
+}
+
+/* ── Per-page header: logo left · centered company block ── */
+.rp-page-header {
+  position: relative;
+  padding: 14px 26px 8px;
+  text-align: center;
+}
+
+.rp-header-logo {
+  position: absolute;
+  top: 10px;
+  inset-inline-start: 22px;
+  height: 58px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+}
+
+.rp-header-company {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--rp-ink);
+  letter-spacing: 0.01em;
+}
+
+.rp-header-tagline {
+  margin: 1px 0 0;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--rp-ink-body);
+}
+
+.rp-header-rule {
+  margin: 8px auto 0;
+  height: 2px;
+  width: 220px;
+  background-color: var(--rp-brand);
+  border-radius: 1px;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ── Watermark (repeats per printed page via fixed positioning) ── */
+.rp-watermark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.rp-watermark img {
+  width: 62%;
+  max-width: 460px;
+  opacity: 0.05;
+  filter: grayscale(35%);
+}
+
+@media print {
+  .rp-watermark {
+    position: fixed;
+    inset: 0;
+  }
+}
+
+.rp-body-cell {
+  position: relative;
+  z-index: 1;
+}
+
+/* Bidi utilities — emitted by MixedBidiText / backend bidi renderer */
+#replica-print-area .offer-ltr-isolate {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+}
+
+#replica-print-area .offer-ar-chunk,
+#replica-print-area .offer-align-ar {
+  direction: rtl;
+  unicode-bidi: isolate;
+}
+
+#replica-print-area .offer-mixed-line {
+  unicode-bidi: isolate;
+}
+
+.rp-body-inner {
+  padding: 6px 28px 14px;
+}
+
+/* ── Document title (centered, brand underline) ── */
+.rp-doc-title {
+  margin: 4px 0 12px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--rp-ink);
+}
+
+.rp-doc-title bdi,
+.rp-doc-title span {
+  border-bottom: 2px solid var(--rp-brand);
+  padding-bottom: 2px;
+}
+
+/* ── Meta block: التاريخ / السادة / رقم المرجعي (right-aligned RTL) ── */
+.rp-meta {
+  direction: rtl;
+  text-align: right;
+  margin-bottom: 12px;
+}
+
+.rp-meta p {
+  margin: 0 0 3px;
+  font-size: 13px;
+}
+
+.rp-meta-label {
+  font-weight: 700;
+  color: var(--rp-brand);
+}
+
+.rp-meta-value {
+  font-weight: 600;
+  color: var(--rp-ink);
+}
+
+/* ── Greeting + intro ── */
+.rp-greeting-line {
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.rp-greeting-body {
+  direction: rtl;
+  text-align: justify;
+  text-align-last: right;
+  font-size: 13px;
+  color: var(--rp-ink-body);
+  margin: 0 0 14px;
+  white-space: pre-wrap;
+}
+
+/* ── Section titles (أولاً: … centered bold) ── */
+.rp-section-title {
+  text-align: center;
+  font-size: 14.5px;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--rp-ink);
+  margin: 16px 0 10px;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.rp-section-title .rp-title-accent {
+  color: var(--rp-brand);
+}
+
+/* ── Product block: image slot + spec table side by side ── */
+.rp-product-grid {
+  display: flex;
+  flex-direction: row-reverse; /* table right, image left — mirrors reference */
+  gap: 12px;
+  align-items: stretch;
+  margin-bottom: 14px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.rp-product-img-box {
+  flex: 0 0 44%;
+  border: 1px solid var(--rp-brand);
+  border-radius: 4px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  min-height: 150px;
+}
+
+.rp-product-img-box img {
+  width: 100%;
+  max-height: 230px;
+  object-fit: contain;
+}
+
+.rp-product-table-box {
+  flex: 1 1 auto;
+}
+
+/* ── Spec & commercial tables — brand-locked headers and borders ── */
+.rp-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 12.5px;
+}
+
+.rp-table th {
+  background-color: var(--rp-brand) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  font-style: italic;
+  padding: 6px 8px;
+  border: 1px solid var(--rp-brand-dark);
+  text-align: center;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.rp-table td {
+  border: 1px solid var(--rp-brand);
+  padding: 6px 8px;
+  vertical-align: middle;
+  text-align: center;
+  color: var(--rp-ink);
+  word-wrap: break-word;
+}
+
+.rp-table .rp-cell-label {
+  font-weight: 700;
+}
+
+.rp-table .rp-row-price td {
+  font-weight: 700;
+  font-style: italic;
+  background-color: var(--rp-brand-light) !important;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.rp-table thead {
+  display: table-header-group; /* repeat column headers across page breaks */
+}
+
+.rp-table tr {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Commercial terms table (م | البند | التفاصيل و الشروط) */
+.rp-commercial-table {
+  direction: rtl;
+}
+
+.rp-commercial-table .rp-col-serial {
+  width: 8%;
+}
+
+.rp-commercial-table .rp-col-key {
+  width: 27%;
+}
+
+.rp-commercial-table .rp-col-value {
+  width: 65%;
+}
+
+.rp-commercial-table td.rp-cell-value {
+  text-align: right;
+}
+
+/* ── Extra image attachments grid (bounded, non-overlapping) ── */
+.rp-attachments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 10px 0 14px;
+}
+
+.rp-attachment {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.rp-attachment img {
+  width: 100%;
+  max-height: 120px;
+  object-fit: contain;
+  border: 1px solid var(--rp-brand);
+  padding: 4px;
+  border-radius: 4px;
+  background-color: #ffffff;
+}
+
+.rp-attachment figcaption {
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  direction: rtl;
+}
+
+/* ── Closing note ── */
+.rp-note {
+  direction: rtl;
+  text-align: right;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--rp-ink-body);
+  border-inline-start: 3px solid var(--rp-brand);
+  padding: 5px 10px;
+  margin: 12px 0;
+  background-color: var(--rp-brand-light);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* ── Signatures row — table fallback for Chromium print (flex+grid break poorly) ── */
+.rp-signatures {
+  direction: rtl;
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 18px 0;
+  margin: 20px 0 8px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.rp-signatures.rp-signatures--grid-fallback {
+  display: grid;
+  gap: 18px;
+}
+
+.rp-signatures.rp-signatures--fixed {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 12px 0;
+}
+
+.rp-signatures.rp-signatures--fixed > .rp-signature-cell {
+  display: table-cell;
+  width: 33.33%;
+  vertical-align: top;
+  padding: 0 8px;
+}
+
+@media print {
+  .rp-signatures {
+    display: table !important;
+    width: 100% !important;
+    border-spacing: 12px 0 !important;
+  }
+
+  .rp-signatures > .rp-signature {
+    display: table-cell !important;
+    vertical-align: top !important;
+    width: auto !important;
+  }
+
+  .rp-signatures.rp-signatures--fixed {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-spacing: 10px 0 !important;
+  }
+
+  .rp-signatures.rp-signatures--fixed > .rp-signature-cell {
+    display: table-cell !important;
+    width: 33.33% !important;
+    vertical-align: top !important;
+    padding: 0 8px !important;
+  }
+
+  .rp-product-grid {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+
+  .rp-product-img-box,
+  .rp-product-table-box {
+    display: table-cell !important;
+    vertical-align: top !important;
+  }
+
+  .rp-product-img-box {
+    width: 44% !important;
+  }
+}
+
+.rp-signature {
+  text-align: center;
+}
+
+.rp-signature-title {
+  margin: 0 0 24px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--rp-ink-body);
+}
+
+.rp-signature-name {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  border-top: 1px solid var(--rp-brand);
+  padding-top: 5px;
+}
+
+/* ── Per-page footer: icon contact rows + brand band ── */
+.rp-page-footer {
+  padding: 8px 26px 0;
+}
+
+.rp-footer-rows {
+  border-top: 1.5px solid var(--rp-brand);
+  padding-top: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.rp-footer-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  direction: ltr;
+  text-align: left;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--rp-brand-dark);
+  line-height: 1.45;
+}
+
+.rp-footer-icon {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+}
+
+.rp-footer-band {
+  margin-top: 7px;
+  height: 5px;
+  background-color: var(--rp-brand);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ── Compact print mode: tighter rhythm ── */
+.print-mode-compact .rp-body-inner {
+  padding: 4px 24px 10px;
+}
+
+.print-mode-compact .rp-section-title {
+  margin: 10px 0 7px;
+}
+
+.print-mode-compact .rp-product-grid {
+  margin-bottom: 10px;
+}
+
+.print-mode-compact .rp-table th,
+.print-mode-compact .rp-table td {
+  padding: 4px 7px;
+}
+
+/* ── Print page flow ── */
+@media print {
+  #replica-print-area {
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .rp-product-grid,
+  .rp-attachment,
+  .rp-signatures,
+  .rp-note {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .rp-section-title {
+    break-after: avoid !important;
+    page-break-after: avoid !important;
+  }
+
+  .rp-table {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+}

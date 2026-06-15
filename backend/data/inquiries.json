@@ -1,0 +1,26 @@
+[
+  {
+    "id": 2,
+    "productId": 1,
+    "productName": "إسطمبة I-Shape مخصصة — 80 مم (Zenith 913)",
+    "companyName": "العمدة",
+    "contactPerson": "العمدة",
+    "phone": "0100000000",
+    "email": "adasdasdasd@gmail.com",
+    "quantity": "قالب",
+    "customizations": "نشسامنشيبمكنض",
+    "createdAt": "2026-06-09T10:43:28.811Z"
+  },
+  {
+    "id": 1,
+    "productId": null,
+    "productName": "Block Mold",
+    "companyName": "Test Co",
+    "contactPerson": "Ali",
+    "phone": "",
+    "email": "a@test.com",
+    "quantity": "2",
+    "customizations": "",
+    "createdAt": "2026-06-06T14:21:42.208Z"
+  }
+]

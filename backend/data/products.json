@@ -1,0 +1,123 @@
+[
+  {
+    "id": 1,
+    "nameAr": "خط إنتاج آلي بالكامل للبلوك والبلاط — 120 م³/يوم",
+    "nameEn": "Fully Automated Block & Interlock Production Line — 120 m³/day",
+    "descriptionAr": "خط آلي بالكامل متكامل للبلوك المجوف والصلب والبلاط المتداخل. هندسة من المخطط إلى التصنيع: تلقيم وخلط ونقل وضغط وتكديس ومعالجة — تخطيط مخصص حسب مساحة المصنع.",
+    "descriptionEn": "Turnkey fully automated line for hollow blocks, solid blocks, and interlocking pavers. Blueprint-to-fabrication engineering: batching, mixing, conveying, pressing, stacking, and curing — custom layout per factory footprint.",
+    "categoryId": 6,
+    "images": [
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&h=400&fit=crop"
+    ]
+  },
+  {
+    "id": 2,
+    "nameAr": "خط إنتاج آلي بالكامل للبلاط والبردورات — 100 م³/يوم",
+    "nameEn": "Fully Automated Interlock & Curbstone Line — 100 m³/day",
+    "descriptionAr": "خط بلاط وبردورات آلي بالكامل مصمم من الصفر للتشغيل المستمر. تغذية وجه ملون، ضغط متعدد الطبقات، مناولة pallets آلية، ومعالجة — بدون محطات إنتاج يدوية.",
+    "descriptionEn": "Fully automated premium paver and curbstone line engineered from scratch for continuous operation. Color-face feeding, multi-layer pressing, automated pallet handling, and curing — no manual production stations.",
+    "categoryId": 4,
+    "images": [
+      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=400&fit=crop"
+    ]
+  },
+  {
+    "id": 3,
+    "nameAr": "خط بلوك مجوف آلي بالكامل عالي الطاقة — 200 م³/يوم",
+    "nameEn": "High-Capacity Fully Automated Hollow Block Line — 200 m³/day",
+    "descriptionAr": "خط بلوك مجوف آلي بالكامل للتشغيل 24/7 بمعايير التصدير. دورة مكبس مخصصة، cuber آلي، وحساسات جودة متكاملة — مصمم ومصنع بالكامل بواسطة إيجي ماك.",
+    "descriptionEn": "Heavy-duty fully automated hollow block manufacturing line for 24/7 export-grade production. Custom-engineered press cycle, automatic cuber, and integrated quality sensors — designed and fabricated entirely by Egy Mac.",
+    "categoryId": 3,
+    "images": [
+      "https://images.unsplash.com/photo-1565043589221-1a6fd9f4a589?w=600&h=400&fit=crop"
+    ]
+  },
+  {
+    "id": 4,
+    "nameAr": "خط تصدير متعدد المنتجات آلي بالكامل — 160 م³/يوم",
+    "nameEn": "Fully Automated Multi-Product Export Line — 160 m³/day",
+    "descriptionAr": "خط آلي بالكامل للتبديل بين البلوك والبلاط والبردورات عبر أنظمة قوالب سريعة التغيير. من المخطط إلى التصنيع والتركيب والتشغيل — حسب متطلبات التصدير.",
+    "descriptionEn": "Elite fully automated line switching between block, interlock, and curbstone profiles via engineered quick-change mold systems. End-to-end blueprint, fabrication, installation, and commissioning — bespoke to client export requirements.",
+    "categoryId": 6,
+    "images": [
+      "https://images.unsplash.com/photo-1513828583688-c52646db42da?w=600&h=400&fit=crop"
+    ]
+  },
+  {
+    "id": 5,
+    "nameAr": "إسطمبة I-Shape مخصصة — 80 مم (Zenith 913)",
+    "nameEn": "Custom I-Shape Interlock Mold — 80mm (Zenith 913)",
+    "descriptionAr": "هندسة من الصفر أو بديل دقيق للتجويف البالي Zenith 913. ملف بلاط متداخل متعدد التجويف مع تركيب سريع.",
+    "descriptionEn": "Engineered from scratch or as exact replacement for worn Zenith 913 cavities. Multi-cavity interlock profile with quick-change mounting.",
+    "categoryId": 7,
+    "images": [
+      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=400&fit=crop"
+    ]
+  },
+  {
+    "id": 6,
+    "nameAr": "إسطمبة بلاط سداسي — تصنيع مخصص",
+    "nameEn": "Hexagonal Interlock Mold — Custom Fabrication",
+    "descriptionAr": "قالب بلاط سداسي حسب الطلب للإنتاج الزخرفي. محسّن لدورات Masa و Hess — تصنيع جديد أو إعادة تصنيع أسطح التآكل.",
+    "descriptionEn": "Bespoke hexagonal interlock mold for decorative paver production. Optimized for Masa and Hess pressing cycles — new fabrication or wear-surface re-manufacture.",
+    "categoryId": 7,
+    "images": [
+      "https://images.unsplash.com/photo-1565043589221-1a6fd9f4a589?w=600&h=400&fit=crop"
+    ]
+  },
+  {
+    "id": 7,
+    "nameAr": "قالب بلوك مجوف — 20×40×20 سم (بديل دقيق)",
+    "nameEn": "Hollow Block Mold — 20×40×20 cm (Exact Replacement)",
+    "descriptionAr": "قالب بلوك مجوف لخطوط آلية عالية الدورات. إعادة تصنيع كاملة من وحدة تالفة أو تصنيع جديد مع بطانة Mn12.",
+    "descriptionEn": "Heavy-duty hollow block mold for high-cycle automated lines. Full re-manufacture from damaged unit or new custom fabrication with Mn12 wear lining.",
+    "categoryId": 8,
+    "images": [
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&h=400&fit=crop"
+    ]
+  },
+  {
+    "id": 8,
+    "nameAr": "قالب بلوك صلب — 40×40×20 سم",
+    "nameEn": "Solid Block Mold — 40×40×20 cm",
+    "descriptionAr": "قالب بلوك صلب للتطبيقات الحاملة. أسطح Hardox 500 — هندسة مخصصة أو تجديد قالب متشقق/بالي.",
+    "descriptionEn": "Solid block mold for load-bearing applications. Hardox 500 cavity surfaces — custom engineered or overhaul of cracked/worn existing mold.",
+    "categoryId": 9,
+    "images": [
+      "https://images.unsplash.com/photo-1513828583688-c52646db42da?w=600&h=400&fit=crop"
+    ]
+  },
+  {
+    "id": 9,
+    "nameAr": "قالب بردورة — نوع A (حافة طريق)",
+    "nameEn": "Curbstone Mold — Type A (Road Edge)",
+    "descriptionAr": "قالب بردورة حافة طريق بتصميم split-core. متوافق مع ضغط Hess — بناء جديد أو إصلاح دقيق للأجزاء التالفة.",
+    "descriptionEn": "Road-edge curbstone mold with split-core design. Compatible with Hess multi-layer pressing — new build or precision repair of damaged core sections.",
+    "categoryId": 10,
+    "images": [
+      "https://images.unsplash.com/photo-1565043589221-1a6fd9f4a589?w=600&h=400&fit=crop"
+    ]
+  },
+  {
+    "id": 10,
+    "nameAr": "إعادة تصنيع رأس المكبس وصفائح التآكل",
+    "nameEn": "Press Ram & Wear Plate Re-manufacture",
+    "descriptionAr": "تشخيص وصيانة أو إعادة تصنيع كاملة لرؤوس المكابس وصفائح التآكل والمكونات الحرجة في مصانع البلوك الآلية.",
+    "descriptionEn": "Diagnosis, overhaul, or full re-manufacture of press rams, wear plates, and critical pressing components for automated block factories.",
+    "categoryId": 11,
+    "images": [
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&h=400&fit=crop"
+    ]
+  },
+  {
+    "id": 11,
+    "nameAr": "إصلاح شامل لطاولة الاهتزاز والهيكل",
+    "nameEn": "Vibration Table & Frame Overhaul",
+    "descriptionAr": "إصلاح هندسي للهياكل المتشققة وطاولات الاهتزاز البالية وواجهات الناقل في خطوط الإنتاج الآلية — استعادة الكفاءة التشغيلية القصوى.",
+    "descriptionEn": "Engineering repair of cracked frames, worn vibration tables, and conveyor interfaces on fully automated production lines — restore maximum operational efficiency.",
+    "categoryId": 11,
+    "images": [
+      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=400&fit=crop"
+    ]
+  }
+]

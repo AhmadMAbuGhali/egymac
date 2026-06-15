@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "nameEn": "Fully Automated Production Lines",
+    "nameAr": "خطوط إنتاج آلية بالكامل",
+    "parentId": null
+  },
+  {
+    "id": 2,
+    "nameEn": "Custom Molds & Heavy Parts",
+    "nameAr": "قوالب ومكونات ثقيلة مخصصة",
+    "parentId": null
+  },
+  {
+    "id": 3,
+    "nameEn": "Hollow & Solid Blocks",
+    "nameAr": "بلوك مجوف وصلب",
+    "parentId": 1
+  },
+  {
+    "id": 4,
+    "nameEn": "Interlock & Pavers",
+    "nameAr": "بلاط متداخل",
+    "parentId": 1
+  },
+  {
+    "id": 5,
+    "nameEn": "Curbstones",
+    "nameAr": "بردورات",
+    "parentId": 1
+  },
+  {
+    "id": 6,
+    "nameEn": "Multi-Product Lines",
+    "nameAr": "خطوط متعددة المنتجات",
+    "parentId": 1
+  },
+  {
+    "id": 7,
+    "nameEn": "Interlock Shapes",
+    "nameAr": "أشكال بلاط متداخل",
+    "parentId": 2
+  },
+  {
+    "id": 8,
+    "nameEn": "Hollow Blocks",
+    "nameAr": "بلوك مجوف",
+    "parentId": 2
+  },
+  {
+    "id": 9,
+    "nameEn": "Solid Blocks",
+    "nameAr": "بلوك صلب",
+    "parentId": 2
+  },
+  {
+    "id": 10,
+    "nameEn": "Curbstones",
+    "nameAr": "بردورات",
+    "parentId": 2
+  },
+  {
+    "id": 11,
+    "nameEn": "Heavy Mechanical Components",
+    "nameAr": "مكونات ميكانيكية ثقيلة",
+    "parentId": 2
+  }
+]

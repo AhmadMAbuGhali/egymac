@@ -1,0 +1,756 @@
+[
+  {
+    "documentTitle": "عرض سعر / Price Offer",
+    "referenceNumber": "EMPL-2026-06-0803",
+    "date": "June 8, 2026",
+    "clientName": "مصنع سيناء للطوب الاسمنتي والمنتجات الاسمنتيه",
+    "greeting": "يتشرف قسم التصميم والإنتاج بمصنع إيجي ماك (EGY MAC) بأن يتقدم لسيادتكم بعرض السعر الفني والمالي لتصنيع قالب طوب أسمنتي، وفقاً للمواصفات المعيارية لضمان أعلى إنتاجية وأقل فاقد أثناء التشغيل",
+    "technicalSectionTitle": "المواصفات الفنية / Technical Specifications",
+    "technicalColumns": {
+      "serial": "م",
+      "parameter": "التفاصيل الفنية",
+      "value": "الوصف"
+    },
+    "technicalSpecs": [
+      {
+        "id": 1,
+        "serial": "1",
+        "parameter": "نوع الطوب",
+        "value": "بلوك 12"
+      },
+      {
+        "id": 2,
+        "serial": "2",
+        "parameter": "مقاس الطوب",
+        "value": "39 × 19 × 11.5    سم"
+      },
+      {
+        "id": 3,
+        "serial": "3",
+        "parameter": "الطاقة الإنتاجية",
+        "value": " 10   قالب في الكبسة"
+      },
+      {
+        "id": 5,
+        "serial": "5",
+        "parameter": "خامة الذكر",
+        "value": "حديد استيل 52"
+      },
+      {
+        "id": 6,
+        "serial": "6",
+        "parameter": "خامة  الناتية ",
+        "value": "المنطقة الفعالة (حديد استيل 70) الاطار الخارجي (حديد استيل 52)"
+      }
+    ],
+    "commercialSectionTitle": "الشروط التجارية / Commercial Terms",
+    "commercialColumns": {
+      "serial": "م",
+      "termKey": "البند",
+      "termValue": "الوصف"
+    },
+    "commercialTerms": [
+      {
+        "id": 1,
+        "serial": "1",
+        "termKey": "سعر تصنيع القالب",
+        "termValue": "135,000 جنيه مصري"
+      },
+      {
+        "id": 2,
+        "serial": "2",
+        "termKey": "مكان التسليم",
+        "termValue": "ارض المصنع "
+      },
+      {
+        "id": 3,
+        "serial": "3",
+        "termKey": "الضرائب ",
+        "termValue": "السعر لا يشمل ضريبة القيمة المضافة "
+      },
+      {
+        "id": 4,
+        "serial": "4",
+        "termKey": "نظام الدفع",
+        "termValue": "50%  مقدم عند التعاقد و 50%  عند الاستلام"
+      },
+      {
+        "id": 5,
+        "serial": "5",
+        "termKey": "مدة التنفيذ",
+        "termValue": " من   21 -30  يوماً من تاريخ استلام الدفعة المقدمة"
+      },
+      {
+        "id": 6,
+        "serial": "6",
+        "termKey": "الضمان",
+        "termValue": "ضمان 3 شهور ضد عيوب الصناعة"
+      }
+    ],
+    "closingNote": "ملاحظة: ينتهي عرض السعر بعد 15 يوماً من تاريخه، ويخضع للتعديل في حالة تغيير المواصفات الفنية.",
+    "signatures": [
+      {
+        "id": 3,
+        "title": "المدير العام",
+        "name": "أ. محمد محمود"
+      },
+      {
+        "id": 4,
+        "title": "تنفيذ و اشراف",
+        "name": "أ.  عبدو الغرباوي"
+      },
+      {
+        "id": 5,
+        "title": "مسؤول البيع ",
+        "name": "أ. مصطفى عصام"
+      }
+    ],
+    "companyFooter": {
+      "companyName": "EGY MAC MACHINE — إيجي ماك",
+      "headquartersAr": "المقر الرئيسي: فيلا رقم 5 - شارع 291 - المعادي - القاهرة.",
+      "headquartersEn": "Main Office: Villa No. 5 - Street 291 - Maadi - Cairo",
+      "factoryAr": "المصنع: منطقة أبو رواش الصناعية - الكيلو 26 - الجيزة",
+      "factoryEn": "Factory: Abu Rawash Industrial Zone - Kilo 26 - Giza",
+      "website": "egymac.net",
+      "phone": "+201228004646",
+      "extraLines": []
+    },
+    "id": 1,
+    "savedAt": "2026-06-08T17:59:25.050Z"
+  },
+  {
+    "documentTitle": "عرض سعر صيانة / Maintenance price quote",
+    "referenceNumber": "EMPL-2026-06-0801",
+    "date": "June 8, 2026",
+    "clientName": "مصنع المهندس",
+    "greeting": "تحية طيبة وبعد،،،\nيتشرف قسم التصميم والإنتاج بمصنع إيجي ماك (EGY MAC) بأن يتقدم لسيادتكم بعرض السعر الفني والمالي الخاص بتصنيع كفوف و نتاية لمصمت 20 ، وفقاً للمواصفات المعيارية لضمان أعلى إنتاجية وأقل فاقد أثناء التشغيل:",
+    "technicalSectionTitle": "المواصفات الفنية / Technical Specifications",
+    "technicalColumns": {
+      "serial": "م",
+      "parameter": "المطلوب صيانته",
+      "value": "التفاصيل الفنية"
+    },
+    "technicalSpecs": [
+      {
+        "id": 1,
+        "serial": "1",
+        "parameter": "خامة نتاية",
+        "value": "المنطقة الفعالة (حديد استيل 70) الاطار الخارجي (حديد استيل 52)"
+      },
+      {
+        "id": 2,
+        "serial": "2",
+        "parameter": "خامة الكفوف",
+        "value": "حديد استيل 52"
+      },
+      {
+        "id": 3,
+        "serial": "3",
+        "parameter": "عدد القوالب",
+        "value": "75 قالب"
+      }
+    ],
+    "commercialSectionTitle": "الشروط المالية / Commercial Terms",
+    "commercialColumns": {
+      "serial": "م",
+      "termKey": "البند",
+      "termValue": "الوصف"
+    },
+    "commercialTerms": [
+      {
+        "id": 1,
+        "serial": "1",
+        "termKey": "سعر الصيانة ",
+        "termValue": "95,000 حنيه مصري"
+      },
+      {
+        "id": 2,
+        "serial": "2",
+        "termKey": "مكان التسليم ",
+        "termValue": "مصنع العميل"
+      },
+      {
+        "id": 3,
+        "serial": "3",
+        "termKey": "الضرائب",
+        "termValue": "السعر لا يشمل ضريبة القيمة المضافة "
+      },
+      {
+        "id": 4,
+        "serial": "4",
+        "termKey": "نظام الدفع ",
+        "termValue": "50 % مقدم عند التعاقد و 50% عند الاستلام"
+      },
+      {
+        "id": 5,
+        "serial": "5",
+        "termKey": "مدة التنفيذ",
+        "termValue": "21 يوماً من تاريخ استلام الدفعة المقدمة "
+      },
+      {
+        "id": 6,
+        "serial": "6",
+        "termKey": "الضمان",
+        "termValue": "3 اشهر ضد عيوب الصناعة"
+      }
+    ],
+    "closingNote": "ملاحظة: ينتهي عرض السعر بعد 15 يوماً من تاريخه، ويخضع للتعديل في حالة تغيير المواصفات الفنية.",
+    "signatures": [
+      {
+        "id": 3,
+        "title": "المدير العام",
+        "name": "د. محمد محمود"
+      },
+      {
+        "id": 5,
+        "title": "تنفيذ و اشراف",
+        "name": "أ . عبدو الغرباوي "
+      },
+      {
+        "id": 6,
+        "title": "مسؤول البيع ",
+        "name": "أ. أسامة بكري "
+      }
+    ],
+    "companyFooter": {
+      "companyName": "EGY MAC MACHINE — إيجي ماك",
+      "headquartersAr": "المقر الرئيسي: فيلا رقم 5 - شارع 291 - المعادي - القاهرة.",
+      "headquartersEn": "Main Office: Villa No. 5 - Street 291 - Maadi - Cairo",
+      "factoryAr": "المصنع: منطقة أبو رواش الصناعية - الكيلو 26 - الجيزة",
+      "factoryEn": "Factory: Abu Rawash Industrial Zone - Kilo 26 - Giza",
+      "website": "egymac.net",
+      "phone": "+201228004646",
+      "extraLines": []
+    },
+    "id": 2,
+    "savedAt": "2026-06-08T17:54:55.000Z"
+  },
+  {
+    "documentTitle": "عرض سعر / Price Offer",
+    "referenceNumber": "EMPL-2026-06-0902",
+    "date": "June 9, 2026",
+    "clientName": "يوني بريكس",
+    "greeting": "تحية طيبة وبعد،،،\nيتشرف قسم التصميم والإنتاج بمصنع إيجي ماك (EGY MAC) بأن يتقدم لسيادتكم بعرض السعر الفني والمالي لتصنيع قالب انترلوك\n وفقاً للمواصفات المعيارية لضمان أعلى إنتاجية وأقل فاقد أثناء التشغيل:",
+    "technicalSectionTitle": "المواصفات الفنية / Technical Specifications",
+    "technicalColumns": {
+      "serial": "م",
+      "parameter": "التفاصيل الفنية",
+      "value": "الوصف"
+    },
+    "technicalSpecs": [
+      {
+        "id": 1,
+        "serial": "1",
+        "parameter": "نوع الانترلوك",
+        "value": "انترلوك سداسي  8  سم"
+      },
+      {
+        "id": 2,
+        "serial": "2",
+        "parameter": "الطاقة الاتاجة",
+        "value": "28 قطعة   ونصفين"
+      },
+      {
+        "id": 3,
+        "serial": "3",
+        "parameter": "الدكر",
+        "value": "الإطار الخارجي حديد استيل معالج52  كفوف الدكر حديد استيل معالج 52"
+      },
+      {
+        "id": 4,
+        "serial": "4",
+        "parameter": "النتاية",
+        "value": "المنطقة الفعالة هاردوكس صلابة 450   الإطار الخارجي حديد استيل معالج 52"
+      }
+    ],
+    "commercialSectionTitle": "الشروط  المالية  / Commercial Terms",
+    "commercialColumns": {
+      "serial": "م",
+      "termKey": "البند",
+      "termValue": "الوصف"
+    },
+    "commercialTerms": [
+      {
+        "id": 1,
+        "serial": "1",
+        "termKey": "سعر تصنيع القالب",
+        "termValue": "295,000 جنيه مصري"
+      },
+      {
+        "id": 2,
+        "serial": "2",
+        "termKey": "مكان التسليم",
+        "termValue": "مصنع العميل"
+      },
+      {
+        "id": 7,
+        "serial": "3",
+        "termKey": "الضرائب",
+        "termValue": "السعر لا يشمل ضريبة القيمة المضافة"
+      },
+      {
+        "id": 6,
+        "serial": "4",
+        "termKey": "النقل",
+        "termValue": "السعر يشمل النقل"
+      },
+      {
+        "id": 5,
+        "serial": "5",
+        "termKey": "نظام الدفع",
+        "termValue": "نظام الدفع"
+      },
+      {
+        "id": 4,
+        "serial": "6",
+        "termKey": "مدة التنفيذ",
+        "termValue": "21 - 30 يوم  من تاريخ استلام الدفعة المقدمة"
+      },
+      {
+        "id": 3,
+        "serial": "7",
+        "termKey": "الضمان",
+        "termValue": "ضمان 3 شهور ضد عيوب الصناعة"
+      }
+    ],
+    "closingNote": "ملاحظة: ينتهي عرض السعر بعد 15 يوماً من تاريخه، ويخضع للتعديل في حالة تغيير المواصفات الفنية.",
+    "signatures": [
+      {
+        "id": 1,
+        "title": "مسؤول البيع",
+        "name": "مصطفى عصام"
+      },
+      {
+        "id": 2,
+        "title": "التنفيذ والإشراف",
+        "name": "أ. عبدو الغرباوي"
+      },
+      {
+        "id": 3,
+        "title": "المدير العام",
+        "name": "د. محمد محمود"
+      }
+    ],
+    "salespersonId": 1,
+    "companyFooter": {
+      "companyName": "EGY MAC MACHINE — إيجي ماك",
+      "headquartersAr": "المقر الرئيسي: فيلا رقم 5 - شارع 291 - المعادي - القاهرة.",
+      "headquartersEn": "Main Office: Villa No. 5 - Street 291 - Maadi - Cairo",
+      "factoryAr": "المصنع: منطقة أبو رواش الصناعية - الكيلو 26 - الجيزة",
+      "factoryEn": "Factory: Abu Rawash Industrial Zone - Kilo 26 - Giza",
+      "website": "egymac.net",
+      "phone": "+201228004646",
+      "extraLines": []
+    },
+    "id": 3,
+    "savedAt": "2026-06-11T11:04:56.730Z",
+    "sectionVisibility": {
+      "documentMeta": true,
+      "greeting": true,
+      "technicalSpecs": true,
+      "commercialTerms": true,
+      "visualAttachments": true,
+      "machineryItems": true,
+      "closingNote": true,
+      "signatures": true,
+      "companyFooter": true
+    },
+    "salespersonName": "مصطفى عصام"
+  },
+  {
+    "documentTitle": "عرض سعر / Price Offer",
+    "referenceNumber": "EMPL-2026-06-1403",
+    "date": "June 14, 2026",
+    "clientName": "مصنع بروتكشن",
+    "greeting": "تحية طيبة وبعد،،،\nيتشرف قسم التصميم والإنتاج بمصنع إيجي ماك (EGY MAC) بأن يتقدم لسيادتكم بعرض السعر الفني والمالي لتصنيع قالب طوب أسمنتي، وفقاً للمواصفات المعيارية لضمان أعلى إنتاجية وأقل فاقد أثناء التشغيل:",
+    "technicalSectionTitle": "المواصفات الفنية / Technical Specifications",
+    "technicalColumns": {
+      "serial": "م",
+      "parameter": "التفاصيل الفنية",
+      "value": "الوصف"
+    },
+    "technicalSpecs": [
+      {
+        "id": 1,
+        "serial": "1",
+        "parameter": "نوع الطوب",
+        "value": "مصمت 25"
+      },
+      {
+        "id": 2,
+        "serial": "2",
+        "parameter": "مقاس الطوب",
+        "value": "25 × 12 × 6    سم"
+      },
+      {
+        "id": 3,
+        "serial": "3",
+        "parameter": "الطاقة الإنتاجية",
+        "value": "48   قالب في الكبسة"
+      },
+      {
+        "id": 4,
+        "serial": "4",
+        "parameter": "خامة الذكر",
+        "value": "حديد استيل 52"
+      },
+      {
+        "id": 5,
+        "serial": "5",
+        "parameter": "خامة النتاية",
+        "value": "المنطقة الفعالة ( حديد استيل 70 )  الاطار الخارجي (حديد استيل 52 )"
+      }
+    ],
+    "commercialSectionTitle": "الشروط التجارية / Commercial Terms",
+    "commercialColumns": {
+      "serial": "م",
+      "termKey": "البند",
+      "termValue": "الوصف"
+    },
+    "commercialTerms": [
+      {
+        "id": 1,
+        "serial": "1",
+        "termKey": "سعر تصنيع القالب",
+        "termValue": "125,000 جنيه مصري"
+      },
+      {
+        "id": 2,
+        "serial": "2",
+        "termKey": "مكان التسليم",
+        "termValue": "مصنع العميل"
+      },
+      {
+        "id": 3,
+        "serial": "3",
+        "termKey": "الضرائب",
+        "termValue": "السعر لا يشمل ضريبة القيمة المضافة"
+      },
+      {
+        "id": 4,
+        "serial": "4",
+        "termKey": "نظام الدفع",
+        "termValue": "50%  مقدم عند التعاقد و 50%  عند الاستلام"
+      },
+      {
+        "id": 5,
+        "serial": "5",
+        "termKey": "مدة التنفيذ",
+        "termValue": "21- 30 يوم  من تاريخ استلام الدفعة المقدمة"
+      },
+      {
+        "id": 6,
+        "serial": "6",
+        "termKey": "الضمان",
+        "termValue": "ضمان 3 شهور ضد عيوب الصناعة"
+      }
+    ],
+    "closingNote": "ملاحظة: ينتهي عرض السعر بعد 15 يوماً من تاريخه، ويخضع للتعديل في حالة تغيير المواصفات الفنية.",
+    "signatures": [
+      {
+        "id": 1,
+        "title": "مسؤول البيع",
+        "name": "مصطفى عصام"
+      },
+      {
+        "id": 2,
+        "title": "التنفيذ والإشراف",
+        "name": "أ. عبدو الغرباوي"
+      },
+      {
+        "id": 3,
+        "title": "المدير العام",
+        "name": "د. محمد محمود"
+      }
+    ],
+    "salespersonId": 1,
+    "companyFooter": {
+      "companyName": "EGY MAC MACHINE — إيجي ماك",
+      "headquartersAr": "المقر الرئيسي: فيلا رقم 5 - شارع 291 - المعادي - القاهرة.",
+      "headquartersEn": "Main Office: Villa No. 5 - Street 291 - Maadi - Cairo",
+      "factoryAr": "المصنع: منطقة أبو رواش الصناعية - الكيلو 26 - الجيزة",
+      "factoryEn": "Factory: Abu Rawash Industrial Zone - Kilo 26 - Giza",
+      "website": "egymac.net",
+      "phone": "+201228004646",
+      "extraLines": []
+    },
+    "salespersonName": "مصطفى عصام",
+    "sectionVisibility": {
+      "documentMeta": true,
+      "greeting": true,
+      "technicalSpecs": true,
+      "commercialTerms": true,
+      "visualAttachments": true,
+      "machineryItems": true,
+      "closingNote": true,
+      "signatures": true,
+      "companyFooter": true
+    },
+    "id": 4,
+    "savedAt": "2026-06-14T20:39:59.595Z"
+  },
+  {
+    "documentTitle": "عرض سعر / Price Offer",
+    "referenceNumber": "EMPL-2026-7550",
+    "date": "June 14, 2026",
+    "clientName": "مصنع بروتكشن",
+    "greeting": "تحية طيبة وبعد،،،\nيتشرف قسم التصميم والإنتاج بمصنع إيجي ماك (EGY MAC) بأن يتقدم لسيادتكم بعرض السعر الفني والمالي لتصنيع قالب طوب أسمنتي، وفقاً للمواصفات المعيارية لضمان أعلى إنتاجية وأقل فاقد أثناء التشغيل:",
+    "technicalSectionTitle": "المواصفات الفنية / Technical Specifications",
+    "technicalColumns": {
+      "serial": "م",
+      "parameter": "التفاصيل الفنية",
+      "value": "الوصف"
+    },
+    "technicalSpecs": [
+      {
+        "id": 1,
+        "serial": "1",
+        "parameter": "نوع الطوب",
+        "value": "مصمت 25"
+      },
+      {
+        "id": 2,
+        "serial": "2",
+        "parameter": "مقاس الطوب",
+        "value": "25 × 12 × 6    سم"
+      },
+      {
+        "id": 3,
+        "serial": "3",
+        "parameter": "الطاقة الإنتاجية",
+        "value": "48   قالب في الكبسة"
+      },
+      {
+        "id": 4,
+        "serial": "4",
+        "parameter": "خامة الذكر",
+        "value": "حديد استيل 52"
+      },
+      {
+        "id": 5,
+        "serial": "5",
+        "parameter": "خامة النتاية",
+        "value": "المنطقة الفعالة ( حديد استيل 70 )  الاطار الخارجي (حديد استيل 52 )"
+      }
+    ],
+    "commercialSectionTitle": "الشروط التجارية / Commercial Terms",
+    "commercialColumns": {
+      "serial": "م",
+      "termKey": "البند",
+      "termValue": "الوصف"
+    },
+    "commercialTerms": [
+      {
+        "id": 1,
+        "serial": "1",
+        "termKey": "سعر تصنيع القالب",
+        "termValue": "125,000 جنيه مصري"
+      },
+      {
+        "id": 2,
+        "serial": "2",
+        "termKey": "مكان التسليم",
+        "termValue": "مصنع العميل"
+      },
+      {
+        "id": 3,
+        "serial": "3",
+        "termKey": "الضرائب",
+        "termValue": "السعر لا يشمل ضريبة القيمة المضافة"
+      },
+      {
+        "id": 4,
+        "serial": "4",
+        "termKey": "نظام الدفع",
+        "termValue": "50%  مقدم عند التعاقد و 50%  عند الاستلام"
+      },
+      {
+        "id": 5,
+        "serial": "5",
+        "termKey": "مدة التنفيذ",
+        "termValue": "21- 30 يوم  من تاريخ استلام الدفعة المقدمة"
+      },
+      {
+        "id": 6,
+        "serial": "6",
+        "termKey": "الضمان",
+        "termValue": "ضمان 3 شهور ضد عيوب الصناعة"
+      }
+    ],
+    "closingNote": "ملاحظة: ينتهي عرض السعر بعد 15 يوماً من تاريخه، ويخضع للتعديل في حالة تغيير المواصفات الفنية.",
+    "signatures": [
+      {
+        "id": 1,
+        "title": "مسؤول البيع",
+        "name": "مصطفى عصام"
+      },
+      {
+        "id": 2,
+        "title": "التنفيذ والإشراف",
+        "name": "أ. عبدو الغرباوي"
+      },
+      {
+        "id": 3,
+        "title": "المدير العام",
+        "name": "د. محمد محمود"
+      }
+    ],
+    "salespersonId": 1,
+    "companyFooter": {
+      "companyName": "EGY MAC MACHINE — إيجي ماك",
+      "headquartersAr": "المقر الرئيسي: فيلا رقم 5 - شارع 291 - المعادي - القاهرة.",
+      "headquartersEn": "Main Office: Villa No. 5 - Street 291 - Maadi - Cairo",
+      "factoryAr": "المصنع: منطقة أبو رواش الصناعية - الكيلو 26 - الجيزة",
+      "factoryEn": "Factory: Abu Rawash Industrial Zone - Kilo 26 - Giza",
+      "website": "egymac.net",
+      "phone": "+201228004646",
+      "extraLines": []
+    },
+    "salespersonName": "مصطفى عصام",
+    "sectionVisibility": {
+      "documentMeta": true,
+      "greeting": true,
+      "technicalSpecs": true,
+      "commercialTerms": true,
+      "visualAttachments": true,
+      "machineryItems": true,
+      "closingNote": true,
+      "signatures": true,
+      "companyFooter": true
+    },
+    "id": 5,
+    "savedAt": "2026-06-15T07:12:53.238Z"
+  },
+  {
+    "documentTitle": "عرض سعر / Price Offer",
+    "referenceNumber": "EMPL-2026-2402",
+    "date": "June 14, 2026",
+    "clientName": "مصنع بروتكشن",
+    "greeting": "تحية طيبة وبعد،،،\nيتشرف قسم التصميم والإنتاج بمصنع إيجي ماك (EGY MAC) بأن يتقدم لسيادتكم بعرض السعر الفني والمالي لتصنيع قالب طوب أسمنتي، وفقاً للمواصفات المعيارية لضمان أعلى إنتاجية وأقل فاقد أثناء التشغيل:",
+    "technicalSectionTitle": "المواصفات الفنية / Technical Specifications",
+    "technicalColumns": {
+      "serial": "م",
+      "parameter": "التفاصيل الفنية",
+      "value": "الوصف"
+    },
+    "technicalSpecs": [
+      {
+        "id": 1,
+        "serial": "1",
+        "parameter": "نوع الطوب",
+        "value": "مصمت 25"
+      },
+      {
+        "id": 2,
+        "serial": "2",
+        "parameter": "مقاس الطوب",
+        "value": "25 × 12 × 6    سم"
+      },
+      {
+        "id": 3,
+        "serial": "3",
+        "parameter": "الطاقة الإنتاجية",
+        "value": "48   قالب في الكبسة"
+      },
+      {
+        "id": 4,
+        "serial": "4",
+        "parameter": "خامة الذكر",
+        "value": "حديد استيل 52"
+      },
+      {
+        "id": 5,
+        "serial": "5",
+        "parameter": "خامة النتاية",
+        "value": "المنطقة الفعالة ( حديد استيل 70 )  الاطار الخارجي (حديد استيل 52 )"
+      }
+    ],
+    "commercialSectionTitle": "الشروط التجارية / Commercial Terms",
+    "commercialColumns": {
+      "serial": "م",
+      "termKey": "البند",
+      "termValue": "الوصف"
+    },
+    "commercialTerms": [
+      {
+        "id": 1,
+        "serial": "1",
+        "termKey": "سعر تصنيع القالب",
+        "termValue": "125,000 جنيه مصري"
+      },
+      {
+        "id": 2,
+        "serial": "2",
+        "termKey": "مكان التسليم",
+        "termValue": "مصنع العميل"
+      },
+      {
+        "id": 3,
+        "serial": "3",
+        "termKey": "الضرائب",
+        "termValue": "السعر لا يشمل ضريبة القيمة المضافة"
+      },
+      {
+        "id": 4,
+        "serial": "4",
+        "termKey": "نظام الدفع",
+        "termValue": "50%  مقدم عند التعاقد و 50%  عند الاستلام"
+      },
+      {
+        "id": 5,
+        "serial": "5",
+        "termKey": "مدة التنفيذ",
+        "termValue": "21- 30 يوم  من تاريخ استلام الدفعة المقدمة"
+      },
+      {
+        "id": 6,
+        "serial": "6",
+        "termKey": "الضمان",
+        "termValue": "ضمان 3 شهور ضد عيوب الصناعة"
+      }
+    ],
+    "closingNote": "ملاحظة: ينتهي عرض السعر بعد 15 يوماً من تاريخه، ويخضع للتعديل في حالة تغيير المواصفات الفنية.",
+    "signatures": [
+      {
+        "id": 1,
+        "title": "مسؤول البيع",
+        "name": "مصطفى عصام"
+      },
+      {
+        "id": 2,
+        "title": "التنفيذ والإشراف",
+        "name": "أ. عبدو الغرباوي"
+      },
+      {
+        "id": 3,
+        "title": "المدير العام",
+        "name": "د. محمد محمود"
+      }
+    ],
+    "salespersonId": 1,
+    "companyFooter": {
+      "companyName": "EGY MAC MACHINE — إيجي ماك",
+      "headquartersAr": "المقر الرئيسي: فيلا رقم 5 - شارع 291 - المعادي - القاهرة.",
+      "headquartersEn": "Main Office: Villa No. 5 - Street 291 - Maadi - Cairo",
+      "factoryAr": "المصنع: منطقة أبو رواش الصناعية - الكيلو 26 - الجيزة",
+      "factoryEn": "Factory: Abu Rawash Industrial Zone - Kilo 26 - Giza",
+      "website": "egymac.net",
+      "phone": "+201228004646",
+      "extraLines": []
+    },
+    "salespersonName": "مصطفى عصام",
+    "sectionVisibility": {
+      "documentMeta": true,
+      "greeting": true,
+      "technicalSpecs": true,
+      "commercialTerms": true,
+      "visualAttachments": true,
+      "machineryItems": true,
+      "closingNote": true,
+      "signatures": true,
+      "companyFooter": true
+    },
+    "id": 6,
+    "savedAt": "2026-06-15T07:45:12.359Z"
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "hero": {
+    "en": {
+      "badge": "100% Fully Automated · German Engineering · Made in Egypt",
+      "headline": "Engineering Fully Automated Concrete Production Lines & Custom Heavy-Duty Molds —",
+      "headlineAccent": "From Conception to Complete Fabrication",
+      "headlineEnd": ", Overhauling, and Bespoke Re-manufacturing.",
+      "subtext": "Egy Mac strictly designs, engineers, and manufactures fully automated production lines (خطوط إنتاج آلية بالكامل) for concrete blocks, interlocking tiles, and curbstones — plus custom molds from absolute scratch and bespoke mechanical overhauling & re-manufacturing of worn factory parts.",
+      "ctaPrimary": "Explore Service Catalog",
+      "ctaSecondary": "Request Engineering Quote"
+    },
+    "ar": {
+      "badge": "آلي بالكامل 100% · هندسة ألمانية · صنع في مصر",
+      "headline": "هندسة خطوط إنتاج خرسانية آلية بالكامل وقوالب ثقيلة مخصصة —",
+      "headlineAccent": "من الفكرة إلى التصنيع الكامل",
+      "headlineEnd": " والصيانة الشاملة وإعادة التصنيع حسب الطلب.",
+      "subtext": "إيجي ماك تصمم وتصنع خطوط إنتاج آلية بالكامل للبلوك والبلاط المتداخل والبردورات — وقوالب مخصصة من الصفر وصيانة هندسية وإعادة تصنيع للقوالب والمكونات البالية.",
+      "ctaPrimary": "استكشف فهرس الخدمات",
+      "ctaSecondary": "اطلب عرض هندسي"
+    }
+  },
+  "about": {
+    "en": {
+      "subtitle": "About Egy Mac",
+      "title": "Elite Automated Engineering — Not Manual, Not Generic",
+      "intro": "Egy Mac (إيجي ماك) is Egypt's specialist in fully automated concrete production lines for blocks, interlock, and curbstones — and bespoke heavy-duty molds. We blueprint, fabricate, install, and deliver bespoke mechanical overhauling & re-manufacturing when worn molds or parts threaten your automated factory uptime.",
+      "mission": "To deliver end-to-end German-standard engineering: fully automated lines and custom steel solutions fabricated in Egypt, with dedicated repair and re-manufacturing capability when breakdowns or wear threaten your production uptime."
+    },
+    "ar": {
+      "subtitle": "عن إيجي ماك",
+      "title": "هندسة آلية متخصصة — لا حلول يدوية ولا عامة",
+      "intro": "إيجي ماك متخصصة في خطوط إنتاج خرسانية آلية بالكامل وقوالب ثقيلة مخصصة. نرسم المخططات ونصنع ونركّب ونُصلح ونعيد التصنيع من الصفر — لاستعادة الكفاءة القصوى في المصانع الآلية.",
+      "mission": "تقديم هندسة ألمانية متكاملة: خطوط آلية بالكامل وحلول فولاذية مخصصة في مصر، مع قدرة إصلاح وإعادة تصنيع عند تعطل أو تآكل المكونات الحرجة."
+    }
+  }
+}

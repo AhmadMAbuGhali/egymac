@@ -1,0 +1,484 @@
+/* ═══ Archive & Sales Management — premium dashboard workspace ═══ */
+
+.archive-workspace {
+  font-family: "Cairo", system-ui, sans-serif;
+}
+
+/* ── Workspace tabs ── */
+.archive-workspace-tabs {
+  @apply flex flex-wrap gap-2 mb-6;
+}
+
+.archive-workspace-tab {
+  @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200;
+  font-family: "Cairo", sans-serif;
+}
+
+.archive-workspace-tab--active {
+  background: #3b767c;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(59, 118, 124, 0.28);
+}
+
+.archive-workspace-tab--idle {
+  @apply bg-white text-slate-600;
+  box-shadow: 0 8px 30px rgb(0 0 0 / 0.015);
+}
+
+.archive-workspace-tab--idle:hover {
+  color: #3b767c;
+  background: rgba(59, 118, 124, 0.06);
+}
+
+/* ── Page header ── */
+.archive-page-header {
+  @apply mb-6;
+}
+
+.archive-page-title {
+  @apply text-xl font-bold text-slate-800 leading-relaxed;
+  font-family: "Cairo", sans-serif;
+}
+
+.archive-page-subtitle {
+  @apply text-sm text-slate-500 font-normal leading-relaxed mt-1;
+}
+
+/* ── Floating filter dock ── */
+.archive-filter-dock {
+  @apply bg-white rounded-2xl p-5 sm:p-6 mb-6;
+  border: 1px solid rgb(241 245 249);
+  box-shadow: 0 8px 30px rgb(0 0 0 / 0.015);
+}
+
+.archive-filter-dock__label {
+  @apply text-xs font-medium text-slate-500 uppercase tracking-wide mb-4;
+  letter-spacing: 0.06em;
+}
+
+.archive-filter-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4;
+}
+
+.archive-filter-field {
+  @apply relative flex items-center rounded-xl border border-slate-200/80 bg-slate-50/40 transition-all duration-200;
+}
+
+.archive-filter-field:focus-within {
+  border-color: #3b767c;
+  box-shadow: 0 0 0 4px rgba(59, 118, 124, 0.1);
+  background: #fff;
+}
+
+.archive-filter-field__icon {
+  @apply absolute start-3.5 text-slate-400 pointer-events-none shrink-0;
+}
+
+.archive-filter-field select,
+.archive-filter-field input {
+  @apply w-full bg-transparent border-0 py-3.5 ps-10 pe-4 text-sm font-medium text-slate-700 leading-relaxed outline-none rounded-xl;
+  font-family: "Cairo", sans-serif;
+}
+
+.archive-filter-field select:focus,
+.archive-filter-field input:focus {
+  ring: 0;
+}
+
+.archive-filter-clear {
+  @apply inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 px-3 py-2 rounded-lg transition-all duration-300;
+  font-family: "Cairo", sans-serif;
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+}
+
+.archive-filter-clear--visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.archive-filter-clear:hover {
+  color: #3b767c;
+  background: rgba(59, 118, 124, 0.08);
+}
+
+/* ── Data matrix table ── */
+.archive-matrix-card {
+  @apply bg-white rounded-2xl overflow-hidden;
+  border: 1px solid rgb(241 245 249);
+  box-shadow: 0 8px 30px rgb(0 0 0 / 0.015);
+}
+
+.archive-matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Cairo", sans-serif;
+}
+
+.archive-matrix-table thead tr {
+  @apply bg-slate-50/70;
+}
+
+.archive-matrix-table th {
+  @apply text-slate-500 font-medium text-sm tracking-wide py-4 px-6 uppercase text-start;
+  letter-spacing: 0.05em;
+}
+
+.archive-matrix-table td {
+  @apply py-4 px-6 text-sm text-slate-700 font-normal leading-relaxed border-t border-slate-100/80;
+}
+
+.archive-matrix-row {
+  @apply transition-all duration-200;
+}
+
+.archive-matrix-row:hover {
+  @apply bg-slate-50/50;
+  transform: scale(1.002);
+}
+
+.archive-matrix-row:last-child td {
+  border-bottom: none;
+}
+
+.archive-id-badge {
+  @apply inline-flex items-center justify-center min-w-[2rem] h-7 px-2 rounded-lg text-xs font-bold font-mono;
+  background: rgba(59, 118, 124, 0.08);
+  color: #3b767c;
+}
+
+.archive-price-badge {
+  @apply inline-flex items-center font-mono font-semibold text-sm px-3 py-1 rounded-full;
+  background: rgba(59, 118, 124, 0.1);
+  color: #3b767c;
+}
+
+.archive-date-cell {
+  @apply inline-flex items-center gap-2 text-slate-500 text-sm leading-relaxed;
+}
+
+.archive-date-cell svg {
+  @apply shrink-0 text-slate-400;
+}
+
+.archive-salesperson-cell {
+  @apply inline-flex items-center gap-2 text-slate-600 font-medium;
+}
+
+.archive-action-group {
+  @apply flex flex-wrap items-center gap-2;
+}
+
+.archive-action-btn {
+  @apply inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all duration-200;
+  font-family: "Cairo", sans-serif;
+}
+
+.archive-action-btn--edit {
+  color: #3b767c;
+  background: rgba(59, 118, 124, 0.1);
+}
+
+.archive-action-btn--edit:hover {
+  background: rgba(59, 118, 124, 0.18);
+  transform: translateY(-1px);
+}
+
+.archive-action-btn--delete {
+  @apply text-slate-500;
+  background: transparent;
+}
+
+.archive-action-btn--delete:hover {
+  @apply text-red-500 bg-red-50;
+}
+
+/* ── Empty state ── */
+.archive-empty-state {
+  @apply flex flex-col items-center justify-center text-center py-16 px-6;
+}
+
+.archive-empty-icon {
+  @apply w-20 h-20 rounded-2xl flex items-center justify-center mb-5;
+  background: linear-gradient(135deg, rgba(59, 118, 124, 0.12), rgba(59, 118, 124, 0.04));
+  color: #3b767c;
+}
+
+.archive-empty-title {
+  @apply text-lg font-bold text-slate-800 mb-2 leading-relaxed;
+}
+
+.archive-empty-desc {
+  @apply text-sm text-slate-500 max-w-sm mb-6 leading-relaxed;
+}
+
+.archive-empty-cta {
+  @apply inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all duration-200;
+  background: #3b767c;
+  box-shadow: 0 8px 24px rgba(59, 118, 124, 0.25);
+  font-family: "Cairo", sans-serif;
+}
+
+.archive-empty-cta:hover {
+  background: #2e6569;
+  transform: translateY(-2px);
+}
+
+/* ── Loading skeleton row ── */
+.archive-loading-row {
+  @apply animate-pulse flex items-center justify-center gap-3 py-16 text-slate-400 text-sm font-medium;
+}
+
+/* ── Delete modal ── */
+.archive-modal-backdrop {
+  @apply fixed inset-0 z-[60] flex items-center justify-center p-4;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(6px);
+  animation: archiveFadeIn 0.2s ease-out;
+}
+
+.archive-modal {
+  @apply bg-white rounded-2xl p-6 sm:p-8 w-full max-w-md;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12);
+  font-family: "Cairo", sans-serif;
+  animation: archiveSlideUp 0.25s ease-out;
+}
+
+@keyframes archiveFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes archiveSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Salesperson slide-over drawer (portal on body) ── */
+.sp-drawer-root {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.sp-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: auto;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: archiveFadeIn 0.2s ease-out;
+}
+
+.sp-drawer-panel {
+  position: fixed;
+  top: 0;
+  inset-inline-end: 0;
+  z-index: 50;
+  pointer-events: auto;
+  height: 100%;
+  width: 100%;
+  max-width: 28rem;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  box-shadow: -12px 0 48px rgba(0, 0, 0, 0.08);
+  animation: spDrawerSlideIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  font-family: "Cairo", sans-serif;
+}
+
+@keyframes spDrawerSlideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+[dir="rtl"] .sp-drawer-panel {
+  animation-name: spDrawerSlideInRtl;
+}
+
+@keyframes spDrawerSlideInRtl {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.sp-drawer-header {
+  @apply flex items-center justify-between gap-3 px-6 py-5 border-b border-slate-100;
+}
+
+.sp-drawer-body {
+  @apply flex-1 overflow-y-auto px-6 py-5 space-y-5;
+}
+
+.sp-drawer-footer {
+  @apply px-6 py-4 border-t border-slate-100 bg-slate-50/50;
+}
+
+.sp-floating-field {
+  @apply relative rounded-xl border border-slate-200/80 bg-white transition-all duration-200;
+}
+
+.sp-floating-field:focus-within {
+  border-color: #3b767c;
+  box-shadow: 0 0 0 4px rgba(59, 118, 124, 0.1);
+}
+
+.sp-floating-field input {
+  @apply w-full bg-transparent border-0 pt-6 pb-2.5 px-4 text-sm font-medium text-slate-800 outline-none rounded-xl leading-relaxed;
+  font-family: "Cairo", sans-serif;
+}
+
+.sp-floating-label {
+  @apply absolute start-4 top-2 text-[10px] font-medium text-slate-400 uppercase tracking-wide pointer-events-none;
+}
+
+.sp-profile-row {
+  @apply flex items-center justify-between gap-3 p-3.5 rounded-xl bg-slate-50/60 border border-slate-100/80 transition-all duration-200;
+}
+
+.sp-profile-row:hover {
+  @apply bg-slate-50 border-slate-200/80;
+}
+
+.sp-profile-avatar {
+  @apply w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold shrink-0;
+  background: rgba(59, 118, 124, 0.12);
+  color: #3b767c;
+}
+
+.sp-delete-btn {
+  @apply p-2 rounded-lg text-slate-400 transition-colors duration-200;
+}
+
+.sp-delete-btn:hover {
+  @apply bg-red-50 text-red-500;
+}
+
+/* ── Signature desk preview widget ── */
+.signature-desk-widget {
+  @apply space-y-5;
+}
+
+.signature-desk-select-wrap {
+  @apply relative rounded-xl border border-slate-200/80 bg-white transition-all duration-200;
+}
+
+.signature-desk-select-wrap:focus-within {
+  border-color: #3b767c;
+  box-shadow: 0 0 0 4px rgba(59, 118, 124, 0.1);
+}
+
+.signature-desk-select-wrap select {
+  @apply w-full bg-transparent border-0 py-3.5 px-4 pe-10 text-sm font-medium text-slate-700 outline-none rounded-xl leading-relaxed appearance-none;
+  font-family: "Cairo", sans-serif;
+}
+
+.signature-desk-preview {
+  @apply rounded-2xl p-5;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.8), rgba(255, 255, 255, 0.4));
+  border: 1px solid rgb(241 245 249);
+  box-shadow: 0 8px 30px rgb(0 0 0 / 0.015);
+}
+
+.signature-desk-preview__title {
+  @apply text-xs font-medium text-slate-400 uppercase tracking-wide mb-4 text-center;
+}
+
+.signature-desk-grid {
+  @apply grid grid-cols-1 sm:grid-cols-3 gap-3;
+}
+
+.signature-desk-slot {
+  @apply border-dashed border-2 border-slate-200 rounded-xl bg-slate-50/30 p-4 text-center transition-all duration-300;
+}
+
+.signature-desk-slot--active {
+  border-color: rgba(59, 118, 124, 0.35);
+  background: rgba(59, 118, 124, 0.04);
+}
+
+.signature-desk-slot__label {
+  @apply text-xs font-medium text-slate-500 mb-3 leading-relaxed;
+}
+
+.signature-desk-slot__line {
+  @apply h-px bg-slate-300 mx-2 mb-3;
+}
+
+.signature-desk-slot__name {
+  @apply text-sm font-bold text-slate-800 leading-relaxed min-h-[1.5rem];
+}
+
+.signature-desk-slot__name--placeholder {
+  @apply text-slate-400 font-medium italic;
+}
+
+.signature-name-fade {
+  animation: signatureNameFade 0.35s ease-out;
+}
+
+@keyframes signatureNameFade {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Toolbar buttons ── */
+.archive-toolbar-btn {
+  @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200;
+  font-family: "Cairo", sans-serif;
+}
+
+.archive-toolbar-btn--primary {
+  background: #3b767c;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(59, 118, 124, 0.2);
+}
+
+.archive-toolbar-btn--primary:hover {
+  background: #2e6569;
+}
+
+.archive-toolbar-btn--ghost {
+  @apply bg-white text-slate-600;
+  box-shadow: 0 8px 30px rgb(0 0 0 / 0.015);
+  border: 1px solid rgb(241 245 249);
+}
+
+.archive-toolbar-btn--ghost:hover {
+  color: #3b767c;
+  border-color: rgba(59, 118, 124, 0.25);
+}
+
+.archive-count-badge {
+  @apply inline-flex items-center justify-center min-w-[1.5rem] h-6 px-2 rounded-full text-[11px] font-bold;
+  background: rgba(59, 118, 124, 0.12);
+  color: #3b767c;
+}
+
+@media (max-width: 768px) {
+  .archive-matrix-card {
+    overflow-x: auto;
+  }
+
+  .archive-matrix-table {
+    min-width: 720px;
+  }
+}

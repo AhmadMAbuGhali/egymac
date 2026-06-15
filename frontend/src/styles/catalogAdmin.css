@@ -1,0 +1,180 @@
+/* Catalog Admin — bilingual workspace & category tree */
+
+.catalog-bilingual-workspace {
+  font-family: "Cairo", system-ui, sans-serif;
+}
+
+.catalog-lang-tabs {
+  @apply flex gap-2 mb-4 p-1 rounded-xl bg-slate-50/80 border border-slate-100;
+}
+
+.catalog-lang-tab {
+  @apply flex-1 py-2.5 px-3 rounded-lg text-xs font-bold transition-all duration-200;
+  color: #6b7280;
+}
+
+.catalog-lang-tab--active {
+  background: #3b767c;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(59, 118, 124, 0.25);
+}
+
+.catalog-bilingual-grid {
+  @apply grid gap-4 lg:gap-5;
+}
+
+@media (min-width: 1024px) {
+  .catalog-bilingual-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.catalog-lang-panel {
+  @apply p-4 rounded-xl border space-y-3;
+  border-color: rgb(241 245 249 / 0.9);
+  background: rgb(248 250 252 / 0.6);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.catalog-lang-panel--en {
+  @apply lg:order-1;
+}
+
+.catalog-lang-panel--ar {
+  @apply lg:order-2;
+  direction: rtl;
+  text-align: right;
+}
+
+@media (max-width: 1023px) {
+  .catalog-lang-panel--hidden-mobile {
+    display: none;
+  }
+}
+
+.catalog-lang-panel-label {
+  @apply text-[10px] font-bold uppercase tracking-wider mb-1;
+  color: #3b767c;
+}
+
+.catalog-field-label {
+  @apply block text-xs font-bold text-ink-body mb-1.5;
+}
+
+.catalog-field-label--required::after {
+  content: " *";
+  color: #dc2626;
+}
+
+.catalog-field-input {
+  @apply w-full px-4 py-3 rounded-xl bg-surface border border-border
+         text-ink text-sm placeholder:text-ink-muted/70
+         hover:border-accent/40
+         focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20
+         transition-all duration-200 ease-out;
+}
+
+.catalog-field-input:focus {
+  border-color: #3b767c;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 118, 124, 0.15);
+}
+
+.catalog-select {
+  @apply w-full px-4 py-3 rounded-xl bg-surface border border-border
+         text-ink text-sm placeholder:text-ink-muted/70
+         hover:border-accent/40
+         focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20
+         transition-all duration-200 ease-out;
+}
+
+.catalog-select:focus {
+  border-color: #3b767c;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 118, 124, 0.15);
+}
+
+.catalog-tree-row {
+  @apply flex items-center gap-2 py-2.5 px-3 rounded-xl border border-transparent transition-all duration-200;
+}
+
+.catalog-tree-row:hover {
+  @apply border-slate-100 bg-slate-50/70;
+}
+
+.catalog-tree-indent {
+  flex-shrink: 0;
+  width: 1rem;
+}
+
+.catalog-tree-badge {
+  @apply inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold;
+  background: rgba(59, 118, 124, 0.1);
+  color: #3b767c;
+}
+
+.catalog-upload-zone {
+  @apply relative w-full rounded-2xl border-2 border-dashed p-6 text-center transition-all duration-200 cursor-pointer;
+  border-color: rgba(59, 118, 124, 0.35);
+  background: rgba(233, 243, 244, 0.35);
+}
+
+.catalog-upload-zone:hover {
+  border-color: #3b767c;
+  background: rgba(233, 243, 244, 0.65);
+}
+
+.catalog-image-grid {
+  @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-4;
+}
+
+.catalog-image-thumb {
+  @apply relative aspect-square rounded-xl overflow-hidden border border-slate-100 bg-white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.catalog-image-thumb img {
+  @apply w-full h-full object-cover;
+}
+
+.catalog-image-delete {
+  @apply absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-200;
+  background: rgba(17, 24, 39, 0.55);
+}
+
+.catalog-image-thumb:hover .catalog-image-delete {
+  @apply opacity-100;
+}
+
+.catalog-image-delete-btn {
+  @apply px-3 py-1.5 rounded-lg text-xs font-bold text-white transition-transform duration-200;
+  background: #dc2626;
+}
+
+.catalog-image-delete-btn:hover {
+  transform: scale(1.05);
+}
+
+.catalog-validation-banner {
+  @apply rounded-xl border px-4 py-3 text-sm font-medium;
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.catalog-panel {
+  @apply rounded-2xl border border-slate-100/80 bg-surface p-4 sm:p-5 space-y-4;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  font-family: "Cairo", system-ui, sans-serif;
+}
+
+.catalog-panel-title {
+  @apply text-sm font-bold flex items-center gap-2;
+  color: #3b767c;
+}
+
+.catalog-panel-title::before {
+  content: "";
+  @apply inline-block w-1 h-4 rounded-full shrink-0;
+  background: #3b767c;
+}

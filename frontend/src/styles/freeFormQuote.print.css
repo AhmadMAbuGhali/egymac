@@ -1,0 +1,1060 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   EGY MAC — Price Offer · Smart Print Optimizer & Premium Sheet Styles
+   Primary: #3B767C · Secondary: #FFFFFF
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --offer-primary: #3b767c;
+  --offer-primary-dark: #2e6569;
+  --offer-primary-light: #e9f3f4;
+  --offer-ink: #0a0a0a;
+  --offer-ink-body: #111827;
+
+  /* Typography & density — executive spanned (default A4) */
+  --offer-fs-client: 1.5rem;
+  --offer-fs-greeting: 1rem;
+  --offer-fs-meta-title: 1.25rem;
+  --offer-fs-section: 1.125rem;
+  --offer-fs-table-head: 1rem;
+  --offer-fs-table-body: 1.0625rem;
+  --offer-cell-padding: 16px 22px;
+  --offer-lh-body: 1.65;
+  --offer-lh-arabic: 1.75;
+  --offer-tracking-section: 0.1em;
+  --offer-logo-height: 4.5rem;
+  --offer-logo-max-width: 11.5rem;
+}
+
+/* Compact mode — tighter padding, smaller body type, relaxed leading */
+.print-mode-compact {
+  --offer-fs-client: 1.25rem;
+  --offer-fs-greeting: 0.9375rem;
+  --offer-fs-meta-title: 1.0625rem;
+  --offer-fs-section: 0.9375rem;
+  --offer-fs-table-head: 0.875rem;
+  --offer-fs-table-body: 0.875rem;
+  --offer-cell-padding: 12px 16px;
+  --offer-lh-body: 1.6;
+  --offer-lh-arabic: 1.68;
+  --offer-logo-height: 3.25rem;
+  --offer-logo-max-width: 9rem;
+}
+
+/* ── Screen preview panel ── */
+@media screen {
+  .offer-print-host {
+    position: sticky;
+    top: 1rem;
+  }
+
+  .offer-print-scroll {
+    max-height: calc(100vh - 8rem);
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  #quotation-print-area {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .offer-sheet {
+    box-shadow:
+      0 2px 6px rgb(10 10 10 / 0.06),
+      0 16px 40px rgb(10 10 10 / 0.1);
+    border-radius: 0.625rem;
+    border: 1px solid #cbd5e1;
+  }
+}
+
+.quotation-print-wrapper {
+  width: 100%;
+  max-width: 210mm;
+  margin-inline: auto;
+  background: #ffffff;
+}
+
+#quotation-print-area {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 210mm;
+  margin-inline: auto;
+  background: #ffffff;
+  font-family: "Cairo", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "liga" 1, "calt" 1;
+  color: var(--offer-ink);
+}
+
+/* Arabic — Cairo (connected shaping) */
+#quotation-print-area .offer-align-ar,
+#quotation-print-area .offer-ar-chunk,
+#quotation-print-area .offer-mixed-line,
+#quotation-print-area .offer-meta-ar,
+#quotation-print-area .offer-section-ar,
+#quotation-print-area .offer-client,
+#quotation-print-area .offer-greeting,
+#quotation-print-area .offer-closing p,
+#quotation-print-area .offer-signature-title,
+#quotation-print-area .offer-signature-name,
+#quotation-print-area .offer-footer-col--ar,
+#quotation-print-area .offer-meta-subtitle,
+#quotation-print-area td.offer-td-ar,
+#quotation-print-area th.offer-align-ar {
+  font-family: "Cairo", sans-serif;
+  line-height: var(--offer-lh-arabic);
+}
+
+/* English — Poppins (clean Latin) */
+#quotation-print-area .offer-align-en,
+#quotation-print-area .offer-sheet-company,
+#quotation-print-area .offer-meta-en,
+#quotation-print-area .offer-meta-label,
+#quotation-print-area .offer-meta-value,
+#quotation-print-area .offer-section-en,
+#quotation-print-area .offer-footer-col--en,
+#quotation-print-area .offer-sheet-tagline,
+#quotation-print-area th.offer-align-en {
+  font-family: "Poppins", system-ui, sans-serif;
+  letter-spacing: 0.02em;
+}
+
+/* Tables & headers — Cairo for bilingual cells */
+#quotation-print-area .offer-table-premium th,
+#quotation-print-area .offer-table-premium td {
+  font-family: "Cairo", sans-serif;
+}
+
+#quotation-print-area .offer-document-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+#quotation-print-area .offer-document-tail {
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+.print-mode-compact #quotation-print-area {
+  min-height: 297mm;
+}
+
+/* ── Explicit alignment layer (LTR shell — no global RTL) ── */
+.offer-doc-ltr {
+  direction: ltr;
+  unicode-bidi: normal;
+}
+
+.offer-align-ar {
+  direction: rtl;
+  text-align: right;
+  unicode-bidi: isolate;
+  font-family: "Cairo", sans-serif;
+}
+
+.offer-align-en {
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: plaintext;
+  font-family: "Poppins", system-ui, sans-serif;
+}
+
+.offer-align-center {
+  direction: ltr;
+  text-align: center;
+  unicode-bidi: plaintext;
+}
+
+.offer-ltr-isolate {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+  font-family: "Poppins", system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.offer-ar-chunk {
+  direction: rtl;
+  unicode-bidi: isolate;
+  font-family: "Cairo", sans-serif;
+}
+
+.offer-mixed-line {
+  direction: rtl;
+  unicode-bidi: embed;
+  display: inline;
+}
+
+.offer-section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  font-size: var(--offer-fs-section);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--offer-tracking-section);
+  color: var(--offer-primary);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 2px solid var(--offer-primary);
+}
+
+.offer-section-ar {
+  flex: 1;
+  font-family: "Cairo", system-ui, sans-serif;
+  color: var(--offer-primary);
+}
+
+.offer-section-en {
+  flex: 1;
+  font-family: "Poppins", system-ui, sans-serif;
+  color: var(--offer-primary);
+}
+
+/* ── Premium sheet layout (screen + print) ── */
+.brand-bg {
+  background-color: #3b767c !important;
+  color: #ffffff !important;
+}
+
+.offer-sheet-accent {
+  height: 3px;
+  background-color: #3b767c !important;
+}
+
+.offer-sheet-header {
+  padding: 1.25rem 1.75rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.offer-sheet-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.625rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.offer-sheet-brand-text {
+  width: 100%;
+  text-align: center;
+}
+
+#quotation-print-area .offer-sheet-brand .offer-sheet-company,
+#quotation-print-area .offer-sheet-brand .offer-sheet-tagline {
+  text-align: center !important;
+  width: 100%;
+  margin-inline: auto;
+}
+
+#quotation-print-area .offer-sheet-brand .offer-align-en,
+#quotation-print-area .offer-sheet-brand .offer-align-ar,
+#quotation-print-area .offer-sheet-brand .offer-ltr-isolate {
+  text-align: center !important;
+}
+
+.offer-sheet-logo {
+  height: var(--offer-logo-height);
+  width: auto;
+  max-width: var(--offer-logo-max-width);
+  object-fit: contain;
+  display: block;
+  margin-inline: auto;
+  image-rendering: auto;
+}
+
+.offer-sheet-company {
+  font-size: 1.75rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: var(--offer-ink);
+  text-align: center;
+  width: 100%;
+}
+
+.offer-sheet-tagline {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  color: var(--offer-ink-body);
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.125rem 0.35rem;
+}
+
+.offer-meta-block {
+  background: var(--offer-primary-light);
+  border: 1px solid var(--offer-primary);
+  padding: 0.75rem 1rem;
+}
+
+.offer-meta-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: var(--offer-fs-meta-title);
+  font-weight: 800;
+  letter-spacing: var(--offer-tracking-section);
+  text-transform: uppercase;
+  color: var(--offer-primary);
+  margin-bottom: 0.5rem;
+}
+
+.offer-meta-ar {
+  color: var(--offer-primary);
+  font-family: "Cairo", system-ui, sans-serif;
+}
+
+.offer-meta-en {
+  color: var(--offer-primary);
+  font-family: "Poppins", system-ui, sans-serif;
+}
+
+.offer-meta-sep {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.offer-meta-subtitle {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+  font-family: "Cairo", system-ui, sans-serif;
+}
+
+.offer-meta-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.875rem;
+}
+
+.offer-meta-label {
+  font-weight: 800;
+  color: var(--offer-ink);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-inline-end: 0.375rem;
+}
+
+.offer-meta-value {
+  font-weight: 800;
+  color: var(--offer-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.offer-document-body {
+  padding: 1.25rem 1.75rem 0;
+}
+
+.offer-intro {
+  margin-bottom: 1.25rem;
+}
+
+.offer-client {
+  font-family: "Cairo", sans-serif;
+  font-size: var(--offer-fs-client);
+  font-weight: 800;
+  color: var(--offer-ink);
+  margin-bottom: 0.625rem;
+  line-height: 1.35;
+}
+
+.offer-greeting {
+  font-family: "Cairo", sans-serif;
+  font-size: var(--offer-fs-greeting);
+  line-height: var(--offer-lh-arabic);
+  color: var(--offer-ink-body);
+  font-weight: 600;
+  white-space: pre-wrap;
+}
+
+.offer-section {
+  margin-bottom: 1.25rem;
+}
+
+/* legacy section title block removed — see flex layout above */
+
+/* ── Premium thin-grid tables (LTR column order: desc | item | serial) ── */
+#quotation-print-area .offer-table-premium th,
+#quotation-print-area .offer-table-premium td {
+  padding: var(--offer-cell-padding) !important;
+  font-size: var(--offer-fs-table-body) !important;
+  line-height: var(--offer-lh-body) !important;
+  font-family: "Cairo", sans-serif !important;
+}
+
+#quotation-print-area .offer-table-premium td.offer-align-en {
+  font-family: "Poppins", sans-serif !important;
+}
+
+#quotation-print-area .offer-table-premium th {
+  background-color: #3b767c !important;
+  color: #ffffff !important;
+  border: 1px solid #2e6569 !important;
+  font-weight: 800;
+  font-size: var(--offer-fs-table-head) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+#quotation-print-area.print-mode-compact .offer-sheet-header {
+  padding: 0.75rem 1rem 0.5rem;
+}
+
+#quotation-print-area.print-mode-compact .offer-document-body {
+  padding: 0.625rem 1rem 0;
+}
+
+#quotation-print-area .offer-footer-anchored {
+  margin-top: auto;
+  border-top: 1px solid #3b767c !important;
+  background-color: #e9f3f4 !important;
+  padding: 0.75rem 1.75rem 1rem;
+}
+
+#quotation-print-area .offer-footer-phone {
+  color: #3b767c !important;
+  font-weight: 700;
+}
+
+.offer-table-premium {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: var(--offer-fs-table-body);
+  direction: ltr;
+}
+
+.offer-col-desc,
+.offer-th-desc {
+  width: 45% !important;
+}
+
+.offer-col-item,
+.offer-th-item {
+  width: 45% !important;
+}
+
+.offer-col-serial,
+.offer-th-serial {
+  width: 10% !important;
+}
+
+.offer-table-premium thead tr {
+  background-color: #3b767c !important;
+  color: #ffffff !important;
+}
+
+.offer-table-premium th {
+  padding: var(--offer-cell-padding);
+  font-size: var(--offer-fs-table-head);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background-color: #3b767c !important;
+  color: #ffffff !important;
+  border: 1px solid #2e6569 !important;
+  line-height: var(--offer-lh-body);
+  font-family: "Cairo", sans-serif;
+}
+
+.offer-table-premium td.offer-align-en {
+  font-family: "Poppins", sans-serif;
+}
+
+.offer-table-premium th.offer-th-serial {
+  text-align: center;
+}
+
+.offer-table-premium td {
+  padding: var(--offer-cell-padding);
+  border: 1px solid #cbd5e1;
+  color: var(--offer-ink-body);
+  font-weight: 600;
+  vertical-align: top;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  line-height: var(--offer-lh-body);
+  font-size: var(--offer-fs-table-body);
+  font-family: "Cairo", sans-serif;
+}
+
+.offer-table-premium td.offer-td-ar {
+  text-align: right;
+  font-weight: 700;
+}
+
+.offer-table-premium td.offer-td-serial,
+.offer-table-premium td.offer-col-serial {
+  text-align: center;
+  color: var(--offer-ink);
+  font-weight: 700;
+}
+
+.offer-table-premium tbody tr:nth-child(even) td {
+  background: #f9fafb;
+}
+
+.offer-table-premium tbody tr:nth-child(odd) td {
+  background: #ffffff;
+}
+
+/* ── Closing note ── */
+.offer-closing {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 0.625rem 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.offer-closing p {
+  font-family: "Cairo", sans-serif;
+  font-size: var(--offer-fs-greeting);
+  line-height: var(--offer-lh-body);
+  color: #111827;
+  white-space: pre-wrap;
+}
+
+/* ── Signatures ── */
+.offer-signature-grid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.offer-signature-row--fixed {
+  direction: rtl;
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 12px 0;
+  margin-bottom: 1rem;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.offer-signature-row--fixed .offer-signature-cell {
+  display: table-cell;
+  width: 33.33%;
+  vertical-align: top;
+  padding: 0 10px;
+}
+
+.offer-signature-grid.grid-cols-1 { grid-template-columns: 1fr; }
+.offer-signature-grid.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.offer-signature-grid.grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.offer-signature-grid.grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+.offer-signature-grid.grid-cols-5 { grid-template-columns: repeat(5, 1fr); }
+.offer-signature-grid.grid-cols-6 { grid-template-columns: repeat(6, 1fr); }
+
+.offer-signature-card {
+  text-align: center;
+  padding: 0.25rem 0.375rem;
+}
+
+.offer-signature-title {
+  font-family: "Cairo", sans-serif;
+  font-size: var(--offer-fs-table-head);
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.375rem;
+  min-height: 1.75rem;
+}
+
+.offer-signature-line {
+  height: 1px;
+  background: #111827;
+  margin: 0 0.5rem 0.375rem;
+}
+
+.offer-signature-name {
+  font-family: "Cairo", sans-serif;
+  font-size: var(--offer-fs-table-body);
+  font-weight: 600;
+  color: #111827;
+}
+
+/* ── Official footer ── */
+.offer-document-footer {
+  margin-top: auto;
+  padding: 0.75rem 1.75rem 1rem;
+  background: var(--offer-primary-light);
+  border-top: 2px solid var(--offer-primary);
+}
+
+.offer-footer-rule {
+  height: 2px;
+  background: var(--offer-primary);
+  margin: 0 auto 0.625rem;
+  max-width: 4rem;
+}
+
+.offer-footer-brand {
+  text-align: center;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--offer-ink);
+  margin-bottom: 0.5rem;
+}
+
+.offer-footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1.25rem;
+  max-width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.offer-footer-col--en {
+  text-align: left;
+}
+
+.offer-footer-col--ar {
+  text-align: right;
+  font-family: "Cairo", system-ui, sans-serif;
+}
+
+.offer-footer-line {
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--offer-ink-body);
+  font-weight: 600;
+  margin-bottom: 0.125rem;
+}
+
+.offer-footer-contact {
+  text-align: center;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--offer-ink);
+  letter-spacing: 0.03em;
+}
+
+.offer-footer-dot {
+  margin: 0 0.375rem;
+  color: #475569;
+  font-weight: 600;
+}
+
+.offer-footer-phone {
+  color: var(--offer-primary);
+}
+
+.offer-footer-extra {
+  text-align: center;
+  font-size: 0.625rem;
+  color: #111827;
+  margin-top: 0.25rem;
+}
+
+/* ── Document tail cluster ── */
+.offer-document-tail {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ═══ COMPACT MODE — defers to CSS variable overrides above ═══ */
+.print-mode-compact .offer-sheet-header {
+  padding: 0.75rem 1rem 0.625rem;
+}
+
+.print-mode-compact .offer-sheet-logo {
+  height: var(--offer-logo-height);
+  max-width: var(--offer-logo-max-width);
+}
+
+.print-mode-compact .offer-document-body {
+  padding: 0.75rem 1rem 0;
+}
+
+.print-mode-compact .offer-section {
+  margin-bottom: 0.625rem;
+}
+
+.print-mode-compact .offer-document-footer,
+.print-mode-compact .offer-document-footer--compact {
+  padding: 0.5rem 1rem 0.625rem;
+}
+
+/* Editor helpers */
+.offer-row-active:focus-within {
+  background-color: #e9f3f4;
+}
+
+.offer-generator-root .input-field:focus {
+  border-color: #3b767c;
+  box-shadow: 0 0 0 2px rgb(59 118 124 / 0.12);
+}
+
+/* ═══ PRINT OUTPUT ═══ */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 15mm 10mm 15mm 10mm;
+  }
+
+  html,
+  body {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Hide dashboard chrome */
+  .no-print,
+  .admin-print-chrome,
+  .print-optimizer-bar,
+  .offer-generator-root > .no-print,
+  .offer-generator-root .no-print,
+  nav,
+  .contact-action-fabs,
+  .call-fab,
+  .whatsapp-fab,
+  button,
+  select,
+  input,
+  textarea,
+  label {
+    display: none !important;
+  }
+
+  body.printing-offer .offer-print-host,
+  .offer-print-host {
+    display: block !important;
+    visibility: visible !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .admin-print-root,
+  .admin-print-root .section-container,
+  .offer-generator-root,
+  .offer-generator-root .grid {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  #free-form-offer-print,
+  #quotation-print-area,
+  .offer-print-document,
+  .offer-sheet {
+    display: flex !important;
+    flex-direction: column !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    page-break-after: auto;
+  }
+
+  .offer-document-body {
+    flex: 1 0 auto !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .offer-table-premium thead {
+    display: table-header-group !important;
+  }
+
+  .offer-table-premium thead tr {
+    background-color: #3b767c !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .offer-table-premium thead th {
+    background-color: #3b767c !important;
+    color: #ffffff !important;
+    border-color: #2e6569 !important;
+  }
+
+  .offer-table-premium tbody tr:nth-child(even) td {
+    background: #f9fafb !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .offer-meta-block {
+    background: var(--offer-primary-light) !important;
+    border: 1px solid var(--offer-primary) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .offer-document-footer {
+    background: var(--offer-primary-light) !important;
+    border-top: 2px solid var(--offer-primary) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .offer-sheet-accent {
+    background: var(--offer-primary) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── COMPACT: force single-page density, keep tail unified ── */
+  .print-mode-compact .offer-document-tail {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .print-mode-compact .offer-print-table-wrap {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .print-mode-compact .offer-print-block {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .print-mode-compact .offer-table-premium tr {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* ── SPANNED: intelligent page breaks ── */
+  .print-mode-spanned .offer-print-table-wrap {
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+  }
+
+  .print-mode-spanned .offer-table-premium tr {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .print-mode-spanned .offer-section {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  .print-mode-spanned .offer-document-tail {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    break-before: auto;
+    page-break-before: auto;
+  }
+
+  .print-mode-spanned .offer-print-closing,
+  .print-mode-spanned .offer-print-signatures,
+  .print-mode-spanned .offer-document-footer {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .offer-signature-row--fixed {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+
+  .offer-signature-row--fixed .offer-signature-cell {
+    display: table-cell !important;
+    width: 33.33% !important;
+    vertical-align: top !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .print-mode-spanned .offer-signature-card {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .print-mode-spanned .offer-intro {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .print-mode-spanned .offer-sheet-header {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Shared print guards */
+  .offer-signature-card {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .offer-document-footer {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    width: 100% !important;
+  }
+
+  .offer-signature-grid {
+    display: grid !important;
+  }
+}
+
+/* ── Direct PDF capture (html2pdf / html2canvas) ── */
+.pdf-capture-active .offer-table-premium tbody tr:nth-child(even) td {
+  background: #f9fafb !important;
+}
+
+.pdf-capture-active,
+.pdf-capture-active #quotation-print-area {
+  max-height: none !important;
+  height: auto !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+.pdf-capture-active .offer-table-premium thead tr,
+.pdf-capture-active .offer-table-premium th {
+  background-color: #3b767c !important;
+  color: #ffffff !important;
+}
+
+.pdf-capture-active .offer-sheet-accent {
+  background-color: #3b767c !important;
+}
+
+.pdf-capture-active .offer-document-footer {
+  background: var(--offer-primary-light) !important;
+  border-top: 2px solid var(--offer-primary) !important;
+}
+
+.pdf-capture-active .offer-meta-block {
+  background: var(--offer-primary-light) !important;
+  border: 1px solid var(--offer-primary) !important;
+}
+
+.pdf-capture-active,
+.pdf-capture-active * {
+  -webkit-font-smoothing: antialiased;
+}
+
+.pdf-capture-active .offer-align-ar,
+.pdf-capture-active .offer-ar-chunk,
+.pdf-capture-active bdi[dir="rtl"] {
+  direction: rtl !important;
+  text-align: right !important;
+  unicode-bidi: isolate !important;
+}
+
+.pdf-capture-active .offer-align-en,
+.pdf-capture-active bdi[dir="ltr"] {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: isolate !important;
+}
+
+.pdf-capture-active .offer-ltr-isolate {
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+  display: inline-block !important;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Visual Offer Extension — المرفقات الفنية المصورة (purely additive)
+   Renders only when attachments exist; standard offer is unaffected.
+   ════════════════════════════════════════════════════════════════════ */
+.offer-visual-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.625rem;
+  margin-top: 0.5rem;
+}
+
+.offer-visual-item {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.offer-visual-img {
+  width: 100%;
+  max-height: 120px;
+  object-fit: contain;
+  border: 1px solid #3b767c;
+  padding: 4px;
+  border-radius: 4px;
+  background-color: #ffffff;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.offer-visual-caption {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #111827;
+  text-align: center !important;
+  line-height: 1.35;
+}
+
+.print-mode-compact .offer-visual-grid {
+  gap: 0.4rem;
+}
+
+.print-mode-compact .offer-visual-img {
+  max-height: 90px;
+}
+
+@media print {
+  .offer-visual-attachments {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .offer-visual-img {
+    border: 1px solid #3b767c !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
