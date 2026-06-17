@@ -1,4 +1,4 @@
-import { createApp, API_MOUNT } from "./app.js";
+import { createApp } from "./app.js";
 
 const app = createApp();
 const PORT = process.env.PORT || 5001;
@@ -8,8 +8,8 @@ export default app;
 if (!process.env.VERCEL) {
   const server = app.listen(PORT, () => {
     console.log(`\n⚙️  Egy Mac API → http://localhost:${PORT}`);
-    console.log(`    Health      GET                 ${API_MOUNT || ""}/api/health`);
-    console.log(`    Catalog     GET                 ${API_MOUNT || ""}/api/catalog`);
+    console.log(`    Health      GET                 /api/health`);
+    console.log(`    Catalog     GET                 /api/catalog`);
     console.log(`    Admin Key   X-Admin-Key header (default: egymac-admin-dev)\n`);
   });
 

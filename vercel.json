@@ -10,7 +10,8 @@
       "routePrefix": "/_/backend",
       "framework": "express",
       "maxDuration": 60,
-      "memory": 1024
+      "memory": 1024,
+      "includeFiles": "backend/data/**"
     }
   }
 }

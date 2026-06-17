@@ -9,8 +9,9 @@ import quotationsRouter from "./routes/quotations.js";
 import salespersonsRouter from "./routes/salespersons.js";
 import templatesRouter from "./routes/templates.js";
 
-/** Vercel mounts this service at /_/backend; local dev uses bare /api paths. */
-export const API_MOUNT = process.env.API_MOUNT_PREFIX ?? (process.env.VERCEL ? "/_/backend" : "");
+/** Public URL prefix for this service on Vercel (see vercel.json routePrefix). */
+export const SERVICE_ROUTE_PREFIX =
+  process.env.SERVICE_ROUTE_PREFIX || process.env.API_MOUNT_PREFIX || "/_/backend";
 
 const defaultOrigins = [
   "http://localhost:5173",
@@ -44,6 +45,19 @@ export function createApp() {
     next(err);
   });
 
+  /**
+   * Normalize paths from Vercel Services routing.
+   * External: /_/backend/api/site-content
+   * Express may receive either the full path or a stripped /api/... path.
+   */
+  app.use((req, _res, next) => {
+    const prefix = SERVICE_ROUTE_PREFIX;
+    if (prefix && prefix !== "/" && (req.url === prefix || req.url.startsWith(`${prefix}/`))) {
+      req.url = req.url.slice(prefix.length) || "/";
+    }
+    next();
+  });
+
   const api = express.Router();
   api.use("/catalog", catalogRouter);
   api.use("/site-texts", siteTextsRouter);
@@ -54,10 +68,20 @@ export function createApp() {
   api.use("/salespersons", salespersonsRouter);
   api.use("/templates", templatesRouter);
   api.get("/health", (_req, res) => {
-    res.json({ status: "ok", service: "egymac-api", timestamp: new Date().toISOString() });
+    res.json({
+      status: "ok",
+      service: "egymac-api",
+      timestamp: new Date().toISOString(),
+      mount: "/api",
+    });
   });
 
-  app.use(`${API_MOUNT}/api`, api);
+  // Mount once at /api — prefix strip middleware handles /_/backend/... requests.
+  app.use("/api", api);
+  // Fallback: some runtimes pass the full prefixed path without stripping.
+  if (SERVICE_ROUTE_PREFIX && SERVICE_ROUTE_PREFIX !== "/") {
+    app.use(`${SERVICE_ROUTE_PREFIX}/api`, api);
+  }
 
   app.use((_req, res) => {
     res.status(404).json({ success: false, message: "Route not found" });
