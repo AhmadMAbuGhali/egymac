@@ -183,3 +183,36 @@
 .quote-blueprint-save-btn:active {
   transform: translateY(0);
 }
+
+/* Eye-soothing quote builder palette */
+.quote-builder-soft {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid rgb(226 232 240 / 0.85);
+}
+
+.quote-builder-soft .quote-workspace-toolbar {
+  background: rgb(255 255 255 / 0.92);
+  border-color: rgb(226 232 240 / 0.9);
+}
+
+.quote-builder-soft .ws-section {
+  background: rgb(255 255 255 / 0.96);
+  border-color: rgb(226 232 240 / 0.75);
+}
+
+.quote-builder-soft .input-field {
+  background: #f8fafc;
+  border-color: rgb(203 213 225 / 0.8);
+}
+
+.quote-builder-soft .input-field:focus {
+  background: #fff;
+}
+
+.quote-builder-soft .ws-field-label {
+  color: #64748b;
+}
+
+.quote-builder-soft .ws-section-title {
+  color: #3b767c;
+}

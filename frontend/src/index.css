@@ -281,6 +281,37 @@
   }
 }
 
+/* ─── Minimal contact dock (WhatsApp + Call) ─── */
+.contact-dock {
+  @apply fixed z-40 bottom-5 end-5 flex flex-col gap-2.5;
+}
+
+[dir="rtl"] .contact-dock {
+  @apply end-auto start-5;
+}
+
+.contact-dock__btn {
+  @apply flex items-center justify-center w-12 h-12 rounded-2xl text-white shadow-lg
+         transition-all duration-300 ease-out hover:scale-105 active:scale-95;
+  backdrop-filter: blur(8px);
+}
+
+.contact-dock__btn--whatsapp {
+  background: linear-gradient(145deg, #25d366 0%, #1ebe5d 100%);
+  box-shadow: 0 8px 24px rgb(37 211 102 / 0.35);
+}
+
+.contact-dock__btn--call {
+  background: linear-gradient(145deg, #3b767c 0%, #2d5c61 100%);
+  box-shadow: 0 8px 24px rgb(59 118 124 / 0.35);
+}
+
+@media (min-width: 640px) {
+  .contact-dock__btn {
+    @apply w-[3.25rem] h-[3.25rem];
+  }
+}
+
 /* ─── Floating call-to-action — primary #3b767c ─── */
 @keyframes call-fab-pulse {
   0%,

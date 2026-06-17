@@ -5,7 +5,7 @@ import {
   productDisplayDescription,
   productPrimaryImage,
 } from "../constants/catalogSchema.js";
-import { extractProductSpecs, isCustomEngineered } from "../utils/catalogStorefrontUtils.js";
+import { extractProductSpecs } from "../utils/catalogStorefrontUtils.js";
 import "../styles/catalogStorefront.css";
 
 export default function CatalogProductCard({ product, categoryPath, onQuote, onSelect }) {
@@ -14,22 +14,15 @@ export default function CatalogProductCard({ product, categoryPath, onQuote, onS
   const desc = productDisplayDescription(product, lang);
   const image = productPrimaryImage(product);
   const specs = extractProductSpecs(product, lang);
-  const isCustom = isCustomEngineered(product);
 
   const L = {
     en: {
       datasheet: "Technical Datasheet",
       inquire: "Request Quote",
-      available: "In Stock",
-      custom: "Custom Build",
-      engineered: "Engineered",
     },
     ar: {
       datasheet: "البيانات الفنية",
       inquire: "طلب عرض سعر",
-      available: "متاح",
-      custom: "تصنيع مخصص",
-      engineered: "هندسي",
     },
   }[lang];
 
@@ -50,11 +43,6 @@ export default function CatalogProductCard({ product, categoryPath, onQuote, onS
               <span>EGY MAC</span>
             </div>
           )}
-          <span
-            className={`catalog-product-card__status ${isCustom ? "catalog-product-card__status--custom" : ""}`}
-          >
-            {isCustom ? L.custom : L.available}
-          </span>
           {categoryPath ? (
             <span className="catalog-product-card__category">{categoryPath.split(" › ").pop()}</span>
           ) : null}

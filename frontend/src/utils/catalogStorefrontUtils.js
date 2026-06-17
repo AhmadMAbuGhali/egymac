@@ -42,14 +42,6 @@ export function extractProductSpecs(product, lang = "en") {
   const specs = [];
   const L = (en, ar) => (lang === "ar" ? ar : en);
 
-  const capacity =
-    text.match(/(\d+)\s*m³\s*\/\s*day/i)?.[1] ||
-    text.match(/(\d+)\s*م³\s*\/\s*يوم/)?.[1] ||
-    text.match(/(\d+)\s*m³/i)?.[1];
-  if (capacity) {
-    specs.push({ label: L("Capacity", "الطاقة"), value: `${capacity} m³/day` });
-  }
-
   const weight =
     text.match(/(\d+(?:\.\d+)?)\s*(?:kg|ton|tons|طن|كجم)/i)?.[0] ||
     text.match(/weight[:\s]+(\d+[^\s,]+)/i)?.[1];
@@ -85,12 +77,6 @@ export function extractProductSpecs(product, lang = "en") {
   return specs.slice(0, 4);
 }
 
-export function extractCapacityToken(product) {
-  const text = `${product.nameEn || ""} ${product.nameAr || ""}`;
-  const m = text.match(/(\d+)\s*m³/i) || text.match(/(\d+)\s*م³/);
-  return m ? Number(m[1]) : null;
-}
-
 export function isCustomEngineered(product) {
   const text = `${product.descriptionEn || ""} ${product.descriptionAr || ""} ${product.nameEn || ""} ${product.nameAr || ""}`.toLowerCase();
   return /custom|bespoke|مخصص|حسب الطلب|from scratch|engineered/.test(text);
@@ -99,7 +85,7 @@ export function isCustomEngineered(product) {
 export function filterCatalogProducts(
   products,
   categories,
-  { search, categoryId, availability, capacityMin, capacityMax, subCategoryId }
+  { search, categoryId, subCategoryId }
 ) {
   let list = [...products];
   const activeCategory = subCategoryId ?? categoryId;
@@ -129,42 +115,7 @@ export function filterCatalogProducts(
     });
   }
 
-  if (availability === "custom") {
-    list = list.filter(isCustomEngineered);
-  } else if (availability === "standard") {
-    list = list.filter((p) => !isCustomEngineered(p));
-  }
-
-  if (capacityMin != null && capacityMin !== "") {
-    const min = Number(capacityMin);
-    if (!Number.isNaN(min)) {
-      list = list.filter((p) => {
-        const cap = extractCapacityToken(p);
-        return cap == null || cap >= min;
-      });
-    }
-  }
-
-  if (capacityMax != null && capacityMax !== "") {
-    const max = Number(capacityMax);
-    if (!Number.isNaN(max)) {
-      list = list.filter((p) => {
-        const cap = extractCapacityToken(p);
-        return cap == null || cap <= max;
-      });
-    }
-  }
-
   return list;
-}
-
-export function uniqueCapacityOptions(products) {
-  const set = new Set();
-  for (const p of products) {
-    const cap = extractCapacityToken(p);
-    if (cap != null) set.add(cap);
-  }
-  return [...set].sort((a, b) => a - b);
 }
 
 export function categoryTabLabel(cat, lang, count) {

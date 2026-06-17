@@ -9,6 +9,7 @@ import {
   getRootCategories,
 } from "../utils/catalogStorefrontUtils.js";
 import CatalogProductCard from "../components/CatalogProductCard.jsx";
+import CatalogCategoryTree from "../components/CatalogCategoryTree.jsx";
 import CatalogFilterPanel from "../components/CatalogFilterPanel.jsx";
 import ProductDetailView from "../components/ProductDetailView.jsx";
 import RFQModal from "../components/RFQModal.jsx";
@@ -24,9 +25,6 @@ export default function CatalogPage() {
   const [search, setSearch] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [subCategoryId, setSubCategoryId] = useState(null);
-  const [availability, setAvailability] = useState("all");
-  const [capacityMin, setCapacityMin] = useState("");
-  const [capacityMax, setCapacityMax] = useState("");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [gridEpoch, setGridEpoch] = useState(0);
   const [gridVisible, setGridVisible] = useState(true);
@@ -62,11 +60,8 @@ export default function CatalogPage() {
         search,
         categoryId: selectedCategoryId,
         subCategoryId,
-        availability,
-        capacityMin,
-        capacityMax,
       }),
-    [products, categories, search, selectedCategoryId, subCategoryId, availability, capacityMin, capacityMax]
+    [products, categories, search, selectedCategoryId, subCategoryId]
   );
 
   const refreshGrid = useCallback(() => {
@@ -92,9 +87,6 @@ export default function CatalogPage() {
   const clearAllFilters = () => {
     setSearch("");
     setSubCategoryId(null);
-    setAvailability("all");
-    setCapacityMin("");
-    setCapacityMax("");
     refreshGrid();
   };
 
@@ -106,19 +98,12 @@ export default function CatalogPage() {
       title: "Industrial Product Catalog",
       subtitle: "Premium engineering storefront — scan, browse, and request technical quotes instantly.",
       liveSearch: "Live Search",
-      searchPlaceholder: "Search titles, specs, capacity…",
+      searchPlaceholder: "Search titles & specifications…",
       clearSearch: "Clear search",
       subCategory: "Sub-category",
       categoryDivision: "Division",
       allCategories: "All divisions",
       allInTab: "All in selected division",
-      availability: "Availability",
-      availabilityAll: "All",
-      availabilityStandard: "Standard",
-      availabilityCustom: "Custom",
-      capacity: "Production capacity",
-      minCapacity: "Min m³/day",
-      maxCapacity: "Max m³/day",
       clearAll: "Reset filters",
       results: "products",
       all: "All Products",
@@ -133,19 +118,12 @@ export default function CatalogPage() {
       title: "فهرس المنتجات الصناعي",
       subtitle: "واجهة عرض احترافية — تصفح واطلب عروضاً فنية فوراً من جوالك أو سطح المكتب.",
       liveSearch: "بحث فوري",
-      searchPlaceholder: "ابحث في العناوين والمواصفات والطاقة…",
+      searchPlaceholder: "ابحث في العناوين والمواصفات…",
       clearSearch: "مسح البحث",
       subCategory: "تصنيف فرعي",
       categoryDivision: "التقسيم",
       allCategories: "كل التقسيمات",
       allInTab: "الكل ضمن التقسيم",
-      availability: "التوفر",
-      availabilityAll: "الكل",
-      availabilityStandard: "قياسي",
-      availabilityCustom: "مخصص",
-      capacity: "الطاقة الإنتاجية",
-      minCapacity: "أدنى m³/يوم",
-      maxCapacity: "أقصى m³/يوم",
       clearAll: "إعادة ضبط الفلاتر",
       results: "منتج",
       all: "كل المنتجات",
@@ -177,31 +155,9 @@ export default function CatalogPage() {
       setSubCategoryId(id);
       refreshGrid();
     },
-    availability,
-    onAvailabilityChange: (v) => {
-      setAvailability(v);
-      refreshGrid();
-    },
-    capacityMin,
-    capacityMax,
-    onCapacityMinChange: (v) => {
-      setCapacityMin(v);
-      refreshGrid();
-    },
-    onCapacityMaxChange: (v) => {
-      setCapacityMax(v);
-      refreshGrid();
-    },
-    products,
   };
 
-  const activeFilterCount = [
-    search.trim(),
-    subCategoryId != null,
-    availability !== "all",
-    capacityMin,
-    capacityMax,
-  ].filter(Boolean).length;
+  const activeFilterCount = [search.trim(), subCategoryId != null].filter(Boolean).length;
 
   return (
     <div className="catalog-storefront min-h-screen bg-slate-50 pt-20">
@@ -282,7 +238,18 @@ export default function CatalogPage() {
 
             <div className="catalog-layout">
               <aside className="catalog-sidebar hidden lg:block">
-                <div className="catalog-sidebar__inner">
+                <div className="catalog-sidebar__inner catalog-sidebar__inner--stack">
+                  <h2 className="catalog-sidebar__title">{L.categoryDivision}</h2>
+                  <CatalogCategoryTree
+                    lang={lang}
+                    categories={categories}
+                    products={products}
+                    selectedCategoryId={selectedCategoryId}
+                    onSelectCategory={handleCategoryTab}
+                    allLabel={L.all}
+                    allCount={products.length}
+                  />
+                  <hr className="catalog-sidebar__divider" />
                   <h2 className="catalog-sidebar__title">{L.sidebarTitle}</h2>
                   <CatalogFilterPanel {...filterProps} />
                 </div>

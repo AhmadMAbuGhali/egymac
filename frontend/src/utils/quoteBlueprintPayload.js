@@ -27,9 +27,8 @@ export function captureQuoteWorkspaceSnapshot(
     templateStyle,
     visualAttachments,
     sectionVisibility,
-    isVisual,
-    isReplica,
-    isMachinery,
+    isClassic = true,
+    isVisualOffer = false,
     keepClientName = true,
   } = {}
 ) {
@@ -73,16 +72,14 @@ export function captureQuoteWorkspaceSnapshot(
     snapshot.machineryItems = deepClone(quote.machineryItems);
   }
 
-  if (isMachinery) {
+  if (isVisualOffer) {
     snapshot.templateStyle = "machinery_detailed";
-  } else if (isReplica) {
-    snapshot.templateStyle = "replica";
-    snapshot.visualAttachments = deepClone(visualAttachments) || [];
   } else {
     delete snapshot.templateStyle;
-    if (isVisual || (visualAttachments?.length ?? 0) > 0) {
-      snapshot.visualAttachments = deepClone(visualAttachments) || [];
-    }
+  }
+
+  if (Array.isArray(visualAttachments) && visualAttachments.length > 0) {
+    snapshot.visualAttachments = deepClone(visualAttachments);
   }
 
   return snapshot;
@@ -111,7 +108,6 @@ export function hydrateBuilderFromTemplatePayload(
   {
     loadQuoteFork,
     setTemplateStyle,
-    setOfferType,
     setVisualAttachments,
     setSectionVisibility,
     prevTemplateRef,
@@ -123,7 +119,8 @@ export function hydrateBuilderFromTemplatePayload(
   }
 
   const cloned = deepClone(payload);
-  const style = cloned.templateStyle || templateRow.templateStyle || "standard";
+  let style = cloned.templateStyle || templateRow.templateStyle || "standard";
+  if (style === "replica") style = "machinery_detailed";
 
   if (prevTemplateRef) {
     prevTemplateRef.current = style;
@@ -134,15 +131,6 @@ export function hydrateBuilderFromTemplatePayload(
   const attachments = Array.isArray(cloned.visualAttachments) ? cloned.visualAttachments : [];
   setTemplateStyle(style);
   setVisualAttachments(attachments);
-
-  if (style === "machinery_detailed") {
-    setOfferType("standard");
-  } else if (attachments.length > 0) {
-    setOfferType("visual");
-  } else {
-    setOfferType("standard");
-  }
-
   setSectionVisibility(mergeSectionVisibility(cloned.sectionVisibility));
   return true;
 }

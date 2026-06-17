@@ -5,11 +5,15 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
-    // Proxy API calls to Express during development
     proxy: {
       "/api": {
         target: "http://localhost:5001",
         changeOrigin: true,
+      },
+      "/_/backend/api": {
+        target: "http://localhost:5001",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/_\/backend/, ""),
       },
     },
   },

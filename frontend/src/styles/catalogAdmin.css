@@ -178,3 +178,56 @@
   @apply inline-block w-1 h-4 rounded-full shrink-0;
   background: #3b767c;
 }
+
+.catalog-form-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.catalog-form-step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgb(226 232 240);
+  background: #fff;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.catalog-form-step--active {
+  border-color: #3b767c;
+  background: #e9f3f4;
+  color: #0f172a;
+}
+
+.catalog-form-step--done {
+  border-color: rgb(59 118 124 / 0.35);
+  color: #3b767c;
+}
+
+.catalog-form-step__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 9999px;
+  background: rgb(241 245 249);
+  font-size: 0.625rem;
+  font-weight: 900;
+}
+
+.catalog-form-step--active .catalog-form-step__num {
+  background: #3b767c;
+  color: #fff;
+}
+
+.catalog-form-step__label {
+  white-space: nowrap;
+}

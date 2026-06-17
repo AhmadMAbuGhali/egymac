@@ -9,7 +9,10 @@
     "email": "adasdasdasd@gmail.com",
     "quantity": "قالب",
     "customizations": "نشسامنشيبمكنض",
-    "createdAt": "2026-06-09T10:43:28.811Z"
+    "createdAt": "2026-06-09T10:43:28.811Z",
+    "status": "new",
+    "internalNotes": [],
+    "updatedAt": "2026-06-17T07:17:52.506Z"
   },
   {
     "id": 1,

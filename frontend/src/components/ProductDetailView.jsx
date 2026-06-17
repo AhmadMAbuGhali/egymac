@@ -3,7 +3,6 @@ import {
   ArrowRight,
   ArrowLeft,
   FileText,
-  Gauge,
   Layers,
   Wrench,
   ShieldCheck,
@@ -16,6 +15,7 @@ import {
   productDisplayDescription,
   productPrimaryImage,
 } from "../constants/catalogSchema.js";
+import MagnifyImage from "./MagnifyImage.jsx";
 
 function buildSpecRows(item) {
   const isLine = item.catalogType === "line";
@@ -26,7 +26,6 @@ function buildSpecRows(item) {
     isLine
       ? { label: "نوع الخط / Line Focus", value: focus }
       : { label: "فئة القالب / Mold Category", value: moldType },
-    { label: "الطاقة الإنتاجية / Capacity", value: item.capacity },
     { label: "درجة الفولاذ / Steel Grade", value: item.steelGrade },
     { label: "المعالجة الحرارية / Heat Treatment", value: item.heatTreatmentDepth },
     { label: "الوزن / Weight", value: item.weight },
@@ -112,13 +111,7 @@ export default function ProductDetailView({ item, onBack, onQuote }) {
         <div className="lg:col-span-3">
           <div className="bg-surface-section border border-border/70 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden group">
             {primaryImage ? (
-              <div className="overflow-hidden">
-                <img
-                  src={primaryImage}
-                  alt={title}
-                  className="w-full max-h-[480px] object-cover transition-all duration-[400ms] ease-out group-hover:scale-105 group-hover:brightness-[1.02]"
-                />
-              </div>
+              <MagnifyImage src={primaryImage} alt={title} className="w-full max-h-[480px]" />
             ) : (
               <div className="h-72 flex items-center justify-center text-accent/30">
                 <Cog size={64} />
@@ -135,12 +128,6 @@ export default function ProductDetailView({ item, onBack, onQuote }) {
                   className="w-full h-16 object-cover rounded-lg border border-border/70"
                 />
               ))}
-            </div>
-          )}
-          {item.capacity && (
-            <div className="mt-4 flex items-center gap-2 text-sm text-ink-body">
-              <Gauge size={16} className="text-accent" />
-              <span className="font-semibold">{item.capacity}</span>
             </div>
           )}
         </div>

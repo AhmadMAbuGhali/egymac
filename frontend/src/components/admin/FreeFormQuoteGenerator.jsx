@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import {
   Plus,
   Trash2,
@@ -8,28 +9,23 @@ import {
   Loader2,
   CheckCircle,
   AlertCircle,
-  Archive,
-  PenLine,
   LayoutTemplate,
 } from "lucide-react";
 import { useFreeFormQuote } from "../../hooks/useFreeFormQuote.js";
 import {
-  getSavedQuotes,
   getSavedQuote,
   getFreeFormQuoteTemplate,
   saveFreeFormQuote,
   getSalespersons,
   saveQuoteTemplate,
 } from "../../api/client.js";
-import ArchivedQuotesList from "./ArchivedQuotesList.jsx";
 import TemplatePickerDrawer from "./TemplatePickerDrawer.jsx";
 import SignatureDeskPreview from "./SignatureDeskPreview.jsx";
 import { buildFixedSignatureBlocks } from "../../constants/signatures.js";
 import FreeFormQuotePreview from "./FreeFormQuotePreview.jsx";
-import ReplicaQuotePreview from "./ReplicaQuotePreview.jsx";
 import MachineryQuotePreview from "./MachineryQuotePreview.jsx";
-import VisualAttachmentsPanel from "./VisualAttachmentsPanel.jsx";
 import MachineryItemsPanel from "./MachineryItemsPanel.jsx";
+import VisualAttachmentsPanel from "./VisualAttachmentsPanel.jsx";
 import PrintOptimizerBar, { PRINT_MODE_COMPACT } from "./PrintOptimizerBar.jsx";
 import WorkspaceSection from "./WorkspaceSection.jsx";
 import { QuoteEditProvider } from "./inlineEdit.jsx";
@@ -54,23 +50,17 @@ import {
 } from "../../utils/quoteBlueprintPayload.js";
 import "../../styles/freeFormQuote.print.css";
 import "../../styles/quoteWorkspace.css";
-import "../../styles/archiveWorkspace.css";
 
 function syncUiFromLoadedQuote(
   data,
-  { setTemplateStyle, setOfferType, setVisualAttachments, setSectionVisibility }
+  { setTemplateStyle, setVisualAttachments, setSectionVisibility }
 ) {
-  const style = data.templateStyle || "standard";
+  let style = data.templateStyle || "standard";
+  // Legacy replica snapshots render on the Heavy Machinery layout
+  if (style === "replica") style = "machinery_detailed";
   const attachments = Array.isArray(data.visualAttachments) ? data.visualAttachments : [];
   setTemplateStyle(style);
   setVisualAttachments(attachments);
-  if (style === "machinery_detailed") {
-    setOfferType("standard");
-  } else if (attachments.length > 0) {
-    setOfferType("visual");
-  } else {
-    setOfferType("standard");
-  }
   setSectionVisibility(mergeSectionVisibility(data.sectionVisibility));
 }
 
@@ -95,6 +85,7 @@ function ColumnHeaderInputs({ columns, keys, labels, onChange }) {
 }
 
 export default function FreeFormQuoteGenerator({ adminKey }) {
+  const location = useLocation();
   const {
     quote,
     savedId,
@@ -122,10 +113,6 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
     updateMachineryInline,
   } = useFreeFormQuote();
 
-  const [archive, setArchive] = useState([]);
-  const [loadingArchive, setLoadingArchive] = useState(false);
-  const [workspaceMode, setWorkspaceMode] = useState("builder");
-  const [archiveRefresh, setArchiveRefresh] = useState(0);
   const [salespersonRoster, setSalespersonRoster] = useState([]);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState("");
@@ -145,18 +132,16 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
   });
   const [sectionVisibility, setSectionVisibility] = useState(createDefaultSectionVisibility);
 
-  // Visual Offer Extension — additive layer, never mutates the standard quote
-  const [offerType, setOfferType] = useState("standard"); // 'standard' | 'visual'
+  // Optional image attachments — available on all layout styles
   const [visualAttachments, setVisualAttachments] = useState([]);
-  const isVisual = offerType === "visual";
 
-  // Template variants — additive switchable layouts, standard stays untouched
-  const [templateStyle, setTemplateStyle] = useState("standard"); // 'standard' | 'replica' | 'machinery_detailed'
-  const isReplica = templateStyle === "replica";
-  const isMachinery = templateStyle === "machinery_detailed";
+  const [templateStyle, setTemplateStyle] = useState("standard");
+  const isClassic = templateStyle === "standard";
+  /** عرض سعر مصوّر — always the original Heavy Machinery layout */
+  const isVisualOffer =
+    templateStyle === "machinery_detailed" || templateStyle === "replica";
 
-  // Replica has designated image slots, so attachments flow in either mode
-  const activeAttachments = isVisual || isReplica ? visualAttachments : null;
+  const activeAttachments = visualAttachments.length > 0 ? visualAttachments : null;
 
   const prevTemplateRef = useRef(templateStyle);
   const initialSavedIdRef = useRef(savedId);
@@ -193,13 +178,15 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
 
     loadQuoteRef.current(draft.quote);
     if (draft.sectionVisibility) setSectionVisibility(mergeSectionVisibility(draft.sectionVisibility));
-    if (draft.templateStyle) setTemplateStyle(draft.templateStyle);
+    if (draft.templateStyle) {
+      setTemplateStyle(draft.templateStyle === "replica" ? "machinery_detailed" : draft.templateStyle);
+    }
     if (Array.isArray(draft.visualAttachments)) setVisualAttachments(draft.visualAttachments);
     setStatus("loaded");
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional: run once on panel mount only
   }, []);
 
-  // Seed machinery assemblies only when switching INTO the machinery template
+  // Seed machinery assemblies when switching into عرض سعر مصوّر (Heavy Machinery layout)
   useEffect(() => {
     const switchedToMachinery =
       templateStyle === "machinery_detailed" && prevTemplateRef.current !== "machinery_detailed";
@@ -286,30 +273,9 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
     [salespersonRoster, updateField]
   );
 
-  const bumpArchiveRefresh = useCallback(() => {
-    setArchiveRefresh((n) => n + 1);
-  }, []);
-
   const toggleSectionVisibility = useCallback((key, visible) => {
     setSectionVisibility((prev) => ({ ...prev, [key]: visible }));
   }, []);
-
-  const loadArchive = useCallback(async () => {
-    if (!adminKey) return;
-    setLoadingArchive(true);
-    try {
-      const res = await getSavedQuotes(adminKey);
-      setArchive(Array.isArray(res.data) ? res.data : []);
-    } catch {
-      setArchive([]);
-    } finally {
-      setLoadingArchive(false);
-    }
-  }, [adminKey]);
-
-  useEffect(() => {
-    loadArchive();
-  }, [loadArchive]);
 
   const handleNew = async () => {
     setError("");
@@ -318,7 +284,6 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
       loadQuote(res.data);
       syncUiFromLoadedQuote(res.data, {
         setTemplateStyle,
-        setOfferType,
         setVisualAttachments,
         setSectionVisibility,
       });
@@ -337,7 +302,6 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
       loadQuoteFork(res.data);
       syncUiFromLoadedQuote(res.data, {
         setTemplateStyle,
-        setOfferType,
         setVisualAttachments,
         setSectionVisibility,
       });
@@ -356,23 +320,19 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
         templateStyle,
         visualAttachments,
         sectionVisibility,
-        isVisual,
-        isReplica,
-        isMachinery,
+        isClassic,
+        isVisualOffer,
       });
       const res = await saveFreeFormQuote(payload, adminKey);
       setSavedId(res.data.id);
       loadQuote(res.data);
       syncUiFromLoadedQuote(res.data, {
         setTemplateStyle,
-        setOfferType,
         setVisualAttachments,
         setSectionVisibility,
       });
       setStatus("saved");
       clearDraft();
-      loadArchive();
-      bumpArchiveRefresh();
     } catch (e) {
       setError(e.message || "Failed to save offer.");
     } finally {
@@ -380,18 +340,39 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
     }
   };
 
-  const handleEditFromArchive = async (id) => {
-    setError("");
-    setWorkspaceMode("builder");
-    await handleLoad(id);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  useEffect(() => {
+    const editId = location.state?.editQuoteId;
+    if (editId == null || !adminKey) return;
+
+    let cancelled = false;
+    (async () => {
+      setError("");
+      try {
+        const res = await getSavedQuote(editId, adminKey);
+        if (cancelled) return;
+        loadQuoteFork(res.data);
+        syncUiFromLoadedQuote(res.data, {
+          setTemplateStyle,
+          setVisualAttachments,
+          setSectionVisibility,
+        });
+        setStatus("loaded");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (e) {
+        if (!cancelled) setError(e.message || "Failed to load saved offer.");
+      }
+    })();
+
+    window.history.replaceState({}, document.title);
+    return () => {
+      cancelled = true;
+    };
+  }, [location.state?.editQuoteId, adminKey, loadQuoteFork]);
 
   const handleLoadFromTemplate = (templateRow) => {
     const hydrated = hydrateBuilderFromTemplatePayload(templateRow, {
       loadQuoteFork,
       setTemplateStyle,
-      setOfferType,
       setVisualAttachments,
       setSectionVisibility,
       prevTemplateRef,
@@ -402,7 +383,6 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
     }
     clearDraft();
     discardDraftSession(null);
-    setWorkspaceMode("builder");
     setStatus("loaded");
     setError("");
     setBlueprintSuccess("");
@@ -431,9 +411,8 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
         templateStyle,
         visualAttachments,
         sectionVisibility,
-        isVisual,
-        isReplica,
-        isMachinery,
+        isClassic,
+        isVisualOffer,
         keepClientName: blueprintForm.keepClientName,
       });
       await saveQuoteTemplate(
@@ -441,8 +420,8 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
           name: blueprintForm.name.trim(),
           nameAr: blueprintForm.nameAr.trim(),
           description: blueprintForm.description.trim(),
-          category: isMachinery ? "machinery" : isReplica ? "premium" : "general",
-          templateStyle: isMachinery ? "machinery_detailed" : isReplica ? "replica" : "standard",
+          category: isVisualOffer ? "premium" : "general",
+          templateStyle: isVisualOffer ? "machinery_detailed" : "standard",
           payload,
         },
         adminKey
@@ -466,9 +445,8 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
         templateStyle,
         visualAttachments,
         sectionVisibility,
-        isVisual,
-        isReplica,
-        isMachinery,
+        isClassic,
+        isVisualOffer,
       });
       const saveRes = await saveFreeFormQuote(payload, adminKey);
       const saved = saveRes.data;
@@ -476,14 +454,11 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
       loadQuote(saved);
       syncUiFromLoadedQuote(saved, {
         setTemplateStyle,
-        setOfferType,
         setVisualAttachments,
         setSectionVisibility,
       });
       setStatus("saved");
       clearDraft();
-      loadArchive();
-      bumpArchiveRefresh();
 
       const { downloadOfferPdfById } = await import("../../utils/generateOfferPdf.js");
       await downloadOfferPdfById({
@@ -500,85 +475,30 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
   };
 
   return (
-    <div className="quote-workspace-root offer-generator-root bg-surface-muted/40 border border-border/60 rounded-2xl p-4 sm:p-6">
-      <div className="no-print archive-workspace-tabs">
-        <button
-          type="button"
-          onClick={() => setWorkspaceMode("builder")}
-          className={`archive-workspace-tab ${workspaceMode === "builder" ? "archive-workspace-tab--active" : "archive-workspace-tab--idle"}`}
-        >
-          <PenLine size={16} /> منشئ العروض
-        </button>
-        <button
-          type="button"
-          onClick={() => setWorkspaceMode("archive")}
-          className={`archive-workspace-tab ${workspaceMode === "archive" ? "archive-workspace-tab--active" : "archive-workspace-tab--idle"}`}
-        >
-          <Archive size={16} /> أرشيف العروض
-        </button>
-      </div>
-
-      {workspaceMode === "archive" ? (
-        <ArchivedQuotesList
-          adminKey={adminKey}
-          onEdit={handleEditFromArchive}
-          onCreateNew={() => setWorkspaceMode("builder")}
-          refreshToken={archiveRefresh}
-        />
-      ) : (
-        <>
-      <div className="no-print mb-4 segmented-control flex-wrap">
-        <button
-          type="button"
-          onClick={() => setOfferType("standard")}
-          className={`segmented-option ${!isVisual ? "segmented-option-active" : ""}`}
-        >
-          Standard Offer — العرض القياسي
-        </button>
-        <button
-          type="button"
-          onClick={() => setOfferType("visual")}
-          className={`segmented-option ${isVisual ? "segmented-option-active" : ""}`}
-        >
-          Visual Offer — العرض المصور
-          {visualAttachments.length > 0 && (
-            <span className="ms-1.5 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-white/25 text-[10px]">
-              {visualAttachments.length}
-            </span>
-          )}
-        </button>
-      </div>
-
-      <div className="no-print mb-4 ms-0 sm:ms-3 segmented-control flex-wrap align-top">
-        <span className="px-2.5 py-2 text-xs font-bold text-ink uppercase tracking-wide self-center">
-          Template
+    <div className="quote-workspace-root quote-builder-soft offer-generator-root rounded-2xl p-4 sm:p-6">
+      <div className="no-print mb-4 segmented-control flex-wrap align-top">
+        <span className="px-2.5 py-2 text-xs font-bold text-slate-600 uppercase tracking-wide self-center">
+          Layout
         </span>
         <button
           type="button"
           onClick={() => setTemplateStyle("standard")}
-          className={`segmented-option ${!isReplica && !isMachinery ? "segmented-option-active" : ""}`}
+          className={`segmented-option ${isClassic ? "segmented-option-active" : ""}`}
         >
-          Classic
-        </button>
-        <button
-          type="button"
-          onClick={() => setTemplateStyle("replica")}
-          className={`segmented-option ${isReplica ? "segmented-option-active" : ""}`}
-        >
-          Replica — نموذج المرجع
+          Classic Look — المظهر الكلاسيكي
         </button>
         <button
           type="button"
           onClick={() => setTemplateStyle("machinery_detailed")}
-          className={`segmented-option ${isMachinery ? "segmented-option-active" : ""}`}
+          className={`segmented-option ${isVisualOffer ? "segmented-option-active" : ""}`}
         >
-          Machinery — الآلات الثقيلة
+          عرض سعر مصوّر — Visual Photographic Offer
         </button>
       </div>
 
       <div className="no-print mb-6">
-        <h2 className="text-lg font-bold text-ink">منظومة إنشاء عروض الأسعار الحرة</h2>
-        <p className="text-sm text-ink-body mt-1">
+        <h2 className="text-lg font-bold text-slate-800">منظومة إنشاء عروض الأسعار</h2>
+        <p className="text-sm text-slate-600 mt-1">
           Dynamic B2B Price Offer Generator — unrestricted control over every document section.
         </p>
       </div>
@@ -615,23 +535,6 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
           {pdfGenerating ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
           {pdfGenerating ? "جاري التحميل…" : "تحميل PDF / Download"}
         </button>
-        <select
-          className="input-field py-2 text-sm w-auto min-w-[200px] ml-auto border-accent/20 focus:border-accent"
-          defaultValue=""
-          onChange={(e) => {
-            if (e.target.value) handleLoad(e.target.value);
-            e.target.value = "";
-          }}
-        >
-          <option value="" disabled>
-            {loadingArchive ? "Loading archive…" : "Load saved offer…"}
-          </option>
-          {archive.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.referenceNumber} — {a.clientName || "No client"} ({a.date})
-            </option>
-          ))}
-        </select>
       </div>
 
       <div className="quote-mobile-view-bar no-print">
@@ -668,7 +571,7 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
       )}
       {status === "saved" && (
         <div className="no-print flex items-center gap-2 text-green-700 text-sm bg-green-50 border border-green-200 rounded-xl px-4 py-3 mb-4 shadow-[0_8px_30px_rgb(0,0,0,0.03)]">
-          <CheckCircle size={16} /> Offer archived successfully.
+          <CheckCircle size={16} /> Offer saved successfully.
         </div>
       )}
       {error && (
@@ -686,17 +589,10 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
           </p>
           <PrintOptimizerBar mode={printMode} onChange={setPrintMode} />
           <QuoteEditProvider onEdit={handleInlineEdit}>
-            {isMachinery ? (
+            {isVisualOffer ? (
               <MachineryQuotePreview
                 quote={quote}
                 printMode={printMode}
-                sectionVisibility={sectionVisibility}
-              />
-            ) : isReplica ? (
-              <ReplicaQuotePreview
-                quote={quote}
-                printMode={printMode}
-                visualAttachments={activeAttachments}
                 sectionVisibility={sectionVisibility}
               />
             ) : (
@@ -780,7 +676,7 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
             </div>
           </WorkspaceSection>
 
-          {!isMachinery && (
+          {!isVisualOffer && (
           <WorkspaceSection
             sectionKey="technicalSpecs"
             visible={sectionVisibility.technicalSpecs}
@@ -1090,34 +986,30 @@ export default function FreeFormQuoteGenerator({ adminKey }) {
             </div>
           </WorkspaceSection>
 
-          {(isVisual || isReplica) && (
-            <WorkspaceSection
-              sectionKey="visualAttachments"
-              visible={sectionVisibility.visualAttachments}
-              onToggleVisibility={toggleSectionVisibility}
-              helper="ارفع صوراً أو اختر من المعرض — تظهر في المعاينة والطباعة"
-            >
-              <VisualAttachmentsPanel attachments={visualAttachments} onChange={setVisualAttachments} />
-            </WorkspaceSection>
-          )}
-
-          {isMachinery && (
+          {isVisualOffer ? (
             <WorkspaceSection
               sectionKey="machineryItems"
               visible={sectionVisibility.machineryItems}
               onToggleVisibility={toggleSectionVisibility}
-              helper="أقسام الماكينات — صورة + جدول مواصفات + بطاقة سعر"
+              helper="أقسام الماكينات — صورة + جدول مواصفات + بطاقة سعر (Heavy Machinery layout)"
             >
               <MachineryItemsPanel
                 items={quote.machineryItems || []}
                 onChange={(items) => updateField("machineryItems", items)}
               />
             </WorkspaceSection>
+          ) : (
+            <WorkspaceSection
+              sectionKey="visualAttachments"
+              visible={sectionVisibility.visualAttachments}
+              onToggleVisibility={toggleSectionVisibility}
+              helper="إرفاق صور اختياري — يظهر في المعاينة والطباعة عند الإضافة فقط"
+            >
+              <VisualAttachmentsPanel attachments={visualAttachments} onChange={setVisualAttachments} />
+            </WorkspaceSection>
           )}
         </div>
       </div>
-        </>
-      )}
 
       <TemplatePickerDrawer
         open={showTemplateDrawer}

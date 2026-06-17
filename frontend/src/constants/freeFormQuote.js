@@ -103,7 +103,7 @@ export function normalizeFreeFormQuote(data = {}) {
   }
 
   if (data.templateStyle === "replica" || data.templateStyle === "machinery_detailed") {
-    merged.templateStyle = data.templateStyle;
+    merged.templateStyle = "machinery_detailed";
   }
 
   if (Array.isArray(data.machineryItems)) {

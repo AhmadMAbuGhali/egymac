@@ -54,9 +54,9 @@ export default function Header() {
           : "border-border/60 bg-surface"
       }`}
     >
-      <div className="section-container flex items-center justify-between h-16 lg:h-[4.25rem]">
+      <div className="section-container flex items-center justify-between h-[4.25rem] lg:h-[5rem]">
         <Link to="/" className="flex items-center gap-3 shrink-0">
-          <img src="/logo.png" alt="Egy Mac" className="h-10 lg:h-11 w-auto" />
+          <img src="/logo.png" alt="Egy Mac" className="h-12 lg:h-[3.75rem] w-auto max-w-[200px] object-contain" />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-1">
@@ -84,7 +84,9 @@ export default function Header() {
               className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-accent-light border border-accent/20 text-accent text-xs font-bold hover:bg-accent hover:text-secondary hover:-translate-y-0.5 hover:shadow-accent active:scale-95 transition-all duration-200 ease-out"
             >
               <PhoneCall size={14} />
-              {phoneDisplay}
+              <span dir="ltr" className="unicode-isolate phone-ltr" style={{ unicodeBidi: "isolate" }}>
+                {phoneDisplay}
+              </span>
             </a>
           ) : null}
           <button
@@ -132,7 +134,9 @@ export default function Header() {
                 className="mx-4 mt-2 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-accent text-secondary text-sm font-semibold shadow-accent hover:bg-accent-hover transition-colors"
               >
                 <PhoneCall size={16} />
-                {phoneDisplay}
+                <span dir="ltr" className="phone-ltr" style={{ unicodeBidi: "isolate" }}>
+                  {phoneDisplay}
+                </span>
               </a>
             ) : null}
           </nav>

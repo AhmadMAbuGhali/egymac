@@ -8,7 +8,7 @@ import {
   ImagePlus,
   CheckCircle2,
 } from "lucide-react";
-import { getSiteContent, updateSiteContent } from "../../api/client.js";
+import { getSiteContent, updateSiteContent, getSiteTexts, updateSiteTexts } from "../../api/client.js";
 import { fileToBase64 } from "../../utils/catalogImageUpload.js";
 import { FEATURE_ICON_OPTIONS, resolveFeatureIcon } from "../../utils/siteContent.js";
 import { PanelSkeleton } from "./Skeleton.jsx";
@@ -25,6 +25,11 @@ const SECTIONS = [
 const BILINGUAL_HERO = ["title", "subtitle", "badgeText", "ctaText"];
 const BILINGUAL_ABOUT = ["heading", "description"];
 const BILINGUAL_CATALOG = ["label", "heading", "ctaText"];
+
+const LEGACY_TEXT_FIELDS = {
+  hero: ["badge", "headline", "headlineAccent", "headlineEnd", "subtext", "ctaPrimary", "ctaSecondary"],
+  about: ["subtitle", "title", "intro", "mission"],
+};
 
 function AccordionSection({ id, label, open, onToggle, children }) {
   return (
@@ -147,6 +152,7 @@ function ImagePicker({ label, value, onChange, onClear }) {
 
 export default function SiteContentManagement({ adminKey }) {
   const [draft, setDraft] = useState(null);
+  const [legacyTexts, setLegacyTexts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -156,16 +162,24 @@ export default function SiteContentManagement({ adminKey }) {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    getSiteContent()
-      .then((r) => {
-        if (!cancelled) setDraft(structuredClone(r.data));
-      })
-      .catch((e) => {
-        if (!cancelled) setError(e.message || "تعذّر تحميل المحتوى.");
+    setError("");
+
+    Promise.allSettled([getSiteContent(), getSiteTexts()])
+      .then(([contentResult, textsResult]) => {
+        if (cancelled) return;
+        if (contentResult.status === "fulfilled") {
+          setDraft(structuredClone(contentResult.value.data));
+        } else {
+          setError(contentResult.reason?.message || "تعذّر تحميل المحتوى.");
+        }
+        if (textsResult.status === "fulfilled") {
+          setLegacyTexts(textsResult.value.data ?? null);
+        }
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
       });
+
     return () => {
       cancelled = true;
     };
@@ -245,6 +259,19 @@ export default function SiteContentManagement({ adminKey }) {
     }));
   }, []);
 
+  const updateLegacyText = useCallback((section, lang, key, value) => {
+    setLegacyTexts((prev) => {
+      if (!prev?.[section]?.[lang]) return prev;
+      return {
+        ...prev,
+        [section]: {
+          ...prev[section],
+          [lang]: { ...prev[section][lang], [key]: value ?? "" },
+        },
+      };
+    });
+  }, []);
+
   const handleSave = async () => {
     if (!draft) return;
     setSaving(true);
@@ -253,6 +280,9 @@ export default function SiteContentManagement({ adminKey }) {
     try {
       const res = await updateSiteContent(draft, adminKey);
       setDraft(structuredClone(res.data));
+      if (legacyTexts?.hero && legacyTexts?.about) {
+        await updateSiteTexts({ hero: legacyTexts.hero, about: legacyTexts.about }, adminKey);
+      }
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2800);
     } catch (e) {
@@ -281,9 +311,9 @@ export default function SiteContentManagement({ adminKey }) {
   return (
     <div className="site-content-admin">
       <header className="site-content-admin__header">
-        <h2 className="site-content-admin__title">إدارة محتوى الموقع</h2>
+        <h2 className="site-content-admin__title">إدارة محتوى الموقع / Website Content Manager</h2>
         <p className="site-content-admin__subtitle">
-          تحكم كامل في نصوص وصور الصفحة الرئيسية — Hero · About · Features · Contact
+          تحكم موحّد في نصوص وصور الصفحة الرئيسية — Hero · About · Features · Contact · Legacy Copy
         </p>
       </header>
 
@@ -429,6 +459,53 @@ export default function SiteContentManagement({ adminKey }) {
             }}
           />
         </AccordionSection>
+
+        {legacyTexts ? (
+          <AccordionSection
+            id="legacy-copy"
+            label="نصوص إضافية للصفحة الرئيسية — Legacy Homepage Copy"
+            open={openSection === "legacy-copy"}
+            onToggle={() => setOpenSection(openSection === "legacy-copy" ? "" : "legacy-copy")}
+          >
+            {["hero", "about"].map((section) => (
+              <div key={section} className="mb-6 last:mb-0">
+                <p className="text-xs font-bold text-[#3b767c] uppercase tracking-wide mb-3">{section}</p>
+                <div className="site-content-lang-grid">
+                  {["ar", "en"].map((lang) => (
+                    <div key={lang} className="site-content-lang-panel">
+                      <p className="site-content-lang-panel__label">{lang === "ar" ? "العربية" : "English"}</p>
+                      {LEGACY_TEXT_FIELDS[section].map((field) => (
+                        <div key={field} className="site-content-field">
+                          <label className="site-content-field__label" htmlFor={`legacy-${section}-${field}-${lang}`}>
+                            {field}
+                          </label>
+                          {["intro", "subtext", "mission"].includes(field) ? (
+                            <textarea
+                              id={`legacy-${section}-${field}-${lang}`}
+                              className="site-content-field__textarea"
+                              dir={lang === "ar" ? "rtl" : "ltr"}
+                              rows={3}
+                              value={legacyTexts[section]?.[lang]?.[field] ?? ""}
+                              onChange={(e) => updateLegacyText(section, lang, field, e.target.value)}
+                            />
+                          ) : (
+                            <input
+                              id={`legacy-${section}-${field}-${lang}`}
+                              className="site-content-field__input"
+                              dir={lang === "ar" ? "rtl" : "ltr"}
+                              value={legacyTexts[section]?.[lang]?.[field] ?? ""}
+                              onChange={(e) => updateLegacyText(section, lang, field, e.target.value)}
+                            />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </AccordionSection>
+        ) : null}
 
         <AccordionSection
           id="contact"
