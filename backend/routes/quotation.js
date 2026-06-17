@@ -1,17 +1,27 @@
 import { Router } from "express";
 import { contentDispositionAttachment } from "../utils/freeFormQuoteHtml.js";
 import multer from "multer";
-import { createRequire } from "module";
 import { requireAdmin } from "../middleware/adminAuth.js";
 import { parsePdfTextToQuotation } from "../utils/pdfParser.js";
 import { generateQuotationPdf } from "../utils/pdfGenerator.js";
 import { computeTotals, createEmptyQuotation } from "../utils/quotationTemplate.js";
 import { readJson, writeJson, nextId } from "../utils/jsonStore.js";
 
-const require = createRequire(import.meta.url);
-const pdfParse = require("pdf-parse");
-
 const router = Router();
+
+/** Lazy-load pdf-parse so catalog/site-content routes work on Vercel (no canvas at cold start). */
+async function extractPdfText(buffer) {
+  try {
+    const { createRequire } = await import("module");
+    const require = createRequire(import.meta.url);
+    const pdfParse = require("pdf-parse");
+    const parsed = await pdfParse(buffer);
+    return parsed.text || "";
+  } catch (err) {
+    console.warn("[Quotation] pdf-parse unavailable:", err.message);
+    return "";
+  }
+}
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
@@ -37,8 +47,7 @@ router.post("/parse", requireAdmin, upload.single("pdf"), async (req, res) => {
     let rawText = "";
 
     try {
-      const parsed = await pdfParse(req.file.buffer);
-      rawText = parsed.text || "";
+      rawText = await extractPdfText(req.file.buffer);
     } catch (parseErr) {
       console.warn("[Quotation] pdf-parse failed, using mock structure:", parseErr.message);
       rawText = "";

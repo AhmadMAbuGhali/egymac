@@ -1,6 +1,5 @@
 import { readJson } from "./jsonStore.js";
 import { normalizeFreeFormQuote } from "./freeFormQuoteTemplate.js";
-import { generateFreeFormQuotePdf } from "./generateFreeFormQuotePdf.js";
 import { assertQuotePayloadWithinLimit } from "./quotePayloadGuard.js";
 import {
   buildQuotationFilename,
@@ -24,6 +23,7 @@ export async function loadSavedQuoteById(id) {
 export async function buildQuotePdfBuffer(quote, printMode = "spanned") {
   const normalized = normalizeFreeFormQuote(quote);
   assertQuotePayloadWithinLimit(normalized);
+  const { generateFreeFormQuotePdf } = await import("./generateFreeFormQuotePdf.js");
   const rawPdf = await generateFreeFormQuotePdf(normalized, printMode);
   const pdfBuffer = Buffer.isBuffer(rawPdf) ? rawPdf : Buffer.from(rawPdf);
 

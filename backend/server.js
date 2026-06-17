@@ -1,5 +1,4 @@
 import { createApp, API_MOUNT } from "./app.js";
-import { closePdfBrowser } from "./utils/generateFreeFormQuotePdf.js";
 
 const app = createApp();
 const PORT = process.env.PORT || 5001;
@@ -26,7 +25,8 @@ if (!process.env.VERCEL) {
 
   function shutdown(signal) {
     console.log(`\n${signal} received — closing server…`);
-    closePdfBrowser()
+    import("./utils/generateFreeFormQuotePdf.js")
+      .then(({ closePdfBrowser }) => closePdfBrowser())
       .catch(() => {})
       .finally(() => {
         server.close(() => process.exit(0));

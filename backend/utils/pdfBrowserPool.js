@@ -1,15 +1,22 @@
-import puppeteer from "puppeteer";
-
 const MAX_CONCURRENT_PAGES = Math.max(1, Number(process.env.PDF_MAX_CONCURRENT) || 2);
 const PDF_TIMEOUT_MS = Number(process.env.PDF_TIMEOUT_MS) || 120_000;
 
 let browserInstance = null;
 let activePages = 0;
 const waitQueue = [];
+let puppeteerModule = null;
+
+async function loadPuppeteer() {
+  if (!puppeteerModule) {
+    puppeteerModule = (await import("puppeteer")).default;
+  }
+  return puppeteerModule;
+}
 
 async function getBrowser() {
   if (browserInstance?.connected) return browserInstance;
 
+  const puppeteer = await loadPuppeteer();
   browserInstance = await puppeteer.launch({
     headless: true,
     args: [
