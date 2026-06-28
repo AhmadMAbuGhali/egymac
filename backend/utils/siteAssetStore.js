@@ -1,13 +1,16 @@
 import fs from "fs/promises";
+import fsSync from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
 import crypto from "crypto";
+import {
+  BUNDLED_DATA_DIR,
+  resolveWritableDir,
+  seedBundledFiles,
+} from "./runtimePaths.js";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const BUNDLED_ASSET_DIR = path.join(BUNDLED_DATA_DIR, "site-assets");
 
-let ASSET_DIR = process.env.EGYMAC_SITE_ASSET_DIR
-  ? path.resolve(process.env.EGYMAC_SITE_ASSET_DIR)
-  : path.join(__dirname, "..", "data", "site-assets");
+let ASSET_DIR = resolveWritableDir("EGYMAC_SITE_ASSET_DIR", "site-assets");
 
 export function configureSiteAssetDir(dir) {
   ASSET_DIR = path.resolve(dir);
@@ -20,7 +23,7 @@ export function getSiteAssetDir() {
 const DATA_URI_RE = /^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/;
 
 async function ensureDir() {
-  await fs.mkdir(ASSET_DIR, { recursive: true });
+  await seedBundledFiles(BUNDLED_ASSET_DIR, ASSET_DIR);
 }
 
 function extForMime(mime) {
@@ -75,5 +78,9 @@ export async function persistSiteImage(slot, imageSrc) {
 
 export function resolveSiteAssetPath(filename) {
   const safe = path.basename(filename);
-  return path.join(ASSET_DIR, safe);
+  const primary = path.join(ASSET_DIR, safe);
+  if (fsSync.existsSync(primary)) return primary;
+  const bundled = path.join(BUNDLED_ASSET_DIR, safe);
+  if (fsSync.existsSync(bundled)) return bundled;
+  return primary;
 }

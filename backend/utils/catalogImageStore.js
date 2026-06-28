@@ -1,13 +1,16 @@
 import fs from "fs/promises";
+import fsSync from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
 import crypto from "crypto";
+import {
+  BUNDLED_DATA_DIR,
+  resolveWritableDir,
+  seedBundledFiles,
+} from "./runtimePaths.js";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const BUNDLED_IMAGE_DIR = path.join(BUNDLED_DATA_DIR, "catalog-images");
 
-let IMAGE_DIR = process.env.EGYMAC_CATALOG_IMAGE_DIR
-  ? path.resolve(process.env.EGYMAC_CATALOG_IMAGE_DIR)
-  : path.join(__dirname, "..", "data", "catalog-images");
+let IMAGE_DIR = resolveWritableDir("EGYMAC_CATALOG_IMAGE_DIR", "catalog-images");
 
 export function configureCatalogImageDir(dir) {
   IMAGE_DIR = path.resolve(dir);
@@ -20,7 +23,7 @@ export function getCatalogImageDir() {
 const DATA_URI_RE = /^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/;
 
 async function ensureDir() {
-  await fs.mkdir(IMAGE_DIR, { recursive: true });
+  await seedBundledFiles(BUNDLED_IMAGE_DIR, IMAGE_DIR);
 }
 
 function extForMime(mime) {
@@ -77,7 +80,11 @@ export async function persistCatalogImages(productId, images = []) {
 
 export function resolveCatalogImagePath(filename) {
   const safe = path.basename(filename);
-  return path.join(IMAGE_DIR, safe);
+  const primary = path.join(IMAGE_DIR, safe);
+  if (fsSync.existsSync(primary)) return primary;
+  const bundled = path.join(BUNDLED_IMAGE_DIR, safe);
+  if (fsSync.existsSync(bundled)) return bundled;
+  return primary;
 }
 
 export async function deleteCatalogAssetsForProduct(productId) {

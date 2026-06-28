@@ -1,20 +1,39 @@
 import fs from "fs/promises";
 import path from "path";
-import { fileURLToPath } from "url";
+import {
+  BUNDLED_DATA_DIR,
+  IS_SERVERLESS,
+  resolveWritableDir,
+  seedBundledFiles,
+} from "./runtimePaths.js";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-let DATA_DIR = process.env.EGYMAC_DATA_DIR
-  ? path.resolve(process.env.EGYMAC_DATA_DIR)
-  : path.join(__dirname, "..", "data");
+let DATA_DIR = resolveWritableDir("EGYMAC_DATA_DIR", "");
 
 /** Test-only: redirect JSON storage to an isolated directory */
 export function configureDataDir(dir) {
   DATA_DIR = path.resolve(dir);
+  initPromise = null;
 }
 
 export function getDataDir() {
   return DATA_DIR;
+}
+
+let initPromise = null;
+
+async function ensureDataReady() {
+  if (!initPromise) {
+    initPromise = (async () => {
+      await fs.mkdir(DATA_DIR, { recursive: true });
+      if (
+        IS_SERVERLESS &&
+        path.resolve(DATA_DIR) !== path.resolve(BUNDLED_DATA_DIR)
+      ) {
+        await seedBundledFiles(BUNDLED_DATA_DIR, DATA_DIR);
+      }
+    })();
+  }
+  await initPromise;
 }
 
 /** Per-file write mutex — prevents read-modify-write races on JSON stores */
@@ -34,15 +53,32 @@ async function acquireLock(filename) {
   };
 }
 
+async function readBundledJson(filename) {
+  const raw = await fs.readFile(path.join(BUNDLED_DATA_DIR, filename), "utf-8");
+  return JSON.parse(raw);
+}
+
 /**
- * Read a JSON data file from backend/data/.
+ * Read a JSON data file. On serverless, reads/writes go to /tmp with bundled seed data.
  */
 export async function readJson(filename, defaultValue = []) {
+  await ensureDataReady();
   const filePath = path.join(DATA_DIR, filename);
+
   try {
     const raw = await fs.readFile(filePath, "utf-8");
     return JSON.parse(raw);
   } catch {
+    if (path.resolve(DATA_DIR) !== path.resolve(BUNDLED_DATA_DIR)) {
+      try {
+        const parsed = await readBundledJson(filename);
+        await writeJson(filename, parsed);
+        return parsed;
+      } catch {
+        // fall through to default
+      }
+    }
+
     await writeJson(filename, defaultValue);
     return defaultValue;
   }
@@ -50,6 +86,7 @@ export async function readJson(filename, defaultValue = []) {
 
 /** Persist data with exclusive lock (atomic write via temp file + rename). */
 export async function writeJson(filename, data) {
+  await ensureDataReady();
   const release = await acquireLock(filename);
   const filePath = path.join(DATA_DIR, filename);
   const tmpPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
@@ -71,6 +108,7 @@ export function nextId(items) {
 
 /** Mutate JSON atomically: read → transform → write under lock */
 export async function mutateJson(filename, defaultValue, mutator) {
+  await ensureDataReady();
   const release = await acquireLock(filename);
   try {
     let data;
@@ -78,7 +116,15 @@ export async function mutateJson(filename, defaultValue, mutator) {
       const raw = await fs.readFile(path.join(DATA_DIR, filename), "utf-8");
       data = JSON.parse(raw);
     } catch {
-      data = defaultValue;
+      if (path.resolve(DATA_DIR) !== path.resolve(BUNDLED_DATA_DIR)) {
+        try {
+          data = await readBundledJson(filename);
+        } catch {
+          data = defaultValue;
+        }
+      } else {
+        data = defaultValue;
+      }
     }
     const next = await mutator(data);
     const tmpPath = path.join(DATA_DIR, `${filename}.${process.pid}.${Date.now()}.tmp`);
