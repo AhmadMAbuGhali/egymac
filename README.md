@@ -248,3 +248,4 @@ Admin key is configured in backend middleware (`egymac-admin-dev` for local dev)
 
 © **Egy Mac Machine** — Production Lines & Precision Molds · Egypt
 # egymac
+# egymac
