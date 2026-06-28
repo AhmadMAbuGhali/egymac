@@ -1,4 +1,4 @@
-const API = "/api";
+import { API_BASE as API } from "../api/base.js";
 
 function sanitizeFilenamePart(value, fallback) {
   const cleaned = String(value || fallback)
@@ -76,6 +76,12 @@ export async function downloadOfferPdfById({ quoteId, printMode = "spanned", adm
 
   const buffer = await res.arrayBuffer();
   if (!isPdfBytes(buffer)) {
+    const peek = new TextDecoder().decode(buffer.slice(0, 64)).trimStart();
+    if (peek.startsWith("<!DOCTYPE") || peek.startsWith("<html")) {
+      throw new Error(
+        "PDF API route not reached (received HTML instead of PDF). Redeploy the latest frontend build."
+      );
+    }
     throw new Error("Server returned a corrupted PDF. Please retry.");
   }
 

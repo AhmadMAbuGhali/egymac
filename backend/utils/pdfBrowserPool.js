@@ -1,3 +1,5 @@
+import { IS_SERVERLESS } from "./runtimePaths.js";
+
 const MAX_CONCURRENT_PAGES = Math.max(1, Number(process.env.PDF_MAX_CONCURRENT) || 2);
 const PDF_TIMEOUT_MS = Number(process.env.PDF_TIMEOUT_MS) || 120_000;
 
@@ -8,16 +10,25 @@ let puppeteerModule = null;
 
 async function loadPuppeteer() {
   if (!puppeteerModule) {
-    puppeteerModule = (await import("puppeteer")).default;
+    puppeteerModule = IS_SERVERLESS
+      ? (await import("puppeteer-core")).default
+      : (await import("puppeteer")).default;
   }
   return puppeteerModule;
 }
 
-async function getBrowser() {
-  if (browserInstance?.connected) return browserInstance;
+async function getLaunchOptions() {
+  if (IS_SERVERLESS) {
+    const chromium = (await import("@sparticuz/chromium")).default;
+    return {
+      args: [...chromium.args, "--disable-dev-shm-usage"],
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
+    };
+  }
 
-  const puppeteer = await loadPuppeteer();
-  browserInstance = await puppeteer.launch({
+  return {
     headless: true,
     args: [
       "--no-sandbox",
@@ -26,7 +37,14 @@ async function getBrowser() {
       "--disable-dev-shm-usage",
       "--disable-gpu",
     ],
-  });
+  };
+}
+
+async function getBrowser() {
+  if (browserInstance?.connected) return browserInstance;
+
+  const puppeteer = await loadPuppeteer();
+  browserInstance = await puppeteer.launch(await getLaunchOptions());
 
   browserInstance.on("disconnected", () => {
     browserInstance = null;

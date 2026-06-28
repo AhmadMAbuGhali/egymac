@@ -1,4 +1,4 @@
-const API = import.meta.env.VITE_API_BASE ?? (import.meta.env.PROD ? "/_/backend/api" : "/api");
+import { API_BASE as API } from "./base.js";
 
 async function request(endpoint, { adminKey, ...options } = {}) {
   const headers = {
