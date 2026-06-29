@@ -14,6 +14,7 @@ import { ADMIN_KEY_STORAGE } from "../constants/catalog.js";
 import { getInquiries } from "../api/client.js";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import { ADMIN_TABS, adminLabel, ADMIN_SHELL } from "../constants/adminLabels.js";
+import SeoHead from "../components/SeoHead.jsx";
 import SiteContentManagement from "../components/admin/SiteContentManagement.jsx";
 import CatalogManager from "../components/admin/CatalogManager.jsx";
 import QuotesInbox from "../components/admin/QuotesInbox.jsx";
@@ -97,11 +98,20 @@ export default function AdminPage() {
     navigate("/admin", { replace: true });
   };
 
-  if (authChecking) return <AuthGateSkeleton />;
+  if (authChecking) {
+    return (
+      <>
+        <SeoHead title="Admin | Egy Mac" description="" path="/admin" noindex />
+        <AuthGateSkeleton />
+      </>
+    );
+  }
 
   if (!authenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 bg-slate-50 py-12">
+      <>
+        <SeoHead title="Admin Login | Egy Mac" description="" path="/admin" noindex />
+        <div className="min-h-screen flex items-center justify-center px-4 bg-slate-50 py-12">
         <form
           onSubmit={handleLogin}
           className="bg-white border border-slate-200 rounded-2xl shadow-lg p-8 sm:p-10 w-full max-w-md"
@@ -135,14 +145,17 @@ export default function AdminPage() {
             {shell.loginButton}
           </button>
         </form>
-      </div>
+        </div>
+      </>
     );
   }
 
   const activePath = location.pathname.replace(/^\/admin\/?/, "") || "site-content";
 
   return (
-    <div className="min-h-screen pb-16 bg-slate-50 admin-print-root">
+    <>
+      <SeoHead title="Admin | Egy Mac" description="" path={location.pathname} noindex />
+      <div className="min-h-screen pb-16 bg-slate-50 admin-print-root">
       <div className="section-container py-10">
         <div className="admin-print-chrome flex flex-wrap items-center justify-between gap-4 mb-8">
           <div>
@@ -235,5 +248,6 @@ export default function AdminPage() {
         </Routes>
       </div>
     </div>
+    </>
   );
 }

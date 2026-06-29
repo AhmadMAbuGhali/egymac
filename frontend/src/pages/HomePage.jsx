@@ -7,20 +7,53 @@ import Hero from "../components/Hero.jsx";
 import About from "../components/About.jsx";
 import HomePageSkeleton from "../components/HomePageSkeleton.jsx";
 import RevealWrapper from "../components/RevealWrapper.jsx";
+import SeoHead from "../components/SeoHead.jsx";
+import {
+  DEFAULT_TITLE,
+  DEFAULT_DESCRIPTION,
+  DEFAULT_DESCRIPTION_AR,
+  KEYWORDS,
+} from "../constants/seo.js";
+import { buildHomeSchema } from "../utils/seoSchema.js";
 
 export default function HomePage() {
   const { lang } = useLanguage();
   const { content, loading, error } = useSiteContent();
 
+  const heroTitle = siteText(content?.hero?.title, lang);
+  const seoTitle =
+    heroTitle && heroTitle.length < 70
+      ? `${heroTitle} | Egy Mac`
+      : lang === "ar"
+        ? "إيجي ماك | خطوط إنتاج آلية وقوالب ثقيلة"
+        : DEFAULT_TITLE;
+  const seoDescription =
+    siteText(content?.hero?.subtitle, lang) ||
+    (lang === "ar" ? DEFAULT_DESCRIPTION_AR : DEFAULT_DESCRIPTION);
+
   if (loading) {
-    return <HomePageSkeleton />;
+    return (
+      <>
+        <SeoHead
+          title={seoTitle}
+          description={seoDescription}
+          path="/"
+          lang={lang}
+          jsonLd={buildHomeSchema()}
+        />
+        <HomePageSkeleton />
+      </>
+    );
   }
 
   if (error && !content) {
     return (
-      <div className="section-container py-24 text-center">
-        <p className="text-ink-body">{error}</p>
-      </div>
+      <>
+        <SeoHead title={seoTitle} description={seoDescription} path="/" lang={lang} />
+        <div className="section-container py-24 text-center">
+          <p className="text-ink-body">{error}</p>
+        </div>
+      </>
     );
   }
 
@@ -28,6 +61,14 @@ export default function HomePage() {
 
   return (
     <>
+      <SeoHead
+        title={seoTitle}
+        description={seoDescription}
+        path="/"
+        lang={lang}
+        keywords={KEYWORDS}
+        jsonLd={buildHomeSchema()}
+      />
       <Hero />
       <About />
 

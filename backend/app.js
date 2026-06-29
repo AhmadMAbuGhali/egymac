@@ -8,6 +8,7 @@ import quotationRouter from "./routes/quotation.js";
 import quotationsRouter from "./routes/quotations.js";
 import salespersonsRouter from "./routes/salespersons.js";
 import templatesRouter from "./routes/templates.js";
+import seoRouter from "./routes/seo.js";
 
 /** Public URL prefix for this service on Vercel (see vercel.json routePrefix). */
 export const SERVICE_ROUTE_PREFIX =
@@ -67,6 +68,7 @@ export function createApp() {
   api.use("/quotations", quotationsRouter);
   api.use("/salespersons", salespersonsRouter);
   api.use("/templates", templatesRouter);
+  api.use("/seo", seoRouter);
   api.get("/health", (_req, res) => {
     res.json({
       status: "ok",

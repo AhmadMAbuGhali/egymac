@@ -27,7 +27,12 @@ export default function About() {
           {sectionImage ? (
             <RevealWrapper delay={80}>
               <div className="card overflow-hidden border-border bg-surface">
-                <img src={sectionImage} alt="" className="w-full h-auto object-cover min-h-[14rem]" />
+                <img
+                  src={sectionImage}
+                  alt={lang === "ar" ? "منشآت ومعدات إيجي ماك الهندسية" : "Egy Mac engineering and manufacturing facilities"}
+                  className="w-full h-auto object-cover min-h-[14rem]"
+                  loading="lazy"
+                />
               </div>
             </RevealWrapper>
           ) : null}
