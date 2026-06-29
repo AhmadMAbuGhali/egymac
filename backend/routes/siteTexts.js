@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { publicErrorMessage } from "../utils/safeError.js";
 import { readJson, writeJson } from "../utils/jsonStore.js";
 import { requireAdmin } from "../middleware/adminAuth.js";
 
@@ -48,7 +49,7 @@ router.get("/", async (_req, res) => {
     const texts = await readJson(FILE, DEFAULT_TEXTS);
     res.json({ success: true, data: texts });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -66,7 +67,7 @@ router.put("/", requireAdmin, async (req, res) => {
     await writeJson(FILE, updated);
     res.json({ success: true, data: updated });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 

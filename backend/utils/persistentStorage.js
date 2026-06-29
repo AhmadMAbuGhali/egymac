@@ -22,7 +22,7 @@ export function getStorageBackend(forceFilesystem) {
   return "filesystem";
 }
 
-export function getStorageDiagnostics() {
+export function getStorageDiagnostics(extra = {}) {
   return {
     persistent: hasPersistentStorage(),
     backend: getStorageBackend(false),
@@ -31,6 +31,7 @@ export function getStorageDiagnostics() {
     vercelOidcToken: Boolean(process.env.VERCEL_OIDC_TOKEN),
     upstashRedis: hasRedisStorage(),
     onVercel: Boolean(process.env.VERCEL || process.env.VERCEL_ENV),
+    ...extra,
   };
 }
 

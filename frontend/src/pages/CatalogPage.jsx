@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { SlidersHorizontal, Loader2, AlertCircle, X, Sparkles, Search } from "lucide-react";
 import { getCatalog } from "../api/client.js";
 import { useLanguage } from "../context/LanguageContext.jsx";
@@ -17,7 +17,7 @@ import RFQModal from "../components/RFQModal.jsx";
 import SeoHead from "../components/SeoHead.jsx";
 import { CatalogEmpty } from "../components/CatalogCard.jsx";
 import { productDisplayName } from "../constants/catalogSchema.js";
-import { catalogProductUrl } from "../constants/seo.js";
+import { catalogProductUrl, pageKeywords } from "../constants/seo.js";
 import { buildCatalogSchema, buildProductSchema } from "../utils/seoSchema.js";
 import "../styles/catalogStorefront.css";
 
@@ -235,12 +235,12 @@ export default function CatalogPage() {
       };
     }
     return {
-      title: lang === "ar" ? "فهرس المنتجات | إيجي ماك" : "Industrial Product Catalog | Egy Mac",
+      title: lang === "ar" ? "فهرس معدات خرسانة وقوالب | إيجي ماك" : "Block Machines & Molds Catalog Egypt | Egy Mac",
       description: L.subtitle,
       path: "/catalog",
-      jsonLd: buildCatalogSchema(),
+      jsonLd: buildCatalogSchema(products, lang),
     };
-  }, [selectedProduct, lang, L.subtitle]);
+  }, [selectedProduct, lang, L.subtitle, products]);
 
   return (
     <div className="catalog-storefront min-h-screen bg-slate-50 pt-20">
@@ -250,8 +250,30 @@ export default function CatalogPage() {
         path={catalogSeo.path}
         image={catalogSeo.image}
         lang={lang}
+        keywords={pageKeywords(lang)}
         jsonLd={catalogSeo.jsonLd}
       />
+      {selectedProduct ? (
+        <nav aria-label="Breadcrumb" className="section-container pt-24 pb-2 text-sm text-slate-500">
+          <ol className="flex flex-wrap items-center gap-1.5">
+            <li>
+              <Link to="/" className="hover:text-[#3b767c] font-semibold">
+                {lang === "ar" ? "الرئيسية" : "Home"}
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <button type="button" onClick={closeProduct} className="hover:text-[#3b767c] font-semibold">
+                {lang === "ar" ? "الكتالوج" : "Catalog"}
+              </button>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li className="text-slate-800 font-semibold truncate max-w-[16rem]">
+              {productDisplayName(selectedProduct, lang)}
+            </li>
+          </ol>
+        </nav>
+      ) : null}
       <header className="catalog-storefront-hero">
         <div className="section-container relative z-10 py-10 lg:py-12">
           <div className="flex items-center gap-2 text-[#3b767c] text-xs font-extrabold uppercase tracking-[0.16em] mb-3">

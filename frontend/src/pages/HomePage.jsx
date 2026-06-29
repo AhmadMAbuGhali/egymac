@@ -8,11 +8,13 @@ import About from "../components/About.jsx";
 import HomePageSkeleton from "../components/HomePageSkeleton.jsx";
 import RevealWrapper from "../components/RevealWrapper.jsx";
 import SeoHead from "../components/SeoHead.jsx";
+import FaqSection from "../components/FaqSection.jsx";
 import {
   DEFAULT_TITLE,
+  DEFAULT_TITLE_AR,
   DEFAULT_DESCRIPTION,
   DEFAULT_DESCRIPTION_AR,
-  KEYWORDS,
+  pageKeywords,
 } from "../constants/seo.js";
 import { buildHomeSchema } from "../utils/seoSchema.js";
 
@@ -25,7 +27,7 @@ export default function HomePage() {
     heroTitle && heroTitle.length < 70
       ? `${heroTitle} | Egy Mac`
       : lang === "ar"
-        ? "إيجي ماك | خطوط إنتاج آلية وقوالب ثقيلة"
+        ? DEFAULT_TITLE_AR
         : DEFAULT_TITLE;
   const seoDescription =
     siteText(content?.hero?.subtitle, lang) ||
@@ -39,7 +41,7 @@ export default function HomePage() {
           description={seoDescription}
           path="/"
           lang={lang}
-          jsonLd={buildHomeSchema()}
+          jsonLd={buildHomeSchema(lang)}
         />
         <HomePageSkeleton />
       </>
@@ -66,8 +68,8 @@ export default function HomePage() {
         description={seoDescription}
         path="/"
         lang={lang}
-        keywords={KEYWORDS}
-        jsonLd={buildHomeSchema()}
+        keywords={pageKeywords(lang)}
+        jsonLd={buildHomeSchema(lang)}
       />
       <Hero />
       <About />
@@ -88,6 +90,7 @@ export default function HomePage() {
           </RevealWrapper>
         </div>
       </section>
+      <FaqSection lang={lang} />
     </>
   );
 }

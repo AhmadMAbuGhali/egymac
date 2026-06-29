@@ -15,6 +15,10 @@ import {
   hasPersistentStorage,
   storageSetupHint,
 } from "./utils/persistentStorage.js";
+import { probeBlobAuth, probeBlobRoundTrip } from "./utils/blobStorage.js";
+import { oidcContextMiddleware } from "./utils/requestOidc.js";
+import { errorHandler } from "./middleware/errorHandler.js";
+import { isValidAdminKey } from "./middleware/adminAuth.js";
 
 /** Public URL prefix for this service on Vercel (see vercel.json routePrefix). */
 export const SERVICE_ROUTE_PREFIX =
@@ -28,6 +32,10 @@ const defaultOrigins = [
 export function createApp() {
   const app = express();
 
+  if (process.env.VERCEL) {
+    app.set("trust proxy", 1);
+  }
+
   const corsOrigins = process.env.CORS_ORIGINS
     ? process.env.CORS_ORIGINS.split(",").map((o) => o.trim()).filter(Boolean)
     : defaultOrigins;
@@ -40,17 +48,7 @@ export function createApp() {
   );
   app.use(express.json({ limit: process.env.JSON_BODY_LIMIT || "50mb" }));
   app.use(express.urlencoded({ extended: true, limit: process.env.JSON_BODY_LIMIT || "50mb" }));
-
-  app.use((err, req, res, next) => {
-    if (err?.type === "entity.too.large") {
-      return res.status(413).json({
-        success: false,
-        message:
-          "Request payload too large. Reduce embedded image sizes or increase JSON_BODY_LIMIT on the server.",
-      });
-    }
-    next(err);
-  });
+  app.use(oidcContextMiddleware);
 
   /**
    * Normalize paths from Vercel Services routing.
@@ -75,17 +73,29 @@ export function createApp() {
   api.use("/salespersons", salespersonsRouter);
   api.use("/templates", templatesRouter);
   api.use("/seo", seoRouter);
-  api.get("/health", (_req, res) => {
-    res.json({
+  api.get("/health", async (req, res) => {
+    const adminView = isValidAdminKey(req.headers["x-admin-key"]);
+    const payload = {
       status: "ok",
       service: "egymac-api",
       timestamp: new Date().toISOString(),
-      mount: "/api",
-      storage: getJsonStorageBackend(),
-      persistent: hasPersistentStorage(),
-      diagnostics: getStorageDiagnostics(),
-      setupHint: storageSetupHint(),
-    });
+    };
+
+    if (adminView) {
+      const blobAuth = await probeBlobAuth();
+      const blobRoundTrip = await probeBlobRoundTrip();
+      Object.assign(payload, {
+        mount: "/api",
+        storage: getJsonStorageBackend(),
+        persistent: hasPersistentStorage() && blobRoundTrip.ok,
+        diagnostics: getStorageDiagnostics({ blobAuth, blobRoundTrip }),
+        setupHint: blobRoundTrip.ok
+          ? storageSetupHint()
+          : "Blob storage is connected but read/write failed. Add BLOB_READ_WRITE_TOKEN in Vercel project settings and redeploy.",
+      });
+    }
+
+    res.json(payload);
   });
 
   // Mount once at /api — prefix strip middleware handles /_/backend/... requests.
@@ -98,6 +108,8 @@ export function createApp() {
   app.use((_req, res) => {
     res.status(404).json({ success: false, message: "Route not found" });
   });
+
+  app.use(errorHandler);
 
   return app;
 }

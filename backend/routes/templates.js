@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { publicErrorMessage } from "../utils/safeError.js";
 import { readJson, writeJson, nextId } from "../utils/jsonStore.js";
 import { requireAdmin } from "../middleware/adminAuth.js";
 import {
@@ -56,7 +57,7 @@ router.get("/", requireAdmin, async (_req, res) => {
     }
     res.json({ success: true, data: templates.map(summarizeTemplate) });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -73,7 +74,7 @@ router.get("/:id", requireAdmin, async (req, res) => {
       data: { ...summarizeTemplate(row), payload },
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -129,7 +130,7 @@ router.post("/", requireAdmin, async (req, res) => {
     await writeJson(FILE, templates);
     res.status(id ? 200 : 201).json({ success: true, data: saved });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -143,7 +144,7 @@ router.delete("/:id", requireAdmin, async (req, res) => {
     await writeJson(FILE, next);
     res.status(200).json({ success: true, message: "Template deleted", id: req.params.id });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 

@@ -91,6 +91,7 @@ async function readRawText(filename) {
   if (!forceFilesystem && hasBlobStorage()) {
     const fromBlob = await readBlobText(jsonBlobKey(filename));
     if (fromBlob != null) return fromBlob;
+    return null;
   }
   const filePath = path.join(DATA_DIR, filename);
   return fs.readFile(filePath, "utf-8");
@@ -121,16 +122,30 @@ export async function readJson(filename, defaultValue = []) {
     const raw = await readRawText(filename);
     if (raw == null) throw new Error("missing");
     return JSON.parse(raw);
-  } catch {
+  } catch (err) {
+    const persistent = hasPersistentStorage();
+    const missing =
+      err?.message === "missing" ||
+      err?.code === "ENOENT" ||
+      err?.name === "BlobNotFoundError";
+
+    if (persistent && !missing) {
+      throw err;
+    }
+
     try {
       const parsed = await readBundledJson(filename);
-      await writeJson(filename, parsed);
+      if (!persistent || missing) {
+        await writeJson(filename, parsed);
+      }
       return parsed;
     } catch {
       // fall through
     }
 
-    await writeJson(filename, defaultValue);
+    if (!persistent || missing) {
+      await writeJson(filename, defaultValue);
+    }
     return defaultValue;
   }
 }

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { publicErrorMessage } from "../utils/safeError.js";
 import { readJson, writeJson, nextId } from "../utils/jsonStore.js";
 import { requireAdmin } from "../middleware/adminAuth.js";
 import { sanitizePlainText } from "../utils/sanitizeText.js";
@@ -25,7 +26,7 @@ router.get("/", requireAdmin, async (_req, res) => {
       .sort((a, b) => a.name.localeCompare(b.name, "ar"));
     res.json({ success: true, data });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -53,7 +54,7 @@ router.post("/", requireAdmin, async (req, res) => {
     await writeJson(FILE, rows);
     res.status(201).json({ success: true, data: created });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -69,7 +70,7 @@ router.delete("/:id", requireAdmin, async (req, res) => {
     await writeJson(FILE, rows);
     res.json({ success: true, message: "Salesperson removed" });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 

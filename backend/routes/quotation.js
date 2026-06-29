@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { publicErrorMessage } from "../utils/safeError.js";
 import { contentDispositionAttachment } from "../utils/freeFormQuoteHtml.js";
 import multer from "multer";
 import { requireAdmin } from "../middleware/adminAuth.js";
@@ -78,7 +79,7 @@ router.post("/parse", requireAdmin, upload.single("pdf"), async (req, res) => {
       rawTextPreview: rawText.slice(0, 500),
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -123,7 +124,7 @@ router.post("/generate", requireAdmin, async (req, res) => {
     res.setHeader("Content-Disposition", contentDispositionAttachment(filename));
     res.end(Buffer.isBuffer(pdfBuffer) ? pdfBuffer : Buffer.from(pdfBuffer));
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 

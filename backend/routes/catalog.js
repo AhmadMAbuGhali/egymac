@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { publicErrorMessage } from "../utils/safeError.js";
 import { readJson, writeJson, nextId } from "../utils/jsonStore.js";
 import { requireAdmin } from "../middleware/adminAuth.js";
 import {
@@ -157,7 +158,7 @@ router.get("/", async (req, res) => {
       products: filteredProducts,
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -187,7 +188,7 @@ router.get("/assets/:filename", async (req, res) => {
     res.setHeader("Content-Type", mimeForFilename(filename));
     res.send(buffer);
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -204,7 +205,7 @@ router.get("/categories", async (_req, res) => {
       flat: flattenWithPaths(categories, "en"),
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -220,7 +221,7 @@ router.post("/categories", requireAdmin, async (req, res) => {
     await writeJson(CATEGORIES_FILE, categories);
     res.status(201).json({ success: true, data: item });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -243,7 +244,7 @@ router.put("/categories/:id", requireAdmin, async (req, res) => {
     await writeJson(CATEGORIES_FILE, categories);
     res.json({ success: true, data: item });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -277,7 +278,7 @@ router.delete("/categories/:id", requireAdmin, async (req, res) => {
     await writeJson(CATEGORIES_FILE, filtered);
     res.json({ success: true, message: "Deleted" });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -289,7 +290,7 @@ router.get("/products", async (req, res) => {
     const data = filterProducts(products, categories, req.query);
     res.json({ success: true, count: data.length, data, categories });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -308,7 +309,7 @@ router.post("/products", requireAdmin, async (req, res) => {
     await writeJson(PRODUCTS_FILE, products);
     res.status(201).json({ success: true, data: item });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -329,7 +330,7 @@ router.put("/products/:id", requireAdmin, async (req, res) => {
     await writeJson(PRODUCTS_FILE, products);
     res.json({ success: true, data: item });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -345,7 +346,7 @@ router.delete("/products/:id", requireAdmin, async (req, res) => {
     await writeJson(PRODUCTS_FILE, filtered);
     res.json({ success: true, message: "Deleted" });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 

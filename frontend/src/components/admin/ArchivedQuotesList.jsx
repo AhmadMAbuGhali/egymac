@@ -87,9 +87,9 @@ export default function ArchivedQuotesList({
     }
   }, [adminKey]);
 
-  const loadRows = useCallback(async () => {
+  const loadRows = useCallback(async ({ silent = false } = {}) => {
     if (!adminKey) return;
-    setLoading(true);
+    if (!silent) setLoading(true);
     setError("");
     try {
       const res = await getSavedQuotes(adminKey, {
@@ -100,9 +100,9 @@ export default function ArchivedQuotesList({
       setRows(Array.isArray(res.data) ? res.data : []);
     } catch (e) {
       setError(e.message || "تعذر تحميل الأرشيف.");
-      setRows([]);
+      if (!silent) setRows([]);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   }, [adminKey, filters]);
 
@@ -120,14 +120,16 @@ export default function ArchivedQuotesList({
 
   const handleDeleteConfirm = async () => {
     if (!deleteTarget) return;
+    const deletedId = deleteTarget.id;
     setDeleting(true);
     setError("");
     try {
-      await deleteSavedQuote(deleteTarget.id, adminKey);
+      await deleteSavedQuote(deletedId, adminKey);
       setDeleteTarget(null);
-      await loadRows();
+      setRows((prev) => prev.filter((row) => String(row.id) !== String(deletedId)));
     } catch (e) {
       setError(e.message || "تعذر حذف العرض.");
+      await loadRows({ silent: true });
     } finally {
       setDeleting(false);
     }

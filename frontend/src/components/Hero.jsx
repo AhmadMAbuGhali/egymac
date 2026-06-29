@@ -65,7 +65,11 @@ export default function Hero() {
               <div className="card p-10 w-80 h-80 flex items-center justify-center border-border bg-surface overflow-hidden">
                 <img
                   src={bgImage || "/logo.png"}
-                  alt="Egy Mac Machine"
+                  alt={
+                    lang === "ar"
+                      ? "إيجي ماك — خطوط إنتاج بلوك وقوالب صناعية في مصر"
+                      : "Egy Mac — concrete block production lines and industrial molds Egypt"
+                  }
                   className="w-full max-w-[220px] object-contain"
                 />
               </div>

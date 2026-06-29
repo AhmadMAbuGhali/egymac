@@ -22,9 +22,16 @@ function xmlEscape(value) {
     .replace(/"/g, "&quot;");
 }
 
-function urlEntry(loc, { changefreq = "weekly", priority = "0.7" } = {}) {
+function urlEntry(loc, { changefreq = "weekly", priority = "0.7", images = [] } = {}) {
   const today = new Date().toISOString().slice(0, 10);
-  return `<url><loc>${xmlEscape(loc)}</loc><lastmod>${today}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`;
+  const imageTags = images
+    .filter(Boolean)
+    .map(
+      (img) =>
+        `<image:image><image:loc>${xmlEscape(img.url)}</image:loc>${img.title ? `<image:title>${xmlEscape(img.title)}</image:title>` : ""}</image:image>`
+    )
+    .join("");
+  return `<url><loc>${xmlEscape(loc)}</loc><lastmod>${today}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority>${imageTags}</url>`;
 }
 
 async function readJson(name) {
@@ -49,10 +56,14 @@ async function main() {
 
   for (const product of products) {
     if (product?.id == null) continue;
+    const image = Array.isArray(product.images) ? product.images[0] : null;
     urls.push(
       urlEntry(`${SITE_URL}/catalog?product=${encodeURIComponent(product.id)}`, {
         changefreq: "weekly",
         priority: "0.8",
+        images: image
+          ? [{ url: image.startsWith("http") ? image : `${SITE_URL}${image}`, title: product.nameEn || product.nameAr }]
+          : [],
       })
     );
   }
@@ -68,7 +79,8 @@ async function main() {
   }
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${urls.join("\n")}
 </urlset>
 `;

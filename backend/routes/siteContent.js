@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { publicErrorMessage } from "../utils/safeError.js";
 import { readJson, writeJson, nextId } from "../utils/jsonStore.js";
 import { persistSiteImage } from "../utils/siteAssetStore.js";
 import { requireAdmin } from "../middleware/adminAuth.js";
@@ -124,7 +125,7 @@ router.get("/", async (_req, res) => {
     const content = await readJson(FILE, DEFAULT_SITE_CONTENT);
     res.json({ success: true, data: content });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -153,7 +154,7 @@ router.post("/", requireAdmin, async (req, res) => {
     await writeJson(FILE, persisted);
     res.json({ success: true, data: persisted });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 

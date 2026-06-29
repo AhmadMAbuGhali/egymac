@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { readJson } from "../utils/jsonStore.js";
+import { publicErrorMessage } from "../utils/safeError.js";
 
 const router = Router();
 
@@ -64,7 +65,8 @@ ${urls.join("\n")}
     res.setHeader("Cache-Control", "public, max-age=3600, s-maxage=86400");
     res.send(xml);
   } catch (err) {
-    res.status(500).type("text/plain").send(err.message);
+    console.error("[seo] sitemap generation failed", err);
+    res.status(500).type("text/plain").send(publicErrorMessage(err, "Sitemap unavailable"));
   }
 });
 

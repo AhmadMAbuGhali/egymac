@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { publicErrorMessage } from "../utils/safeError.js";
 import { requireAdmin } from "../middleware/adminAuth.js";
 import { readJson, writeJson, nextId } from "../utils/jsonStore.js";
 import { createEmptyFreeFormQuote, normalizeFreeFormQuote } from "../utils/freeFormQuoteTemplate.js";
@@ -58,7 +59,7 @@ router.get("/", requireAdmin, async (req, res) => {
     const data = rows.map((r) => summarizeArchiveRow(r, spMap));
     res.json({ success: true, data });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -125,7 +126,7 @@ router.get("/:id", requireAdmin, async (req, res) => {
     if (!quote) return res.status(404).json({ success: false, message: "Quote not found" });
     res.json({ success: true, data: normalizeFreeFormQuote(quote) });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -172,7 +173,7 @@ router.post("/save", requireAdmin, async (req, res) => {
       message: payload.id ? "Quote updated" : "Quote saved",
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -193,7 +194,7 @@ router.delete("/:id", requireAdmin, async (req, res) => {
 
     res.json({ success: true, message: "Quote deleted" });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 

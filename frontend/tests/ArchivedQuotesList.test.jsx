@@ -9,7 +9,7 @@ vi.mock("../src/api/client.js", () => ({
   getSalespersons: vi.fn(),
 }));
 
-import { getSavedQuotes, getSalespersons } from "../src/api/client.js";
+import { getSavedQuotes, deleteSavedQuote, getSalespersons } from "../src/api/client.js";
 
 const ALL_ROWS = [
   {
@@ -141,5 +141,25 @@ describe("ArchivedQuotesList filtering", () => {
 
     await userEvent.click(screen.getByRole("button", { name: /إنشاء عرض سعر جديد/i }));
     expect(onCreateNew).toHaveBeenCalled();
+  });
+
+  it("removes deleted offer from the table without a full page reload", async () => {
+    const user = userEvent.setup();
+    deleteSavedQuote.mockResolvedValue({ success: true });
+    getSavedQuotes.mockResolvedValue({ data: ALL_ROWS });
+
+    render(<ArchivedQuotesList adminKey="test-key" onEdit={vi.fn()} onCreateNew={vi.fn()} />);
+
+    await waitFor(() => expect(screen.getByText("مصنع Alpha")).toBeInTheDocument());
+
+    const alphaRow = screen.getByText("مصنع Alpha").closest("tr");
+    await user.click(within(alphaRow).getByRole("button", { name: /حذف/i }));
+    await user.click(screen.getByRole("button", { name: /حذف نهائي/i }));
+
+    await waitFor(() => {
+      expect(deleteSavedQuote).toHaveBeenCalledWith(1, "test-key");
+      expect(screen.queryByText("مصنع Alpha")).not.toBeInTheDocument();
+      expect(screen.getByText("مصنع Beta")).toBeInTheDocument();
+    });
   });
 });

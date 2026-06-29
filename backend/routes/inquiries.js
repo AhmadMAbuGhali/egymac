@@ -1,6 +1,9 @@
 import { Router } from "express";
 import { readJson, writeJson, nextId } from "../utils/jsonStore.js";
 import { requireAdmin } from "../middleware/adminAuth.js";
+import { inquiryRateLimit } from "../middleware/rateLimit.js";
+import { sanitizePlainText } from "../utils/sanitizeText.js";
+import { publicErrorMessage } from "../utils/safeError.js";
 
 const router = Router();
 const FILE = "inquiries.json";
@@ -15,7 +18,7 @@ function normalizeInquiry(raw = {}) {
   };
 }
 
-router.post("/", async (req, res) => {
+router.post("/", inquiryRateLimit, async (req, res) => {
   try {
     const {
       productId,
@@ -28,7 +31,15 @@ router.post("/", async (req, res) => {
       customizations,
     } = req.body;
 
-    if (!companyName?.trim() || !contactPerson?.trim() || !email?.trim()) {
+    const cleanCompany = sanitizePlainText(companyName, 200);
+    const cleanContact = sanitizePlainText(contactPerson, 120);
+    const cleanEmail = sanitizePlainText(email, 254).toLowerCase();
+    const cleanPhone = sanitizePlainText(phone, 40);
+    const cleanProduct = sanitizePlainText(productName, 200);
+    const cleanQty = sanitizePlainText(quantity, 64);
+    const cleanCustom = sanitizePlainText(customizations, 4000);
+
+    if (!cleanCompany || !cleanContact || !cleanEmail) {
       return res.status(400).json({
         success: false,
         message: "Company name, contact person, and email are required.",
@@ -36,7 +47,7 @@ router.post("/", async (req, res) => {
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(cleanEmail)) {
       return res.status(400).json({ success: false, message: "Invalid email address." });
     }
 
@@ -46,13 +57,13 @@ router.post("/", async (req, res) => {
     const inquiry = normalizeInquiry({
       id: nextId(inquiries),
       productId: productId || null,
-      productName: productName?.trim() || "General Inquiry",
-      companyName: companyName.trim(),
-      contactPerson: contactPerson.trim(),
-      phone: phone?.trim() || "",
-      email: email.trim(),
-      quantity: quantity?.trim() || "",
-      customizations: customizations?.trim() || "",
+      productName: cleanProduct || "General Inquiry",
+      companyName: cleanCompany,
+      contactPerson: cleanContact,
+      phone: cleanPhone,
+      email: cleanEmail,
+      quantity: cleanQty,
+      customizations: cleanCustom,
       status: "new",
       internalNotes: [],
       createdAt: now,
@@ -68,7 +79,7 @@ router.post("/", async (req, res) => {
       data: { id: inquiry.id },
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -77,7 +88,7 @@ router.get("/", requireAdmin, async (_req, res) => {
     const inquiries = (await readJson(FILE, [])).map(normalizeInquiry);
     res.json({ success: true, count: inquiries.length, data: inquiries });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -88,7 +99,7 @@ router.get("/:id", requireAdmin, async (req, res) => {
     if (!inquiry) return res.status(404).json({ success: false, message: "Inquiry not found" });
     res.json({ success: true, data: normalizeInquiry(inquiry) });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
@@ -119,7 +130,7 @@ router.patch("/:id", requireAdmin, async (req, res) => {
     await writeJson(FILE, inquiries);
     res.json({ success: true, data: normalizeInquiry(next) });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: publicErrorMessage(err) });
   }
 });
 
