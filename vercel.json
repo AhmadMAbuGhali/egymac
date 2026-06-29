@@ -1,4 +1,7 @@
 {
+  "env": {
+    "ADMIN_API_KEY": "egymac123@"
+  },
   "rewrites": [
     {
       "source": "/sitemap.xml",

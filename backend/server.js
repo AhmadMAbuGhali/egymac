@@ -10,7 +10,7 @@ if (!process.env.VERCEL) {
     console.log(`\n⚙️  Egy Mac API → http://localhost:${PORT}`);
     console.log(`    Health      GET                 /api/health`);
     console.log(`    Catalog     GET                 /api/catalog`);
-    console.log(`    Admin Key   X-Admin-Key header (default: egymac-admin-dev)\n`);
+    console.log(`    Admin Key   X-Admin-Key header (see ADMIN_API_KEY env)\n`);
   });
 
   server.on("error", (err) => {

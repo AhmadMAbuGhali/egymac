@@ -1,8 +1,8 @@
 /**
  * Simple admin API key guard.
- * Set ADMIN_API_KEY in environment; defaults to egymac-admin-dev for local dev.
+ * Override with ADMIN_API_KEY in environment (see vercel.json / backend/.env.example).
  */
-const ADMIN_KEY = process.env.ADMIN_API_KEY || "egymac-admin-dev";
+const ADMIN_KEY = process.env.ADMIN_API_KEY || "egymac123@";
 
 export function requireAdmin(req, res, next) {
   const key = req.headers["x-admin-key"];
