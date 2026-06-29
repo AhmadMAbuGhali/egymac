@@ -13,6 +13,13 @@ import {
   readBlobBuffer,
   writeBlobBuffer,
 } from "./blobStorage.js";
+import { hasRedisStorage } from "./persistentStorage.js";
+import {
+  deleteRedisByPrefix,
+  readRedisBuffer,
+  redisAssetKey,
+  writeRedisBuffer,
+} from "./redisStorage.js";
 
 function envVarForSubdir(subdir) {
   return subdir === "catalog-images" ? "EGYMAC_CATALOG_IMAGE_DIR" : "EGYMAC_SITE_ASSET_DIR";
@@ -44,12 +51,16 @@ export function mimeForFilename(filename) {
 }
 
 export async function ensureAssetDir(subdir) {
-  if (hasBlobStorage()) return;
+  if (hasBlobStorage() || hasRedisStorage()) return;
   await seedBundledFiles(bundledDir(subdir), writableDir(subdir));
 }
 
 export async function saveAssetBuffer(subdir, filename, buffer, contentType) {
   const safe = path.basename(filename);
+  if (hasRedisStorage()) {
+    await writeRedisBuffer(redisAssetKey(subdir, safe), buffer);
+    return;
+  }
   if (hasBlobStorage()) {
     await writeBlobBuffer(assetBlobKey(subdir, safe), buffer, contentType);
     return;
@@ -61,6 +72,10 @@ export async function saveAssetBuffer(subdir, filename, buffer, contentType) {
 
 export async function readAssetBuffer(subdir, filename) {
   const safe = path.basename(filename);
+  if (hasRedisStorage()) {
+    const fromRedis = await readRedisBuffer(redisAssetKey(subdir, safe));
+    if (fromRedis) return fromRedis;
+  }
   if (hasBlobStorage()) {
     const fromBlob = await readBlobBuffer(assetBlobKey(subdir, safe));
     if (fromBlob) return fromBlob;
@@ -74,6 +89,10 @@ export async function readAssetBuffer(subdir, filename) {
 }
 
 export async function deleteAssetsWithPrefix(subdir, prefix) {
+  if (hasRedisStorage()) {
+    await deleteRedisByPrefix(`egymac:asset:${subdir}:${prefix}`);
+    return;
+  }
   if (hasBlobStorage()) {
     await deleteBlobPrefix(`egymac/${subdir}/${prefix}`);
     return;

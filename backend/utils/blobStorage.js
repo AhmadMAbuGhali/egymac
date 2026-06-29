@@ -75,10 +75,3 @@ export function jsonBlobKey(filename) {
 export function assetBlobKey(subdir, filename) {
   return `egymac/${subdir}/${path.basename(filename)}`;
 }
-
-export function getStorageBackend(forceFilesystem) {
-  if (forceFilesystem) return "filesystem";
-  if (hasBlobStorage()) return "vercel-blob";
-  if (process.env.VERCEL || process.env.EGYMAC_USE_TMP_STORAGE === "1") return "ephemeral-tmp";
-  return "filesystem";
-}

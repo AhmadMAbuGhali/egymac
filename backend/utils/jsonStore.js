@@ -8,11 +8,20 @@ import {
 } from "./runtimePaths.js";
 import {
   getStorageBackend,
+  hasPersistentStorage,
+  hasRedisStorage,
+} from "./persistentStorage.js";
+import {
   hasBlobStorage,
   jsonBlobKey,
   readBlobText,
   writeBlobText,
 } from "./blobStorage.js";
+import {
+  readRedisText,
+  redisJsonKey,
+  writeRedisText,
+} from "./redisStorage.js";
 
 let DATA_DIR = resolveWritableDir("EGYMAC_DATA_DIR", "");
 let forceFilesystem = false;
@@ -37,14 +46,15 @@ let initPromise = null;
 async function ensureDataReady() {
   if (!initPromise) {
     initPromise = (async () => {
-      if (forceFilesystem || !hasBlobStorage()) {
-        await fs.mkdir(DATA_DIR, { recursive: true });
-        if (
-          IS_SERVERLESS &&
-          path.resolve(DATA_DIR) !== path.resolve(BUNDLED_DATA_DIR)
-        ) {
-          await seedBundledFiles(BUNDLED_DATA_DIR, DATA_DIR);
-        }
+      if (forceFilesystem || hasPersistentStorage()) {
+        if (hasPersistentStorage()) return;
+      }
+      await fs.mkdir(DATA_DIR, { recursive: true });
+      if (
+        IS_SERVERLESS &&
+        path.resolve(DATA_DIR) !== path.resolve(BUNDLED_DATA_DIR)
+      ) {
+        await seedBundledFiles(BUNDLED_DATA_DIR, DATA_DIR);
       }
     })();
   }
@@ -74,22 +84,31 @@ async function readBundledJson(filename) {
 }
 
 async function readRawText(filename) {
+  if (!forceFilesystem && hasRedisStorage()) {
+    const fromRedis = await readRedisText(redisJsonKey(filename));
+    if (fromRedis != null) return fromRedis;
+  }
   if (!forceFilesystem && hasBlobStorage()) {
-    return readBlobText(jsonBlobKey(filename));
+    const fromBlob = await readBlobText(jsonBlobKey(filename));
+    if (fromBlob != null) return fromBlob;
   }
   const filePath = path.join(DATA_DIR, filename);
   return fs.readFile(filePath, "utf-8");
 }
 
 async function writeRawText(filename, text) {
+  if (!forceFilesystem && hasRedisStorage()) {
+    await writeRedisText(redisJsonKey(filename), text);
+  }
   if (!forceFilesystem && hasBlobStorage()) {
     await writeBlobText(jsonBlobKey(filename), text);
-    return;
   }
-  const filePath = path.join(DATA_DIR, filename);
-  const tmpPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
-  await fs.writeFile(tmpPath, text, "utf-8");
-  await fs.rename(tmpPath, filePath);
+  if (forceFilesystem || !hasPersistentStorage()) {
+    const filePath = path.join(DATA_DIR, filename);
+    const tmpPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
+    await fs.writeFile(tmpPath, text, "utf-8");
+    await fs.rename(tmpPath, filePath);
+  }
 }
 
 /**
