@@ -15,6 +15,7 @@
     "@sparticuz/chromium": "^149.0.0",
     "@upstash/redis": "^1.38.0",
     "@vercel/blob": "^2.5.0",
+    "@vercel/oidc": "^3.6.1",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "multer": "^2.1.1",

@@ -7,7 +7,11 @@ async function request(endpoint, { adminKey, ...options } = {}) {
     ...options.headers,
   };
 
-  const res = await fetch(`${API}${endpoint}`, { ...options, headers });
+  const res = await fetch(`${API}${endpoint}`, {
+    cache: "no-store",
+    ...options,
+    headers,
+  });
   const text = await res.text();
 
   let data = {};
@@ -94,11 +98,6 @@ export function updateProduct(id, body, adminKey) {
 
 export function deleteProduct(id, adminKey) {
   return request(`/catalog/products/${id}`, { method: "DELETE", adminKey });
-}
-
-/** @deprecated use getCatalog */
-export function getProducts(params = {}) {
-  return getCatalog(params);
 }
 
 // ─── Site Content CMS ────────────────────────────────────────────────────────
@@ -193,14 +192,6 @@ export async function downloadQuotePdfById(id, printMode, adminKey) {
   return res.blob();
 }
 
-/** @deprecated Use downloadQuotePdfById after save */
-export async function generateFreeFormQuotePdf(quote, printMode, adminKey) {
-  if (quote?.id) {
-    return downloadQuotePdfById(quote.id, printMode, adminKey);
-  }
-  throw new Error("Save the offer first, then generate PDF by id.");
-}
-
 export function deleteSavedQuote(id, adminKey) {
   return request(`/quotations/${id}`, { method: "DELETE", adminKey });
 }
@@ -216,38 +207,4 @@ export function createSalesperson(name, adminKey) {
 
 export function deleteSalesperson(id, adminKey) {
   return request(`/salespersons/${id}`, { method: "DELETE", adminKey });
-}
-
-// ─── Legacy Quotation Generator (PDF parse/generate) ─────────────────────────
-export function getQuotationTemplate(adminKey) {
-  return request("/quotation/template", { adminKey });
-}
-
-export async function parseQuotationPdf(file, adminKey) {
-  const formData = new FormData();
-  formData.append("pdf", file);
-
-  const res = await fetch(`${API}/quotation/parse`, {
-    method: "POST",
-    headers: { "X-Admin-Key": adminKey },
-    body: formData,
-  });
-
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "PDF parse failed");
-  return data;
-}
-
-export async function generateQuotationPdf(quotation, adminKey) {
-  const res = await fetch(`${API}/quotation/generate`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "X-Admin-Key": adminKey },
-    body: JSON.stringify(quotation),
-  });
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.message || "PDF generation failed");
-  }
-  return res.blob();
 }
