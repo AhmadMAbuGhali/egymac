@@ -9,6 +9,8 @@ import quotationsRouter from "./routes/quotations.js";
 import salespersonsRouter from "./routes/salespersons.js";
 import templatesRouter from "./routes/templates.js";
 import seoRouter from "./routes/seo.js";
+import { getJsonStorageBackend } from "./utils/jsonStore.js";
+import { hasBlobStorage } from "./utils/blobStorage.js";
 
 /** Public URL prefix for this service on Vercel (see vercel.json routePrefix). */
 export const SERVICE_ROUTE_PREFIX =
@@ -75,6 +77,8 @@ export function createApp() {
       service: "egymac-api",
       timestamp: new Date().toISOString(),
       mount: "/api",
+      storage: getJsonStorageBackend(),
+      persistent: hasBlobStorage(),
     });
   });
 

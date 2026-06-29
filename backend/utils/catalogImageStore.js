@@ -1,19 +1,21 @@
 import fs from "fs/promises";
-import fsSync from "fs";
 import path from "path";
 import crypto from "crypto";
 import {
-  BUNDLED_DATA_DIR,
-  resolveWritableDir,
-  seedBundledFiles,
-} from "./runtimePaths.js";
+  configureAssetDir,
+  deleteAssetsWithPrefix,
+  ensureAssetDir,
+  mimeForFilename,
+  readAssetBuffer,
+  resolveLocalAssetPath,
+  saveAssetBuffer,
+} from "./assetStorage.js";
 
-const BUNDLED_IMAGE_DIR = path.join(BUNDLED_DATA_DIR, "catalog-images");
-
-let IMAGE_DIR = resolveWritableDir("EGYMAC_CATALOG_IMAGE_DIR", "catalog-images");
+let IMAGE_DIR = null;
 
 export function configureCatalogImageDir(dir) {
   IMAGE_DIR = path.resolve(dir);
+  configureAssetDir("catalog-images", dir);
 }
 
 export function getCatalogImageDir() {
@@ -23,7 +25,7 @@ export function getCatalogImageDir() {
 const DATA_URI_RE = /^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/;
 
 async function ensureDir() {
-  await seedBundledFiles(BUNDLED_IMAGE_DIR, IMAGE_DIR);
+  await ensureAssetDir("catalog-images");
 }
 
 function extForMime(mime) {
@@ -38,8 +40,7 @@ function assetUrl(filename) {
 }
 
 /**
- * Persist data-URI images to disk; leave https URLs unchanged.
- * Returns normalized image reference array (paths, not raw base64).
+ * Persist data-URI images to storage; leave https URLs unchanged.
  */
 export async function persistCatalogImages(productId, images = []) {
   await ensureDir();
@@ -70,8 +71,7 @@ export async function persistCatalogImages(productId, images = []) {
 
     const hash = crypto.createHash("sha256").update(buf).digest("hex").slice(0, 12);
     const filename = `p${productId}-${i + 1}-${hash}${extForMime(mime)}`;
-    const filePath = path.join(IMAGE_DIR, filename);
-    await fs.writeFile(filePath, buf);
+    await saveAssetBuffer("catalog-images", filename, buf, mime);
     results.push(assetUrl(filename));
   }
 
@@ -79,21 +79,15 @@ export async function persistCatalogImages(productId, images = []) {
 }
 
 export function resolveCatalogImagePath(filename) {
-  const safe = path.basename(filename);
-  const primary = path.join(IMAGE_DIR, safe);
-  if (fsSync.existsSync(primary)) return primary;
-  const bundled = path.join(BUNDLED_IMAGE_DIR, safe);
-  if (fsSync.existsSync(bundled)) return bundled;
-  return primary;
+  return resolveLocalAssetPath("catalog-images", filename);
 }
 
+export async function readCatalogImageBuffer(filename) {
+  return readAssetBuffer("catalog-images", filename);
+}
+
+export { mimeForFilename };
+
 export async function deleteCatalogAssetsForProduct(productId) {
-  await ensureDir();
-  const files = await fs.readdir(IMAGE_DIR);
-  const prefix = `p${productId}-`;
-  await Promise.all(
-    files
-      .filter((f) => f.startsWith(prefix))
-      .map((f) => fs.unlink(path.join(IMAGE_DIR, f)).catch(() => {}))
-  );
+  await deleteAssetsWithPrefix("catalog-images", `p${productId}-`);
 }

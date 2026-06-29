@@ -6,12 +6,21 @@ import {
   resolveWritableDir,
   seedBundledFiles,
 } from "./runtimePaths.js";
+import {
+  getStorageBackend,
+  hasBlobStorage,
+  jsonBlobKey,
+  readBlobText,
+  writeBlobText,
+} from "./blobStorage.js";
 
 let DATA_DIR = resolveWritableDir("EGYMAC_DATA_DIR", "");
+let forceFilesystem = false;
 
 /** Test-only: redirect JSON storage to an isolated directory */
 export function configureDataDir(dir) {
   DATA_DIR = path.resolve(dir);
+  forceFilesystem = true;
   initPromise = null;
 }
 
@@ -19,17 +28,23 @@ export function getDataDir() {
   return DATA_DIR;
 }
 
+export function getJsonStorageBackend() {
+  return getStorageBackend(forceFilesystem);
+}
+
 let initPromise = null;
 
 async function ensureDataReady() {
   if (!initPromise) {
     initPromise = (async () => {
-      await fs.mkdir(DATA_DIR, { recursive: true });
-      if (
-        IS_SERVERLESS &&
-        path.resolve(DATA_DIR) !== path.resolve(BUNDLED_DATA_DIR)
-      ) {
-        await seedBundledFiles(BUNDLED_DATA_DIR, DATA_DIR);
+      if (forceFilesystem || !hasBlobStorage()) {
+        await fs.mkdir(DATA_DIR, { recursive: true });
+        if (
+          IS_SERVERLESS &&
+          path.resolve(DATA_DIR) !== path.resolve(BUNDLED_DATA_DIR)
+        ) {
+          await seedBundledFiles(BUNDLED_DATA_DIR, DATA_DIR);
+        }
       }
     })();
   }
@@ -58,25 +73,42 @@ async function readBundledJson(filename) {
   return JSON.parse(raw);
 }
 
+async function readRawText(filename) {
+  if (!forceFilesystem && hasBlobStorage()) {
+    return readBlobText(jsonBlobKey(filename));
+  }
+  const filePath = path.join(DATA_DIR, filename);
+  return fs.readFile(filePath, "utf-8");
+}
+
+async function writeRawText(filename, text) {
+  if (!forceFilesystem && hasBlobStorage()) {
+    await writeBlobText(jsonBlobKey(filename), text);
+    return;
+  }
+  const filePath = path.join(DATA_DIR, filename);
+  const tmpPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
+  await fs.writeFile(tmpPath, text, "utf-8");
+  await fs.rename(tmpPath, filePath);
+}
+
 /**
- * Read a JSON data file. On serverless, reads/writes go to /tmp with bundled seed data.
+ * Read a JSON data file. Uses Vercel Blob on production when connected, else local disk.
  */
 export async function readJson(filename, defaultValue = []) {
   await ensureDataReady();
-  const filePath = path.join(DATA_DIR, filename);
 
   try {
-    const raw = await fs.readFile(filePath, "utf-8");
+    const raw = await readRawText(filename);
+    if (raw == null) throw new Error("missing");
     return JSON.parse(raw);
   } catch {
-    if (path.resolve(DATA_DIR) !== path.resolve(BUNDLED_DATA_DIR)) {
-      try {
-        const parsed = await readBundledJson(filename);
-        await writeJson(filename, parsed);
-        return parsed;
-      } catch {
-        // fall through to default
-      }
+    try {
+      const parsed = await readBundledJson(filename);
+      await writeJson(filename, parsed);
+      return parsed;
+    } catch {
+      // fall through
     }
 
     await writeJson(filename, defaultValue);
@@ -84,18 +116,13 @@ export async function readJson(filename, defaultValue = []) {
   }
 }
 
-/** Persist data with exclusive lock (atomic write via temp file + rename). */
+/** Persist data with exclusive lock (atomic write). */
 export async function writeJson(filename, data) {
   await ensureDataReady();
   const release = await acquireLock(filename);
-  const filePath = path.join(DATA_DIR, filename);
-  const tmpPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
+  const text = JSON.stringify(data, null, 2);
   try {
-    await fs.writeFile(tmpPath, JSON.stringify(data, null, 2), "utf-8");
-    await fs.rename(tmpPath, filePath);
-  } catch (err) {
-    await fs.unlink(tmpPath).catch(() => {});
-    throw err;
+    await writeRawText(filename, text);
   } finally {
     release();
   }
@@ -113,23 +140,18 @@ export async function mutateJson(filename, defaultValue, mutator) {
   try {
     let data;
     try {
-      const raw = await fs.readFile(path.join(DATA_DIR, filename), "utf-8");
+      const raw = await readRawText(filename);
+      if (raw == null) throw new Error("missing");
       data = JSON.parse(raw);
     } catch {
-      if (path.resolve(DATA_DIR) !== path.resolve(BUNDLED_DATA_DIR)) {
-        try {
-          data = await readBundledJson(filename);
-        } catch {
-          data = defaultValue;
-        }
-      } else {
+      try {
+        data = await readBundledJson(filename);
+      } catch {
         data = defaultValue;
       }
     }
     const next = await mutator(data);
-    const tmpPath = path.join(DATA_DIR, `${filename}.${process.pid}.${Date.now()}.tmp`);
-    await fs.writeFile(tmpPath, JSON.stringify(next, null, 2), "utf-8");
-    await fs.rename(tmpPath, path.join(DATA_DIR, filename));
+    await writeRawText(filename, JSON.stringify(next, null, 2));
     return next;
   } finally {
     release();

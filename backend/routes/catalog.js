@@ -19,7 +19,10 @@ import {
   persistCatalogImages,
   resolveCatalogImagePath,
   deleteCatalogAssetsForProduct,
+  readCatalogImageBuffer,
+  mimeForFilename,
 } from "../utils/catalogImageStore.js";
+import { readSiteAssetBuffer } from "../utils/siteAssetStore.js";
 import fs from "fs";
 import path from "path";
 
@@ -162,15 +165,27 @@ router.get("/", async (req, res) => {
 
 router.get("/assets/:filename", async (req, res) => {
   try {
-    let filePath = resolveCatalogImagePath(req.params.filename);
-    if (!fs.existsSync(filePath)) {
-      filePath = resolveSiteAssetPath(req.params.filename);
+    const filename = req.params.filename;
+    let buffer =
+      (await readCatalogImageBuffer(filename)) || (await readSiteAssetBuffer(filename));
+
+    if (!buffer) {
+      let filePath = resolveCatalogImagePath(filename);
+      if (!fs.existsSync(filePath)) {
+        filePath = resolveSiteAssetPath(filename);
+      }
+      if (fs.existsSync(filePath)) {
+        buffer = await fs.promises.readFile(filePath);
+      }
     }
-    if (!fs.existsSync(filePath)) {
+
+    if (!buffer) {
       return res.status(404).json({ success: false, message: "Asset not found" });
     }
+
     res.setHeader("Cache-Control", "public, max-age=86400");
-    res.sendFile(path.resolve(filePath));
+    res.setHeader("Content-Type", mimeForFilename(filename));
+    res.send(buffer);
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
